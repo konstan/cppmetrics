@@ -2,3 +2,6 @@ build
 .project
 .cproject
 .settings
+*.a
+*.o
+*.d

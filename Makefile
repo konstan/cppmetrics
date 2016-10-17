@@ -8,14 +8,10 @@ LIBNAME=libcppmetrics_hp.a
 # export POCO_BASE=/usr/local/include
 UNAME=$(shell uname)
 
-POCO_INC_PATH=     -I $(POCO_BASE)/include  -I $(POCO_BASE)/Net/include -I $(POCO_BASE)/Foundation/include -I $(POCO_BASE)/Util/include
-CPPFLAGS=-g -O0 $(POCO_INC_PATH) -I src -I $(GTEST_DIR)/googletest/include  -D_DEBUG -I.. -Wpedantic -pedantic-errors -w  -Wextra  -Wall
-CXXFLAGS= -std=c++11 
-
 ifeq ($(UNAME), Darwin)
 #	ifndef POCO_BASE
 #		$(info POCO_BASE is not defined. I am setting global path based on HomeBrew.)
-	    POCO_BASE=/usr/local/Cellar/poco/1.7.2
+	    POCO_BASE=/usr/local/include
 #	endif
 	# for mac:
 	LDFLAGS= -L $(POCO_BASE)/lib -L/usr/local/opt/openssl/lib
@@ -28,6 +24,10 @@ else
 #	endif
 	LDFLAGS= -L /usr/local/lib
 endif
+
+POCO_INC_PATH=     -I $(POCO_BASE)  -I $(POCO_BASE)/Net/include -I $(POCO_BASE)/Foundation/include -I $(POCO_BASE)/Util/include
+CPPFLAGS=-g -O0 $(POCO_INC_PATH) -I src -I $(GTEST_DIR)/googletest/include  -D_DEBUG -I.. -Wpedantic -pedantic-errors -w  -Wextra  -Wall
+CXXFLAGS= -std=c++11 
 
 LDLIBS=  -lPocoFoundation  -lPocoNet -lPocoUtil 
 SRCS=    src/cppmetrics/core/histogram.cpp\
