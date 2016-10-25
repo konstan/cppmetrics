@@ -18,7 +18,7 @@ conan_basic_setup()
 
 include_directories("src")
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Werror -Wall -Winit-self -m64 -pipe -std=c++11")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Winit-self -m64 -pipe -std=c++11")
 
 set (cppmetrics_global_EXTERNAL_HEADERS
   src/cppmetrics/cppmetrics.h
