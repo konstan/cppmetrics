@@ -5,3 +5,8 @@ build
 *.a
 *.o
 *.d
+CMakeFiles
+CPackConfig.cmake
+CPackSourceConfig.cmake
+Makefile
+cmake_install.cmake

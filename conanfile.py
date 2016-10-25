@@ -21,6 +21,7 @@ class CppmetricsConan(ConanFile):
         
     def package(self):
         self.copy("*.h", dst="include")
+        self.copy("*.h", dst="src")
         self.copy("*.lib", dst="lib", src="lib")
         self.copy("*.dylib", dst="lib", src="lib")
         self.copy("*.a", dst="lib", src="lib")
