@@ -16,6 +16,7 @@ INCLUDE(CPack)
 include(conanbuildinfo.cmake)
 conan_basic_setup()
 
+include_directories("src")
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Werror -Wall -Winit-self -m64 -pipe -std=c++11")
 
