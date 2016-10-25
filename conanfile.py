@@ -9,9 +9,9 @@ class CppmetricsConan(ConanFile):
     exports = "*"
 
     def config(self):
-        self.requires.add("glog")
-        self.requires.add("gtest")
-        self.requires.add("Poco")
+        self.requires.add("glog/0.3.4@dwerner/testing")
+        self.requires.add("gtest/1.7.0@lasote/stable")
+        self.requires.add("Poco/1.7.5@fizx/testing")
 
     def build(self):
         cmake = CMake(self.settings)
