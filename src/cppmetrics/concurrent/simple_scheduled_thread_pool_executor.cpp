@@ -32,7 +32,7 @@ public:
 //			} catch(Poco::Net::NetException& ex){
 //				fprintf(stderr,"cppmetrics task caught exception: %d", ex.displayText().c_str());
 			}catch(std::runtime_error& ex){
-				fprintf(stderr,"cppmetrics task caught runtime exception: %d", ex.what());
+				fprintf(stderr,"cppmetrics task caught runtime exception: %s", ex.what());
 			}
 	}
 	core::Reporter* reporter;
