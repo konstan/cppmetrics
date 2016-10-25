@@ -7,6 +7,7 @@ class CppmetricsConan(ConanFile):
     version = "1.0"
     settings = "os", "compiler", "build_type", "arch"
     exports = "*"
+    generators = "cmake"
 
     def config(self):
         self.requires.add("glog/0.3.4@dwerner/testing")
@@ -19,7 +20,7 @@ class CppmetricsConan(ConanFile):
         self.run("cmake --build . %s" % cmake.build_config)
         
     def package(self):
-        self.copy("*.h", dst="include")
+        self.copy("*.h", dst="include", src="src")
         self.copy("*.lib", dst="lib", src=".")
         self.copy("*.dylib", dst="lib", src=".")
         self.copy("*.a", dst="lib", src=".")

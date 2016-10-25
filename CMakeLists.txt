@@ -13,7 +13,14 @@ set (cppmetrics_VERSION "${cppmetrics_VERSION_MAJOR}.${cppmetrics_VERSION_MINOR}
 set(CPACK_PACKAGE_VERSION ${cppmetrics_VERSION})
 INCLUDE(CPack)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Werror -Wall -Winit-self -m64 -pipe -std=c++11")
+cmake_minimum_required(VERSION 2.8.12)
+
+include(conanbuildinfo.cmake)
+conan_basic_setup()
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2  -Winit-self -m64 -pipe -std=c++11")
+
+include_directories("src")
 
 set (cppmetrics_global_EXTERNAL_HEADERS
   src/cppmetrics/cppmetrics.h
