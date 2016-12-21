@@ -26,7 +26,7 @@ else
 endif
 
 POCO_INC_PATH=     -I $(POCO_BASE)  -I $(POCO_BASE)/Net/include -I $(POCO_BASE)/Foundation/include -I $(POCO_BASE)/Util/include
-CPPFLAGS=-g -O0 $(POCO_INC_PATH) -I src -I $(GTEST_DIR)/googletest/include  -D_DEBUG -I.. -Wpedantic -pedantic-errors -w  -Wextra  -Wall
+CPPFLAGS=-g -O2 $(POCO_INC_PATH) -I src -I $(GTEST_DIR)/googletest/include  -D_DEBUG -I.. -Wpedantic -pedantic-errors -w  -Wextra  -Wall
 CXXFLAGS= -std=c++11 
 
 LDLIBS=  -lPocoFoundation  -lPocoNet -lPocoUtil 
