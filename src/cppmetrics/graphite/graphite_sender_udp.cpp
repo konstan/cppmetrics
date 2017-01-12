@@ -34,7 +34,14 @@ void GraphiteSenderUDP::send(const std::string& name,
         throw std::runtime_error("Graphite server connection not established.");
     }
     std::ostringstream ostr;
-    ostr << name << ' ' << value << ' ' << timestamp << std::endl;
+    bool useGraphiteFormat = false;
+    if(useGraphiteFormat){
+    	ostr << name << ' ' << value << ' ' << timestamp << std::endl;
+    }else{
+    	// use datadog format
+    	ostr << name <<": " << value << "|g" << std::endl;
+    }
+
     std::string graphite_str(ostr.str());
     socket_.sendBytes(graphite_str.c_str(), graphite_str.size() );
 }
