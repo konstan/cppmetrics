@@ -41,5 +41,5 @@
 #include "cppmetrics/graphite/graphite_sender_udp.h"
 #include "cppmetrics/graphite/graphite_reporter.h"
 #include "cppmetrics/core/console_reporter.h"
-
+#include "cppmetrics/graphite/TeeSender.h"
 #endif /* CPPMETRICS_H_ */
