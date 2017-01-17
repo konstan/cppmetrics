@@ -16,6 +16,14 @@ platforms but being used only in linux environment.
 
 ## How to build
 
+### short way: (noam)
+mkdir build
+cd build
+cmake ..
+make -j
+
+
+
 ```
 # It is recommended to create the build directory in the parent directory of cppmetrics source as opposed to creating in the cppmetrics directory.
 mkdir build

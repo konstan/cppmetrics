@@ -1,0 +1,65 @@
+/*
+ * GraphiteSenderUDP.cpp
+ *
+ *  Created on: Jul 27, 2016
+ *      Author: noam
+ */
+
+#include <sstream>
+#include <stdint.h>
+#include  <iostream>
+#include <string>
+#include "cppmetrics/graphite/graphite_sender_udp.h"
+
+using boost::asio::ip::udp;
+
+namespace cppmetrics {
+namespace graphite {
+
+GraphiteSenderUDP::GraphiteSenderUDP(const std::string& host, uint16_t port) :
+                connected_(false),
+                host_(host),
+                port_(port),
+		socket_(io_service_) {
+	socket_.open(udp::v4());
+}
+
+GraphiteSenderUDP::~GraphiteSenderUDP() {
+}
+
+void GraphiteSenderUDP::connect() {
+    udp::resolver resolver(io_service_);
+    std::ostringstream ss;
+    ss << port_; // bypass compiler problem that prevents using to_string()
+    udp::resolver::query query(host_, ss.str() );
+    receiver_endpoint_ = *resolver.resolve(query);
+    connected_ = true;
+}
+
+//noamc: current implementation uses blocking send
+void GraphiteSenderUDP::send(const std::string& name,
+        const std::string& value,
+        uint64_t timestamp) {
+    if (!connected_) {
+        throw std::runtime_error("Graphite server connection not established.");
+    }
+    std::ostringstream ostr;
+    bool useGraphiteFormat = false;
+    if(useGraphiteFormat){
+    	ostr << name << ' ' << value << ' ' << timestamp << std::endl;
+    }else{
+    	// use datadog format
+    	ostr << name <<": " << value << "|g" << std::endl;
+    }
+
+    std::string graphite_str(ostr.str());
+    socket_.send_to(boost::asio::buffer(graphite_str), receiver_endpoint_);
+}
+
+void GraphiteSenderUDP::close() {
+    connected_ = false;
+}
+
+} /* namespace graphite */
+} /* namespace cppmetrics */
+

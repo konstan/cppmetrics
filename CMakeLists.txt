@@ -45,6 +45,7 @@ set (cppmetrics_SOURCES
   src/cppmetrics/graphite/graphite_sender_tcp.cpp
   src/cppmetrics/graphite/graphite_reporter.cpp
   src/cppmetrics/core/console_reporter.cpp
+  src/cppmetrics/graphite/graphite_sender_udp.cpp
 )
 
 set (cppmetrics_core_EXTERNAL_HEADERS
@@ -72,6 +73,7 @@ set (cppmetrics_graphite_EXTERNAL_HEADERS
   src/cppmetrics/graphite/graphite_sender.h
   src/cppmetrics/graphite/graphite_sender_tcp.h
   src/cppmetrics/graphite/graphite_reporter.h
+  src/cppmetrics/graphite/graphite_sender_udp.h
 )
 
 set (cppmetrics_concurrent_EXTERNAL_HEADERS  

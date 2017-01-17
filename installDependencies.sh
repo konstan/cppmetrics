@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 GLOG_TARGET=glog-0.3.3
 GLOG_TARGET_PACKAGE=${GLOG_TARGET}.tar.gz
 GTEST_TARGET=gtest-1.7.0
@@ -8,9 +8,10 @@ GTEST_TARGET_PACKAGE=${GTEST_TARGET}.zip
 make_glog() {
     INSTALL_DIR=$1
     echo "Fetching glog package."
-    curl https://google-glog.googlecode.com/files/${GLOG_TARGET_PACKAGE} -o ${GLOG_TARGET_PACKAGE}
+    wget http://pkgs.fedoraproject.org/repo/pkgs/glog/glog-0.3.3.tar.gz/a6fd2c22f8996846e34c763422717c18/glog-0.3.3.tar.gz
+
     echo "Unzipping ${GLOG_TARGET_PACKAGE} package."
-    tar -zxvf ${GLOG_TARGET_PACKAGE}
+    tar xf ${GLOG_TARGET_PACKAGE}
     cd ${GLOG_TARGET} && ./configure --prefix=${INSTALL_DIR} --enable-shared=false
     make install
 }        
@@ -59,12 +60,12 @@ fetch_and_install_dependencies() {
     mkdir -p ${INSTALL_DIR}
     echo "Created ${INSTALL_DIR}"
     cd ${SOURCE_DIR} && make_glog ${INSTALL_DIR}
-    cd ${SOURCE_DIR} && make_gtest ${INSTALL_DIR}
+    #cd ${SOURCE_DIR} && make_gtest ${INSTALL_DIR}
 }
 
 if [ "x$1" == "x" ] || [ -d "$1" ]
 then
-	echo "Must provided the name of a non existent folder as a parameter (will be used to install depenedencies)"
+	echo "Must provide the name of a non existent folder as a parameter (will be used to install depenedencies)"
 	exit 1
 fi
 

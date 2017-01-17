@@ -13,7 +13,7 @@
  *      Author: vpoliboy
  */
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include "console_reporter.h"
 #include "utils.h"
 

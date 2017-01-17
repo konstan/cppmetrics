@@ -13,7 +13,9 @@
  *      Author: vpoliboy
  */
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
+#define LOG(level) std::cerr 
+
 #include "cppmetrics/concurrent/simple_scheduled_thread_pool_executor.h"
 
 namespace cppmetrics {

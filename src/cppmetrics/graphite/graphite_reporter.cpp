@@ -15,9 +15,11 @@
 
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include "cppmetrics/core/utils.h"
 #include "cppmetrics/graphite/graphite_reporter.h"
+
+#define LOG(level) std::cerr 
 
 namespace cppmetrics {
 namespace graphite {
