@@ -23,10 +23,11 @@
 namespace cppmetrics {
 namespace core {
 
+//bug fix: the duration from epoch must be in UTC (not localtime)
 inline boost::posix_time::time_duration get_duration_from_epoch() {
     boost::posix_time::ptime time_t_epoch(boost::gregorian::date(1970, 1, 1));
     boost::posix_time::ptime now =
-            boost::posix_time::microsec_clock::local_time();
+            boost::posix_time::microsec_clock::universal_time();
     return (now - time_t_epoch);
 }
 
