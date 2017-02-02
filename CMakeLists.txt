@@ -13,6 +13,10 @@ set (cppmetrics_VERSION "${cppmetrics_VERSION_MAJOR}.${cppmetrics_VERSION_MINOR}
 set(CPACK_PACKAGE_VERSION ${cppmetrics_VERSION})
 INCLUDE(CPack)
 
+if(UNIX AND NOT APPLE)
+       set(LINUX TRUE)
+endif()
+
 set (cppmetrics_PREPROC_FLAGS -DBOOST_NO_CXX11_SMART_PTR)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Werror -Wall -Winit-self -m64 -pipe")
 
@@ -22,7 +26,12 @@ IF (DEFINED INCLUDE_SYSTEM_DIRS)
     SET (EXTRA_LD_FLAGS "-L/usr/lib")
 ENDIF()
 
-set (BOOST_LD_FLAGS "-lboost_timer -lboost_chrono -lboost_system -lboost_filesystem -lboost_thread -lboost_date_time -lpthread -lrt")
+if(LINUX)
+  set (BOOST_LD_FLAGS "-lboost_timer -lboost_chrono -lboost_system -lboost_filesystem -lboost_thread -lboost_date_time -lpthread -lrt")
+else()
+  set (BOOST_LD_FLAGS "-lboost_timer -lboost_chrono -lboost_system -lboost_filesystem -lboost_thread -lboost_date_time -lpthread")
+endif()
+
 set (GLOG_LD_FLAGS "-lglog")
 
 set (cppmetrics_global_EXTERNAL_HEADERS
@@ -69,14 +78,14 @@ set (cppmetrics_core_EXTERNAL_HEADERS
   src/cppmetrics/core/console_reporter.h
  )
 
-set (cppmetrics_graphite_EXTERNAL_HEADERS  
+set (cppmetrics_graphite_EXTERNAL_HEADERS
   src/cppmetrics/graphite/graphite_sender.h
   src/cppmetrics/graphite/graphite_sender_tcp.h
   src/cppmetrics/graphite/graphite_reporter.h
   src/cppmetrics/graphite/graphite_sender_udp.h
 )
 
-set (cppmetrics_concurrent_EXTERNAL_HEADERS  
+set (cppmetrics_concurrent_EXTERNAL_HEADERS
   src/cppmetrics/concurrent/simple_thread_pool_executor.h
   src/cppmetrics/concurrent/simple_scheduled_thread_pool_executor.h
 )
@@ -124,8 +133,8 @@ set (DIST_INCLUDE_DIR include/cppmetrics)
 IF (NOT DEFINED BOOST_DIR)
     find_package(Boost 1.53.0)
     if(Boost_FOUND)
-        set (BOOST_INC_DIR ${Boost_INCLUDE_DIRS}) 
-   	set (BOOST_LIB_DIR ${Boost_LIBRARY_DIRS}) 
+        set (BOOST_INC_DIR ${Boost_INCLUDE_DIRS})
+   	set (BOOST_LIB_DIR ${Boost_LIBRARY_DIRS})
     else ()
         MESSAGE(STATUS "BOOST distro not found")
     endif()
@@ -146,7 +155,7 @@ IF (DEFINED GTEST_DIR)
 ENDIF ()
 
 include_directories (src ${BOOST_INC_DIR} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
-link_directories (${BOOST_LIB_DIR} ${GLOG_LIB_DIR} ${GTEST_DIR}) 
+link_directories (${BOOST_LIB_DIR} ${GLOG_LIB_DIR} ${GTEST_DIR})
 install (FILES ${cppmetrics_global_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR})
 install (FILES ${cppmetrics_core_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/core)
 install (FILES ${cppmetrics_concurrent_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/concurrent)
@@ -163,4 +172,3 @@ install (TARGETS cppmetricsshared DESTINATION lib)
 add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
 target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_LD_FLAGS})
 add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)
-
