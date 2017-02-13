@@ -23,6 +23,7 @@
 #include "cppmetrics/core/counter.h"
 #include "cppmetrics/core/histogram.h"
 #include "cppmetrics/core/gauge.h"
+#include "cppmetrics/core/trivial_gauge.h"
 #include "cppmetrics/core/meter.h"
 #include "cppmetrics/core/metered.h"
 #include "cppmetrics/core/metric.h"

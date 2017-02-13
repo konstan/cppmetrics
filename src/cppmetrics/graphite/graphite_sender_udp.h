@@ -41,7 +41,7 @@ class GraphiteSenderUDP: public GraphiteSender {
 	     */
 	    virtual void send(const std::string& name,
 	            const std::string& value,
-	            boost::uint64_t timestamp);
+	            boost::uint64_t timestamp, metric_t type );
 
 	    /**
 	     * Closes the connection.

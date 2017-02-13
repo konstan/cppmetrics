@@ -48,7 +48,7 @@ void GraphiteSenderTCP::connect() {
 
 void GraphiteSenderTCP::send(const std::string& name,
         const std::string& value,
-        boost::uint64_t timestamp) {
+        boost::uint64_t timestamp, metric_t type) {
     if (!connected_) {
         throw std::runtime_error("Graphite server connection not established.");
     }

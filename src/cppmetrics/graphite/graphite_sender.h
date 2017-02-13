@@ -26,6 +26,11 @@ namespace graphite {
  */
 class GraphiteSender {
 public:
+
+    // HACK: the sender should not have to know the metric type.
+    // this is added for dd-statsd format needs
+    typedef enum {Gauge_t,Counter_t,Histogram_t} metric_t;
+
     virtual ~GraphiteSender() {
     }
 
@@ -46,7 +51,7 @@ public:
      */
     virtual void send(const std::string& name,
             const std::string& value,
-            boost::uint64_t timestamp) = 0;
+            boost::uint64_t timestamp, metric_t type = Counter_t) = 0;
 
     /**
      * Closes the connection.

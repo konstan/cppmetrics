@@ -55,7 +55,7 @@ public:
      */
     virtual void send(const std::string& name,
             const std::string& value,
-            boost::uint64_t timestamp);
+            boost::uint64_t timestamp, metric_t type = Counter_t);
 
     /**
      * Closes the TCP connection.

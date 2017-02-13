@@ -39,7 +39,7 @@ void GraphiteSenderUDP::connect() {
 //noamc: current implementation uses blocking send
 void GraphiteSenderUDP::send(const std::string& name,
         const std::string& value,
-        uint64_t timestamp) {
+        uint64_t timestamp , metric_t type) {
     if (!connected_) {
         throw std::runtime_error("Graphite server connection not established.");
     }
@@ -49,7 +49,22 @@ void GraphiteSenderUDP::send(const std::string& name,
     	ostr << name << ' ' << value << ' ' << timestamp << std::endl;
     }else{
     	// use datadog format
-    	ostr << name <<": " << value << "|g" << std::endl;
+        std::string t;
+        switch (type) {
+            case GraphiteSender::Counter_t:
+                t = "c|@10"; // HACK: should take the sampling period (10sec) from the timer thread
+                break;
+            case GraphiteSender::Gauge_t:
+                t = "g";
+                break;
+            case GraphiteSender::Histogram_t:
+                t = "h";
+                break;
+            default:
+                t = "g|#badcountertype";
+                assert(!"bad counter type");
+        }
+    	ostr << name <<": " << value << "|" << t << std::endl;
     }
 
     std::string graphite_str(ostr.str());
