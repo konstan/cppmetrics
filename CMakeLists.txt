@@ -165,10 +165,10 @@ add_library (cppmetrics STATIC ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
 install (TARGETS cppmetrics DESTINATION lib)
 
 # Re-enable them when the boost is built with shared library option too.
-add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
-target_link_libraries (cppmetricsshared ${BOOST_LD_FLAGS})
-install (TARGETS cppmetricsshared DESTINATION lib)
+#add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
+#target_link_libraries (cppmetricsshared ${BOOST_LD_FLAGS})
+#install (TARGETS cppmetricsshared DESTINATION lib)
 
-add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
-target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_LD_FLAGS})
-add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)
+#add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
+#target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_LD_FLAGS})
+#add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)
