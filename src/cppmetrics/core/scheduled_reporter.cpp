@@ -59,7 +59,7 @@ void ScheduledReporter::start(boost::chrono::milliseconds period) {
 void ScheduledReporter::stop() {
     if (running_) {
         running_ = false;
-        scheduled_executor_.shutdown();
+        scheduled_executor_.shutdownNow();
     }
 }
 
