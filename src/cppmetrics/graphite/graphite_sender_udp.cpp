@@ -52,7 +52,8 @@ void GraphiteSenderUDP::send(const std::string& name,
         std::string t;
         switch (type) {
             case GraphiteSender::Counter_t:
-                t = "c|@10"; // HACK: should take the sampling period (10sec) from the timer thread
+                // 0.1 means 1/10 of the sampling rate of the counter which is 1.0 second
+                t = "c|@0.1"; // HACK: should take the sampling period (10sec) from the timer thread
                 break;
             case GraphiteSender::Gauge_t:
                 t = "g";
