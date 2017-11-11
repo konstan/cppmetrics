@@ -20,4 +20,8 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 test_detail.xml
 
+gtest_cppmetrics
+libcppmetrics.a
+libcppmetricsshared.dylib
+
 # End of https://www.gitignore.io/api/cmake
