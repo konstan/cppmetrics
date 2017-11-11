@@ -80,7 +80,7 @@ public:
 
 private:
     void cancelTimers();
-    void timerHandler(size_t timer_index);
+    void timerHandler(const asio::error_code &ec, size_t timer_index);
 
     void scheduleTimer(std::function<void()> task,
         std::chrono::milliseconds period, bool fixed_rate);

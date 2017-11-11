@@ -50,8 +50,7 @@ SimpleScheduledThreadPoolExecutor::SimpleScheduledThreadPoolExecutor(
     , work_ptr_(new asio::io_service::work(io_service_))
 {
     for (size_t i = 0; i < thread_count; ++i) {
-        thread_group_.create_thread(
-            boost::bind(&asio::io_service::run, &io_service_));
+        thread_group_.create_thread([this]() { this->io_service_.run(); });
     }
 }
 
@@ -68,10 +67,16 @@ void SimpleScheduledThreadPoolExecutor::cancelTimers()
     }
 }
 
-void SimpleScheduledThreadPoolExecutor::timerHandler(size_t timer_index)
+void SimpleScheduledThreadPoolExecutor::timerHandler(
+    const asio::error_code &ec, size_t timer_index)
 {
     if (!running_) {
         LOG(ERROR) << "Timer not started.";
+        return;
+    }
+
+    if (ec) {
+        LOG(ERROR) << "Unable to execute the timer, reason " << ec.message();
         return;
     }
 
@@ -91,16 +96,23 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(size_t timer_index)
     }
 
     timer_task.task_();
+    asio::error_code eec;
     if (timer_task.fixed_rate_) {
         timer_task.timer_->expires_at(
-            timer_task.timer_->expires_at() + timer_task.period_);
+            timer_task.timer_->expires_at() + timer_task.period_, eec);
     }
     else {
-        timer_task.timer_->expires_from_now(timer_task.period_);
+        timer_task.timer_->expires_from_now(timer_task.period_, eec);
     }
 
-    timer_task.timer_->async_wait(boost::bind(
-        &SimpleScheduledThreadPoolExecutor::timerHandler, this, timer_index));
+    if (eec) {
+        LOG(ERROR) << "Unable to restart the time, reason " << eec.message();
+    }
+
+    timer_task.timer_->async_wait(
+        [this, timer_index](const asio::error_code &ec) {
+            this->timerHandler(ec, timer_index);
+        });
 }
 
 void SimpleScheduledThreadPoolExecutor::shutdown()
@@ -140,8 +152,9 @@ void SimpleScheduledThreadPoolExecutor::scheduleTimer(
         timer_tasks_.push_back(TimerTask(timer, task, period, fixed_rate));
         timer_index = timer_tasks_.size() - 1;
     }
-    timer->async_wait(boost::bind(
-        &SimpleScheduledThreadPoolExecutor::timerHandler, this, timer_index));
+    timer->async_wait([this, timer_index](const asio::error_code &ec) {
+        this->timerHandler(ec, timer_index);
+    });
 }
 
 void SimpleScheduledThreadPoolExecutor::scheduleAtFixedDelay(

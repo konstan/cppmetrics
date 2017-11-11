@@ -23,8 +23,7 @@ SimpleThreadPoolExecutor::SimpleThreadPoolExecutor(size_t thread_count)
     , work_ptr_(new asio::io_service::work(io_service_))
 {
     for (size_t i = 0; i < thread_count; ++i) {
-        thread_group_.create_thread(
-            boost::bind(&asio::io_service::run, &io_service_));
+        thread_group_.create_thread([this]() { this->io_service_.run(); });
     }
 }
 

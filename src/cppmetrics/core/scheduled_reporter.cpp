@@ -14,7 +14,6 @@
  */
 
 #include "cppmetrics/core/scheduled_reporter.h"
-#include <boost/bind.hpp>
 
 namespace cppmetrics {
 namespace core {
@@ -49,7 +48,7 @@ void ScheduledReporter::start(std::chrono::milliseconds period)
     if (!running_) {
         running_ = true;
         scheduled_executor_.scheduleAtFixedDelay(
-            boost::bind(&ScheduledReporter::report, this), period);
+            [this]() { this->report(); }, period);
     }
 }
 

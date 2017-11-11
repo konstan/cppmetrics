@@ -21,18 +21,13 @@
 namespace cppmetrics {
 namespace concurrent {
 
-namespace {
-void increment_counter(size_t &counter) { ++counter; }
-}
-
 TEST(simplethreadpoolexecutor, functionaltest)
 {
     SimpleThreadPoolExecutor thread_pool_executor(2);
 
     ASSERT_FALSE(thread_pool_executor.isShutdown());
     size_t counter = 0;
-    std::function<void()> task(
-        boost::bind(increment_counter, boost::ref(counter)));
+    auto task = [&]() { ++counter; };
     thread_pool_executor.execute(task);
     // Give up a timeslice.
     std::this_thread::sleep_for(std::chrono::milliseconds(20));

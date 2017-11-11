@@ -18,7 +18,6 @@
 
 #include <asio.hpp>
 #include <atomic>
-#include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 
 namespace cppmetrics {

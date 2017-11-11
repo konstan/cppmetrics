@@ -14,7 +14,7 @@ install:
   - mkdir -p $DEPENDENCIES_ROOT
   - echo `pwd`
   - ./installDependencies.sh $DEPENDENCIES_ROOT
-  
+
 before_script:
   - rm -rf build
   - mkdir build
