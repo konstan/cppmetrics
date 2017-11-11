@@ -21,8 +21,7 @@ namespace cppmetrics {
 namespace core {
 
 const double ExpDecaySample::DEFAULT_ALPHA = 0.015;
-const Clock::duration ExpDecaySample::RESCALE_THRESHOLD(
-    std::chrono::hours(1));
+const Clock::duration ExpDecaySample::RESCALE_THRESHOLD(std::chrono::hours(1));
 
 ExpDecaySample::ExpDecaySample(boost::uint32_t reservoir_size, double alpha)
     : alpha_(alpha)
@@ -60,9 +59,8 @@ void ExpDecaySample::update(
     boost::lock_guard<boost::mutex> rlock(mutex_);
     rescaleIfNeeded(timestamp);
     boost::random::uniform_real_distribution<> dist(0, 1);
-    std::chrono::seconds dur =
-        std::chrono::duration_cast<std::chrono::seconds>(
-            timestamp - start_time_);
+    std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(
+        timestamp - start_time_);
     double priority = 0.0;
     do {
         priority = std::exp(alpha_ * dur.count()) / dist(rng_);

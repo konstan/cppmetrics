@@ -13,11 +13,11 @@
  *      Author: vpoliboy
  */
 
+#include "cppmetrics/graphite/graphite_reporter.h"
+#include "cppmetrics/core/utils.h"
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <glog/logging.h>
-#include "cppmetrics/core/utils.h"
-#include "cppmetrics/graphite/graphite_reporter.h"
 
 namespace cppmetrics {
 namespace graphite {
@@ -31,9 +31,7 @@ GraphiteReporter::GraphiteReporter(core::MetricRegistryPtr registry,
 {
 }
 
-GraphiteReporter::~GraphiteReporter()
-{
-}
+GraphiteReporter::~GraphiteReporter() {}
 
 template <typename T> std::string GraphiteReporter::format(T o)
 {
@@ -50,24 +48,23 @@ void GraphiteReporter::report(core::CounterMap counter_map,
     try {
         sender_->connect();
 
-        for(const core::CounterMap::value_type &kv : counter_map) {
+        for (const core::CounterMap::value_type &kv : counter_map) {
             reportCounter(kv.first, kv.second, timestamp);
         }
 
-        for(
-            const core::HistogramMap::value_type &kv : histogram_map) {
+        for (const core::HistogramMap::value_type &kv : histogram_map) {
             reportHistogram(kv.first, kv.second, timestamp);
         }
 
-        for(const core::MeteredMap::value_type &kv : meter_map) {
+        for (const core::MeteredMap::value_type &kv : meter_map) {
             reportMeter(kv.first, kv.second, timestamp);
         }
 
-        for(const core::TimerMap::value_type &kv : timer_map) {
+        for (const core::TimerMap::value_type &kv : timer_map) {
             reportTimer(kv.first, kv.second, timestamp);
         }
 
-        for(const core::GaugeMap::value_type &kv : gauge_map) {
+        for (const core::GaugeMap::value_type &kv : gauge_map) {
             reportGauge(kv.first, kv.second, timestamp);
         }
         sender_->close();

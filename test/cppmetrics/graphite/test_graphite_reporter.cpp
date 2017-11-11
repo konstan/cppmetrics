@@ -15,8 +15,8 @@
 
 #include "cppmetrics/graphite/graphite_reporter.h"
 #include <boost/lexical_cast.hpp>
-#include <gtest/gtest.h>
 #include <chrono>
+#include <gtest/gtest.h>
 #include <thread>
 
 namespace cppmetrics {
@@ -117,18 +117,18 @@ private:
         ASSERT_STREQ(expected_value.c_str(), actual_value.c_str());
     }
 
-    void sendHistogram(const std::string &name, const std::string &value,
-        uint64_t timestamp)
+    void sendHistogram(
+        const std::string &name, const std::string &value, uint64_t timestamp)
     {
     }
 
-    void sendMeter(const std::string &name, const std::string &value,
-        uint64_t timestamp)
+    void sendMeter(
+        const std::string &name, const std::string &value, uint64_t timestamp)
     {
     }
 
-    void sendTimer(const std::string &name, const std::string &value,
-        uint64_t timestamp)
+    void sendTimer(
+        const std::string &name, const std::string &value, uint64_t timestamp)
     {
     }
 };

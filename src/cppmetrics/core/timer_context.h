@@ -17,9 +17,9 @@
 #define TIMER_CONTEXT_H_
 
 #include "cppmetrics/core/types.h"
-#include <chrono>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <chrono>
 
 namespace cppmetrics {
 namespace core {

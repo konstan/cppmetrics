@@ -17,9 +17,9 @@
 #include <boost/foreach.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <thread>
 #include <chrono>
 #include <gtest/gtest.h>
+#include <thread>
 
 namespace cppmetrics {
 namespace core {

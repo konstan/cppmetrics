@@ -17,12 +17,12 @@
 #define SIMPLE_SCHEDULED_THREAD_POOL_EXECUTOR_H_
 
 #include <asio.hpp>
-#include <chrono>
 #include <boost/atomic.hpp>
 #include <boost/foreach.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
+#include <chrono>
 
 namespace cppmetrics {
 namespace concurrent {

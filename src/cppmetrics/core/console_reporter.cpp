@@ -13,9 +13,9 @@
  *      Author: vpoliboy
  */
 
-#include <glog/logging.h>
 #include "console_reporter.h"
 #include "utils.h"
+#include <glog/logging.h>
 
 namespace cppmetrics {
 namespace core {
@@ -60,8 +60,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!histogram_map.empty()) {
         printWithBanner("-- Histograms", '-');
-        for (
-            const core::HistogramMap::value_type &entry : histogram_map) {
+        for (const core::HistogramMap::value_type &entry : histogram_map) {
             ostr_ << entry.first << std::endl;
             printHistogram(entry.second);
         }
@@ -70,7 +69,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!meter_map.empty()) {
         printWithBanner("-- Meters", '-');
-        for (const core::MeteredMap::value_type &entry: meter_map) {
+        for (const core::MeteredMap::value_type &entry : meter_map) {
             ostr_ << entry.first << std::endl;
             printMeter(entry.second);
         }
@@ -79,7 +78,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!timer_map.empty()) {
         printWithBanner("-- Timers", '-');
-        for(const core::TimerMap::value_type &entry: timer_map) {
+        for (const core::TimerMap::value_type &entry : timer_map) {
             ostr_ << entry.first << std::endl;
             printTimer(entry.second);
         }

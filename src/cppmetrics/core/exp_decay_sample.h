@@ -19,12 +19,12 @@
 #include "cppmetrics/core/sample.h"
 #include "cppmetrics/core/types.h"
 #include <boost/atomic.hpp>
-#include <chrono>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread/lock_guard.hpp>
 #include <boost/thread/mutex.hpp>
+#include <chrono>
 #include <vector>
 
 namespace cppmetrics {

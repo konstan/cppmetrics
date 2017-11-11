@@ -99,8 +99,8 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(size_t timer_index)
         timer_task.timer_->expires_from_now(timer_task.period_);
     }
 
-    timer_task.timer_->async_wait(
-        boost::bind(&SimpleScheduledThreadPoolExecutor::timerHandler, this, timer_index));
+    timer_task.timer_->async_wait(boost::bind(
+        &SimpleScheduledThreadPoolExecutor::timerHandler, this, timer_index));
 }
 
 void SimpleScheduledThreadPoolExecutor::shutdown()
@@ -140,9 +140,8 @@ void SimpleScheduledThreadPoolExecutor::scheduleTimer(
         timer_tasks_.push_back(TimerTask(timer, task, period, fixed_rate));
         timer_index = timer_tasks_.size() - 1;
     }
-    timer->async_wait(
-        boost::bind(&SimpleScheduledThreadPoolExecutor::timerHandler, this,
-            timer_index));
+    timer->async_wait(boost::bind(
+        &SimpleScheduledThreadPoolExecutor::timerHandler, this, timer_index));
 }
 
 void SimpleScheduledThreadPoolExecutor::scheduleAtFixedDelay(

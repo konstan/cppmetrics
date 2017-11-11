@@ -64,20 +64,20 @@ private:
 
     template <class T> std::string format(T o);
 
-    void reportTimer(const std::string &name, core::TimerPtr timer,
-        uint64_t timestamp);
+    void reportTimer(
+        const std::string &name, core::TimerPtr timer, uint64_t timestamp);
 
-    void reportMeter(const std::string &name, core::MeteredPtr meter,
-        uint64_t timestamp);
+    void reportMeter(
+        const std::string &name, core::MeteredPtr meter, uint64_t timestamp);
 
     void reportHistogram(const std::string &name, core::HistogramPtr histogram,
         uint64_t timestamp);
 
-    void reportCounter(const std::string &name, core::CounterPtr counter,
-        uint64_t timestamp);
+    void reportCounter(
+        const std::string &name, core::CounterPtr counter, uint64_t timestamp);
 
-    void reportGauge(const std::string &name, core::GaugePtr gauge,
-        uint64_t timestamp);
+    void reportGauge(
+        const std::string &name, core::GaugePtr gauge, uint64_t timestamp);
 
     core::MetricRegistryPtr registry_;
     GraphiteSenderPtr sender_;

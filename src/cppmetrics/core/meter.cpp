@@ -114,10 +114,9 @@ void Meter::Impl::tick()
 void Meter::Impl::tickIfNecessary()
 {
     uint64_t old_tick = last_tick_;
-    uint64_t cur_tick =
-        std::chrono::duration_cast<std::chrono::nanoseconds>(
-            Clock::now().time_since_epoch())
-            .count();
+    uint64_t cur_tick = std::chrono::duration_cast<std::chrono::nanoseconds>(
+        Clock::now().time_since_epoch())
+                            .count();
     uint64_t age = cur_tick - old_tick;
     if (age > TICK_INTERVAL) {
         uint64_t new_tick = cur_tick - age % TICK_INTERVAL;

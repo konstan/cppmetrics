@@ -27,29 +27,35 @@ namespace core {
 // bug fix: the duration from epoch must be in UTC (not localtime)
 inline auto get_duration_from_epoch()
 {
-    std::chrono::system_clock::time_point time_t_epoch(std::chrono::system_clock::from_time_t(0));
-    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+    std::chrono::system_clock::time_point time_t_epoch(
+        std::chrono::system_clock::from_time_t(0));
+    std::chrono::system_clock::time_point now =
+        std::chrono::system_clock::now();
     return (now - time_t_epoch);
 }
 
 inline auto get_millis_from_epoch()
 {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(get_duration_from_epoch()).count();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+        get_duration_from_epoch())
+        .count();
 }
 
 inline auto get_seconds_from_epoch()
 {
-    return std::chrono::duration_cast<std::chrono::seconds>(get_duration_from_epoch()).count();
+    return std::chrono::duration_cast<std::chrono::seconds>(
+        get_duration_from_epoch())
+        .count();
 }
 
 inline std::string utc_timestamp(const std::locale &current_locale)
 {
     std::ostringstream ss;
     // assumes std::cout's locale has been set appropriately for the entire app
-    // boost::posix_time::time_facet *t_facet(new boost::posix_time::time_facet());
-    // t_facet->time_duration_format("%d-%M-%y %H:%M:%S%F %Q");
-    // ss.imbue(std::locale(current_locale, t_facet));
-    // ss << boost::posix_time::microsec_clock::universal_time();
+    // boost::posix_time::time_facet *t_facet(new
+    // boost::posix_time::time_facet()); t_facet->time_duration_format("%d-%M-%y
+    // %H:%M:%S%F %Q"); ss.imbue(std::locale(current_locale, t_facet)); ss <<
+    // boost::posix_time::microsec_clock::universal_time();
     return ss.str();
 }
 }

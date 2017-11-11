@@ -24,8 +24,7 @@ ScheduledReporter::ScheduledReporter(
     : running_(false)
     , metric_registry_(registry)
     , scheduled_executor_(1)
-    , rate_factor_(
-          std::chrono::milliseconds(1000).count() / rate_unit.count())
+    , rate_factor_(std::chrono::milliseconds(1000).count() / rate_unit.count())
     , duration_factor_(static_cast<double>(1.0) /
           std::chrono::duration_cast<std::chrono::nanoseconds>(
               std::chrono::milliseconds(1))
