@@ -24,7 +24,7 @@ namespace {
 class FakeGauge : public Gauge {
 public:
     virtual ~FakeGauge(){};
-    virtual boost::int64_t getValue() { return 10; }
+    virtual int64_t getValue() { return 10; }
 };
 }
 

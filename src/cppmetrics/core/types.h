@@ -17,6 +17,7 @@
 #define TYPES_H_
 
 #include <chrono>
+
 namespace cppmetrics {
 namespace core {
 typedef std::chrono::high_resolution_clock Clock;

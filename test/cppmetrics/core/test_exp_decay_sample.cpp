@@ -14,7 +14,6 @@
  */
 
 #include "cppmetrics/core/exp_decay_sample.h"
-#include <boost/foreach.hpp>
 #include <gtest/gtest.h>
 
 namespace cppmetrics {
@@ -23,7 +22,7 @@ namespace core {
 namespace {
 void assert_all_values_between(SnapshotPtr snapshot, double min, double max)
 {
-    BOOST_FOREACH (double value, snapshot->getValues()) {
+    for (double value : snapshot->getValues()) {
         ASSERT_GT(max, value);
         ASSERT_LE(min, value);
     }

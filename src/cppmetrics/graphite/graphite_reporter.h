@@ -18,8 +18,6 @@
 
 #include "cppmetrics/core/scheduled_reporter.h"
 #include "cppmetrics/graphite/graphite_sender.h"
-#include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
 
 namespace cppmetrics {
 namespace graphite {
@@ -29,7 +27,7 @@ namespace graphite {
  * @see <a href="http://graphite.wikidot.com/">Graphite - Scalable Realtime
  * Graphing</a>
  */
-class GraphiteReporter : public core::ScheduledReporter, boost::noncopyable {
+class GraphiteReporter : public core::ScheduledReporter {
 public:
     /**
      * Creates a {@link GraphiteReporter} instance. Uses the given registry,
@@ -44,6 +42,7 @@ public:
     GraphiteReporter(core::MetricRegistryPtr registry,
         GraphiteSenderPtr graphite_sender, std::string prefix,
         std::chrono::milliseconds rateUnit = std::chrono::seconds(1));
+    GraphiteReporter(const GraphiteReporter &) = delete;
     virtual ~GraphiteReporter();
 
     /**

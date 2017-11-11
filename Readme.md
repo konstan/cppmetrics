@@ -64,7 +64,6 @@ bool QueryHandler::doProcess(const Query& query) {
 ####Creating the default metrics registry and a graphite reporter that pushes the data to graphite server.
 
 ```cpp
-#include <boost/noncopyable.hpp>
 #include <cppmetrics/cppmetrics.h>
 #include <glog/logging.h>
 
@@ -81,9 +80,10 @@ public:
 /*
  *  Helper class that sets up the default registry and the graphite reporter.
  */
-class Controller : boost::noncopyable
+class Controller
 {
 public:
+    Controller( const Controller& ) = delete;
     cppmetrics::core::MetricRegistryPtr getRegistry() {
         return core::MetricRegistry::DEFAULT_REGISTRY();
     }
@@ -105,7 +105,7 @@ public:
         }
     }
 private:
-    boost::scoped_ptr<cppmetrics::graphite::GraphiteReporter> graphite_reporter_;
+    std::unique_ptr<cppmetrics::graphite::GraphiteReporter> graphite_reporter_;
 };
 
 }

@@ -20,8 +20,7 @@
 namespace cppmetrics {
 namespace graphite {
 
-GraphiteSenderTCP::GraphiteSenderTCP(
-    const std::string &host, boost::uint32_t port)
+GraphiteSenderTCP::GraphiteSenderTCP(const std::string &host, uint32_t port)
     : connected_(false)
     , host_(host)
     , port_(boost::lexical_cast<std::string>(port))
@@ -48,7 +47,7 @@ void GraphiteSenderTCP::connect()
 }
 
 void GraphiteSenderTCP::send(const std::string &name, const std::string &value,
-    boost::uint64_t timestamp, metric_t type)
+    uint64_t timestamp, metric_t type)
 {
     if (!connected_) {
         throw std::runtime_error("Graphite server connection not established.");

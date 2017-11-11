@@ -24,7 +24,7 @@ namespace core {
 /*
  *  A GLOG console reporter that periodically logs the metric values.
  */
-class ConsoleReporter : public ScheduledReporter, boost::noncopyable {
+class ConsoleReporter : public ScheduledReporter {
 public:
     /**
      * Creates a {@link ConsoleReporter} instance. Uses the given registry.
@@ -34,6 +34,7 @@ public:
      */
     ConsoleReporter(MetricRegistryPtr registry, std::ostream &ostr,
         std::chrono::milliseconds rate_unit = std::chrono::seconds(1));
+    ConsoleReporter(const ConsoleReporter &) = delete;
     virtual ~ConsoleReporter();
 
     /**

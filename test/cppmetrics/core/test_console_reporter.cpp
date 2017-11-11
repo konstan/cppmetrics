@@ -14,7 +14,6 @@
  */
 
 #include "cppmetrics/core/console_reporter.h"
-#include <boost/foreach.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 #include <chrono>
@@ -28,7 +27,7 @@ namespace {
 
 class TestGauge : public Gauge {
 public:
-    virtual boost::int64_t getValue() { return 100; }
+    virtual int64_t getValue() { return 100; }
 };
 }
 

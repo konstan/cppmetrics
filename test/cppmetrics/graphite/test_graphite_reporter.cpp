@@ -97,7 +97,7 @@ private:
     }
 
     void sendGauge(const std::string &name, const std::string &actual_value,
-        boost::uint64_t timestamp)
+        uint64_t timestamp)
     {
         std::string expected_value(
             boost::lexical_cast<std::string>(GAUGE_VALUE));

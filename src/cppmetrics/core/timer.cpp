@@ -39,7 +39,7 @@ void Timer::clear() { histogram_.clear(); }
 
 void Timer::update(std::chrono::nanoseconds duration)
 {
-    boost::int64_t count = duration.count();
+    int64_t count = duration.count();
     if (count >= 0) {
         histogram_.update(count);
         meter_.mark();
@@ -48,7 +48,7 @@ void Timer::update(std::chrono::nanoseconds duration)
 
 SnapshotPtr Timer::getSnapshot() const { return histogram_.getSnapshot(); }
 
-void Timer::time(boost::function<void()> func)
+void Timer::time(std::function<void()> func)
 {
     TimerContext timer_context(*this);
     func();

@@ -12,9 +12,9 @@ namespace core {
 
 class TrivialGauge : public Gauge {
 public:
-    virtual boost::int64_t getValue() { return value_; }
-    void setValue(boost::int64_t v) { value_ = v; }
-    boost::int64_t value_;
+    virtual int64_t getValue() { return value_; }
+    void setValue(int64_t v) { value_ = v; }
+    int64_t value_;
 };
 
 typedef boost::shared_ptr<TrivialGauge> TrivialGaugePtr;

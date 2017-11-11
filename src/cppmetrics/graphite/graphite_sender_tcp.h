@@ -34,7 +34,7 @@ public:
      * @param host The graphite server host.
      * @param port The graphite server port.
      */
-    GraphiteSenderTCP(const std::string &host, boost::uint32_t port);
+    GraphiteSenderTCP(const std::string &host, uint32_t port);
     virtual ~GraphiteSenderTCP();
 
     /**
@@ -53,7 +53,7 @@ public:
      * @throws std::runtime_error if there is a problem.
      */
     virtual void send(const std::string &name, const std::string &value,
-        boost::uint64_t timestamp, metric_t type = Counter_t);
+        uint64_t timestamp, metric_t type = Counter_t);
 
     /**
      * Closes the TCP connection.
@@ -65,8 +65,8 @@ private:
     std::string host_;
     std::string port_;
 
-    boost::scoped_ptr<asio::io_service> io_service_;
-    boost::scoped_ptr<asio::ip::tcp::socket> socket_;
+    std::unique_ptr<asio::io_service> io_service_;
+    std::unique_ptr<asio::ip::tcp::socket> socket_;
 };
 
 } /* namespace graphite */

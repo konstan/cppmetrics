@@ -54,7 +54,7 @@ void SimpleThreadPoolExecutor::shutdownNow()
 
 bool SimpleThreadPoolExecutor::isShutdown() const { return !running_; }
 
-void SimpleThreadPoolExecutor::execute(boost::function<void()> command)
+void SimpleThreadPoolExecutor::execute(std::function<void()> command)
 {
     io_service_.post(command);
 }

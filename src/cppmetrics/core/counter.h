@@ -19,8 +19,7 @@
 #include "cppmetrics/core/metric.h"
 #include <atomic>
 #include <boost/cstdint.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace cppmetrics {
 namespace core {
@@ -71,7 +70,7 @@ private:
     std::atomic<int64_t> count_;
 };
 
-typedef boost::shared_ptr<Counter> CounterPtr;
+typedef std::shared_ptr<Counter> CounterPtr;
 
 } /* namespace core */
 } /* namespace cppmetrics */

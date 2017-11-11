@@ -18,10 +18,10 @@
 
 #include <asio.hpp>
 #include <atomic>
-#include <boost/function.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/thread.hpp>
+#include <boost/thread/thread.hpp>
 #include <chrono>
+#include <memory>
+#include <thread>
 
 namespace cppmetrics {
 namespace concurrent {
@@ -49,7 +49,7 @@ public:
      * @param period The interval between the start of the tasks.
      */
     virtual void scheduleAtFixedRate(
-        boost::function<void()> command, std::chrono::milliseconds period);
+        std::function<void()> command, std::chrono::milliseconds period);
 
     /**
      * Executes the give task at the configured interval delay until shutdown is
@@ -59,7 +59,7 @@ public:
      * @param period The time period between the end of the tasks.
      */
     virtual void scheduleAtFixedDelay(
-        boost::function<void()> command, std::chrono::milliseconds period);
+        std::function<void()> command, std::chrono::milliseconds period);
 
     /**
      * Shuts down the service, may or may not return immediately depending on
@@ -82,18 +82,18 @@ private:
     void cancelTimers();
     void timerHandler(size_t timer_index);
 
-    void scheduleTimer(boost::function<void()> task,
+    void scheduleTimer(std::function<void()> task,
         std::chrono::milliseconds period, bool fixed_rate);
 
     std::atomic<bool> running_;
     asio::io_service io_service_;
-    boost::scoped_ptr<asio::io_service::work> work_ptr_;
+    std::unique_ptr<asio::io_service::work> work_ptr_;
     boost::thread_group thread_group_;
 
     class TimerTask;
     typedef std::vector<TimerTask> TimerTasks;
     TimerTasks timer_tasks_;
-    mutable boost::mutex timer_task_mutex_;
+    mutable std::mutex timer_task_mutex_;
 };
 
 } /* namespace concurrent */

@@ -26,14 +26,14 @@ namespace core {
 TEST(timer, initialTest)
 {
     Timer timer;
-    ASSERT_EQ((boost::uint64_t)0, timer.getCount());
+    ASSERT_EQ((uint64_t)0, timer.getCount());
     ASSERT_NEAR(0.0, timer.getMeanRate(), 0.000001);
     ASSERT_NEAR(0.0, timer.getOneMinuteRate(), 0.000001);
     ASSERT_NEAR(0.0, timer.getFiveMinuteRate(), 0.000001);
     ASSERT_NEAR(0.0, timer.getFifteenMinuteRate(), 0.000001);
 
     timer.update(std::chrono::seconds(1));
-    ASSERT_EQ((boost::uint64_t)1, timer.getCount());
+    ASSERT_EQ((uint64_t)1, timer.getCount());
 }
 
 TEST(timer, timerContextTest)

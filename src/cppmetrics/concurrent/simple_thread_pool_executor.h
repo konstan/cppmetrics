@@ -19,8 +19,6 @@
 #include <asio.hpp>
 #include <atomic>
 #include <boost/bind.hpp>
-#include <boost/function.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <boost/thread/thread.hpp>
 
 namespace cppmetrics {
@@ -43,7 +41,7 @@ public:
      * Executes the given task in one of the threads.
      * @param task The task to be executed.
      */
-    virtual void execute(boost::function<void()> command);
+    virtual void execute(std::function<void()> command);
 
     /**
      * Shuts down the service, may or may not return immediately.
@@ -64,7 +62,7 @@ public:
 private:
     std::atomic<bool> running_;
     asio::io_service io_service_;
-    boost::scoped_ptr<asio::io_service::work> work_ptr_;
+    std::unique_ptr<asio::io_service::work> work_ptr_;
     boost::thread_group thread_group_;
 };
 

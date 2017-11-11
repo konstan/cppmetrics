@@ -20,8 +20,6 @@
 #include <atomic>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <boost/thread/lock_guard.hpp>
-#include <boost/thread/mutex.hpp>
 #include <iterator>
 #include <vector>
 
@@ -38,7 +36,7 @@ public:
      * Creates a new {@link UniformReservoir}.
      * @param size the number of samples to keep in the sampling reservoir
      */
-    UniformSample(boost::uint32_t reservoirSize = DEFAULT_SAMPLE_SIZE);
+    UniformSample(uint32_t reservoirSize = DEFAULT_SAMPLE_SIZE);
     virtual ~UniformSample();
 
     /**
@@ -74,7 +72,7 @@ private:
     typedef std::vector<int64_t> Int64Vector;
     Int64Vector values_;
     mutable boost::mt11213b rng_;
-    mutable boost::mutex mutex_;
+    mutable std::mutex mutex_;
 };
 
 } /* namespace core */

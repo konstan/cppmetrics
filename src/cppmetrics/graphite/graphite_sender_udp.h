@@ -9,7 +9,7 @@
 #define SRC_CPPMETRICS_GRAPHITE_GRAPHITE_SENDER_UDP_H_
 #include "cppmetrics/graphite/graphite_sender.h"
 #include <asio.hpp>
-#include <boost/cstdint.hpp>
+#include <cstdint>
 
 namespace cppmetrics {
 namespace graphite {
@@ -40,7 +40,7 @@ public:
      * @throws std::runtime_error if there is a problem.
      */
     virtual void send(const std::string &name, const std::string &value,
-        boost::uint64_t timestamp, metric_t type);
+        uint64_t timestamp, metric_t type);
 
     /**
      * Closes the connection.

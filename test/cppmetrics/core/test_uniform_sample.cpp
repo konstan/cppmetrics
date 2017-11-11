@@ -14,7 +14,6 @@
  */
 
 #include "cppmetrics/core/uniform_sample.h"
-#include <boost/foreach.hpp>
 #include <gtest/gtest.h>
 
 namespace cppmetrics {
@@ -25,13 +24,13 @@ TEST(uniformsample, simpletest)
 
     UniformSample uniform_sample(100);
 
-    for (boost::uint64_t i = 0; i < 1000; i++) {
+    for (uint64_t i = 0; i < 1000; i++) {
         uniform_sample.update(i);
     }
     SnapshotPtr snapshot = uniform_sample.getSnapshot();
     ASSERT_EQ((size_t)100, uniform_sample.size());
     ASSERT_EQ((size_t)100, snapshot->size());
-    BOOST_FOREACH (ValueVector::value_type i, snapshot->getValues()) {
+    for (ValueVector::value_type i : snapshot->getValues()) {
         ASSERT_LE(0, i);
         ASSERT_GT(1000, i);
     }

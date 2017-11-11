@@ -21,7 +21,6 @@
 #include "cppmetrics/core/histogram.h"
 #include "cppmetrics/core/meter.h"
 #include "cppmetrics/core/timer.h"
-#include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <map>
@@ -41,7 +40,7 @@ typedef boost::shared_ptr<MetricRegistry> MetricRegistryPtr;
 /**
  * The thread-safe registry class for all metrics.
  */
-class MetricRegistry : boost::noncopyable {
+class MetricRegistry {
 public:
     /**
      * Singleton factory method for the Metric registry.
@@ -53,6 +52,7 @@ public:
      * Creates a new registry.
      */
     MetricRegistry();
+    MetricRegistry(const MetricRegistry &) = delete;
 
     ~MetricRegistry();
 
@@ -156,7 +156,7 @@ public:
 
 private:
     class Impl;
-    boost::scoped_ptr<Impl> impl_; /**< The pimpl pointer */
+    std::unique_ptr<Impl> impl_; /**< The pimpl pointer */
 };
 
 } /* namespace core */

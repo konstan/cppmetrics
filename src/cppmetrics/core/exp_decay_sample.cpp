@@ -15,7 +15,6 @@
 
 #include "cppmetrics/core/exp_decay_sample.h"
 #include "cppmetrics/core/utils.h"
-#include <boost/foreach.hpp>
 
 namespace cppmetrics {
 namespace core {
@@ -23,7 +22,7 @@ namespace core {
 const double ExpDecaySample::DEFAULT_ALPHA = 0.015;
 const Clock::duration ExpDecaySample::RESCALE_THRESHOLD(std::chrono::hours(1));
 
-ExpDecaySample::ExpDecaySample(boost::uint32_t reservoir_size, double alpha)
+ExpDecaySample::ExpDecaySample(uint32_t reservoir_size, double alpha)
     : alpha_(alpha)
     , reservoir_size_(reservoir_size)
     , count_(0)
@@ -36,7 +35,7 @@ ExpDecaySample::~ExpDecaySample() {}
 
 void ExpDecaySample::clear()
 {
-    boost::lock_guard<boost::mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     values_.clear();
     count_ = 0;
     start_time_ = Clock::now();
@@ -48,15 +47,11 @@ uint64_t ExpDecaySample::size() const
     return std::min(reservoir_size_, count_.load());
 }
 
-void ExpDecaySample::update(boost::int64_t value)
-{
-    update(value, Clock::now());
-}
+void ExpDecaySample::update(int64_t value) { update(value, Clock::now()); }
 
-void ExpDecaySample::update(
-    boost::int64_t value, const Clock::time_point &timestamp)
+void ExpDecaySample::update(int64_t value, const Clock::time_point &timestamp)
 {
-    boost::lock_guard<boost::mutex> rlock(mutex_);
+    std::lock_guard<std::mutex> rlock(mutex_);
     rescaleIfNeeded(timestamp);
     boost::random::uniform_real_distribution<> dist(0, 1);
     std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(
@@ -95,7 +90,7 @@ void ExpDecaySample::rescale(const Clock::time_point &prevStartTime)
 {
     Double2Int64Map old_values;
     std::swap(values_, old_values);
-    BOOST_FOREACH (const Double2Int64Map::value_type &kv, old_values) {
+    for (const Double2Int64Map::value_type &kv : old_values) {
         std::chrono::seconds dur =
             std::chrono::duration_cast<std::chrono::seconds>(
                 start_time_ - prevStartTime);
@@ -109,8 +104,8 @@ SnapshotPtr ExpDecaySample::getSnapshot() const
 {
     ValueVector vals;
     vals.reserve(values_.size());
-    boost::lock_guard<boost::mutex> rlock(mutex_);
-    BOOST_FOREACH (const Double2Int64Map::value_type &kv, values_) {
+    std::lock_guard<std::mutex> rlock(mutex_);
+    for (const Double2Int64Map::value_type &kv : values_) {
         vals.push_back(kv.second);
     }
     return SnapshotPtr(new Snapshot(vals));

@@ -16,11 +16,9 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include <boost/cstdint.hpp>
-#include <boost/function.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 #include <chrono>
+#include <cstdint>
+#include <functional>
 #include <string>
 
 #include "cppmetrics/core/histogram.h"
@@ -49,7 +47,7 @@ public:
     /**
      * @returns the number of events that have been measured.
      */
-    virtual boost::uint64_t getCount() const;
+    virtual uint64_t getCount() const;
 
     /**
      * @return the fifteen-minute exponentially-weighted moving average rate at
@@ -99,7 +97,7 @@ public:
      */
     TimerContextPtr timerContextPtr()
     {
-        return boost::shared_ptr<TimerContext>(new TimerContext(*this));
+        return std::shared_ptr<TimerContext>(new TimerContext(*this));
     }
 
     /**
@@ -107,14 +105,14 @@ public:
      * updates the duration.
      * @param The fn to be timed.
      */
-    void time(boost::function<void()> fn);
+    void time(std::function<void()> fn);
 
 private:
     Meter meter_;         /**< The underlying meter object */
     Histogram histogram_; /**< The underlying histogram object */
 };
 
-typedef boost::shared_ptr<Timer> TimerPtr;
+typedef std::shared_ptr<Timer> TimerPtr;
 
 } /* namespace core */
 } /* namespace cppmetrics */

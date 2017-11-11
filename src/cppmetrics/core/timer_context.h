@@ -17,9 +17,8 @@
 #define TIMER_CONTEXT_H_
 
 #include "cppmetrics/core/types.h"
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 #include <chrono>
+#include <memory>
 
 namespace cppmetrics {
 namespace core {
@@ -58,7 +57,7 @@ private:
     bool active_;                  ///< Whether the timer is active or not */
 };
 
-typedef boost::shared_ptr<TimerContext> TimerContextPtr;
+typedef std::shared_ptr<TimerContext> TimerContextPtr;
 
 } /* namespace cppmetrics */
 } /* namespace core */

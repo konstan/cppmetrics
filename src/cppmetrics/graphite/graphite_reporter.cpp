@@ -15,7 +15,6 @@
 
 #include "cppmetrics/graphite/graphite_reporter.h"
 #include "cppmetrics/core/utils.h"
-#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <glog/logging.h>
 
@@ -76,7 +75,7 @@ void GraphiteReporter::report(core::CounterMap counter_map,
 }
 
 void GraphiteReporter::reportTimer(
-    const std::string &name, core::TimerPtr timer, boost::uint64_t timestamp)
+    const std::string &name, core::TimerPtr timer, uint64_t timestamp)
 {
     core::SnapshotPtr snapshot = timer->getSnapshot();
 
@@ -102,11 +101,11 @@ void GraphiteReporter::reportTimer(
         format(convertDurationUnit(snapshot->get999thPercentile())), timestamp);
 
     reportMeter(
-        name, boost::static_pointer_cast<core::Metered>(timer), timestamp);
+        name, std::static_pointer_cast<core::Metered>(timer), timestamp);
 }
 
 void GraphiteReporter::reportMeter(
-    const std::string &name, core::MeteredPtr meter, boost::uint64_t timestamp)
+    const std::string &name, core::MeteredPtr meter, uint64_t timestamp)
 {
 
     sender_->send(prefix(name, "count"), format(meter->getCount()), timestamp);
@@ -120,8 +119,8 @@ void GraphiteReporter::reportMeter(
         format(convertRateUnit(meter->getMeanRate())), timestamp);
 }
 
-void GraphiteReporter::reportHistogram(const std::string &name,
-    core::HistogramPtr histogram, boost::uint64_t timestamp)
+void GraphiteReporter::reportHistogram(
+    const std::string &name, core::HistogramPtr histogram, uint64_t timestamp)
 {
     core::SnapshotPtr snapshot = histogram->getSnapshot();
 
@@ -147,15 +146,15 @@ void GraphiteReporter::reportHistogram(const std::string &name,
         timestamp);
 }
 
-void GraphiteReporter::reportCounter(const std::string &name,
-    core::CounterPtr counter, boost::uint64_t timestamp)
+void GraphiteReporter::reportCounter(
+    const std::string &name, core::CounterPtr counter, uint64_t timestamp)
 {
     sender_->send(
         prefix(name, "count"), format(counter->getCount()), timestamp);
 }
 
 void GraphiteReporter::reportGauge(
-    const std::string &name, core::GaugePtr gauge, boost::uint64_t timestamp)
+    const std::string &name, core::GaugePtr gauge, uint64_t timestamp)
 {
     const std::string value = format(gauge->getValue());
     sender_->send(prefix(name), value, timestamp, GraphiteSender::Gauge_t);

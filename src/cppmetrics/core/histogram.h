@@ -18,8 +18,6 @@
 
 #include <atomic>
 #include <boost/cstdint.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include "cppmetrics/core/metric.h"
 #include "cppmetrics/core/sample.h"
@@ -69,12 +67,12 @@ public:
 private:
     static const double DEFAULT_ALPHA;
 
-    boost::scoped_ptr<Sample>
-        sample_; /**< The underlying sample implementation. */
+    std::unique_ptr<Sample>
+        sample_;                  /**< The underlying sample implementation. */
     std::atomic<uint64_t> count_; /**< The number of samples. */
 };
 
-typedef boost::shared_ptr<Histogram> HistogramPtr;
+typedef std::shared_ptr<Histogram> HistogramPtr;
 
 } /* namespace core */
 } /* namespace cppmetrics */

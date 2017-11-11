@@ -38,7 +38,7 @@ TEST(simplescheduledthreadpoolexecutor, fixedDelayTest)
 
     std::atomic<size_t> counter;
     counter = 0UL;
-    boost::function<void()> timer_task(
+    std::function<void()> timer_task(
         boost::bind(timer_handler, boost::ref(counter)));
     sstpe.scheduleAtFixedDelay(timer_task, std::chrono::milliseconds(100));
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -60,7 +60,7 @@ TEST(simplescheduledthreadpoolexecutor, fixedRateTest)
 
     std::atomic<size_t> counter;
     counter = 0UL;
-    boost::function<void()> timer_task(
+    std::function<void()> timer_task(
         boost::bind(timer_handler, boost::ref(counter)));
     sstpe.scheduleAtFixedRate(timer_task, std::chrono::milliseconds(100));
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));

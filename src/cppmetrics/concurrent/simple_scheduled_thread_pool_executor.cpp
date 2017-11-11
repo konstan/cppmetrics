@@ -23,14 +23,14 @@ namespace concurrent {
 
 namespace {
 typedef asio::basic_waitable_timer<std::chrono::steady_clock> Timer;
-typedef boost::shared_ptr<Timer> TimerPtr;
+typedef std::shared_ptr<Timer> TimerPtr;
 }
 
 class SimpleScheduledThreadPoolExecutor::TimerTask {
 public:
     TimerTask()
         : period_(1000){};
-    TimerTask(TimerPtr timer, boost::function<void()> task,
+    TimerTask(TimerPtr timer, std::function<void()> task,
         std::chrono::milliseconds period, bool fixed_rate)
         : timer_(timer)
         , task_(task)
@@ -39,7 +39,7 @@ public:
     {
     }
     TimerPtr timer_;
-    boost::function<void()> task_;
+    std::function<void()> task_;
     std::chrono::milliseconds period_;
     bool fixed_rate_;
 };
@@ -62,7 +62,7 @@ SimpleScheduledThreadPoolExecutor::~SimpleScheduledThreadPoolExecutor()
 
 void SimpleScheduledThreadPoolExecutor::cancelTimers()
 {
-    boost::lock_guard<boost::mutex> lock(timer_task_mutex_);
+    std::lock_guard<std::mutex> lock(timer_task_mutex_);
     for (const TimerTask &timer_task : timer_tasks_) {
         timer_task.timer_->cancel();
     }
@@ -77,7 +77,7 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(size_t timer_index)
 
     TimerTask timer_task;
     try {
-        boost::lock_guard<boost::mutex> lock(timer_task_mutex_);
+        std::lock_guard<std::mutex> lock(timer_task_mutex_);
         timer_task = timer_tasks_.at(timer_index);
     }
     catch (const std::out_of_range &oor) {
@@ -129,14 +129,14 @@ void SimpleScheduledThreadPoolExecutor::shutdownNow()
 bool SimpleScheduledThreadPoolExecutor::isShutdown() const { return !running_; }
 
 void SimpleScheduledThreadPoolExecutor::scheduleTimer(
-    boost::function<void()> task, std::chrono::milliseconds interval,
+    std::function<void()> task, std::chrono::milliseconds interval,
     bool fixed_rate)
 {
     std::chrono::milliseconds period(interval.count());
     TimerPtr timer(new Timer(io_service_, period));
     size_t timer_index = 0;
     {
-        boost::lock_guard<boost::mutex> lock(timer_task_mutex_);
+        std::lock_guard<std::mutex> lock(timer_task_mutex_);
         timer_tasks_.push_back(TimerTask(timer, task, period, fixed_rate));
         timer_index = timer_tasks_.size() - 1;
     }
@@ -145,13 +145,13 @@ void SimpleScheduledThreadPoolExecutor::scheduleTimer(
 }
 
 void SimpleScheduledThreadPoolExecutor::scheduleAtFixedDelay(
-    boost::function<void()> task, std::chrono::milliseconds period)
+    std::function<void()> task, std::chrono::milliseconds period)
 {
     scheduleTimer(task, period, false);
 }
 
 void SimpleScheduledThreadPoolExecutor::scheduleAtFixedRate(
-    boost::function<void()> task, std::chrono::milliseconds period)
+    std::function<void()> task, std::chrono::milliseconds period)
 {
     scheduleTimer(task, period, true);
 }

@@ -18,8 +18,6 @@
 
 #include "cppmetrics/core/metered.h"
 #include <atomic>
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 #include <chrono>
 
 namespace cppmetrics {
@@ -42,7 +40,7 @@ public:
     /**
      * @returns the number of events that have been marked.
      */
-    virtual boost::uint64_t getCount() const;
+    virtual uint64_t getCount() const;
 
     /**
      * @return the fifteen-minute exponentially-weighted moving average rate at
@@ -72,14 +70,14 @@ public:
      * Mark the occurrence of a given number of events.
      * @param n the number of events with the default being 1.
      */
-    void mark(boost::uint64_t n = 1);
+    void mark(uint64_t n = 1);
 
 private:
     class Impl;
-    boost::scoped_ptr<Impl> impl_;
+    std::unique_ptr<Impl> impl_;
 };
 
-typedef boost::shared_ptr<Meter> MeterPtr;
+typedef std::shared_ptr<Meter> MeterPtr;
 
 } /* namespace core */
 } /* namespace cppmetrics */
