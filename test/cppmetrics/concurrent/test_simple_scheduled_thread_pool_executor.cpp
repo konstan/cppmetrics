@@ -24,7 +24,7 @@ namespace {
 void timer_handler(boost::atomic<size_t> &counter)
 {
     ++counter;
-    boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 }
 
@@ -38,8 +38,8 @@ TEST(simplescheduledthreadpoolexecutor, fixedDelayTest)
     counter = 0UL;
     boost::function<void()> timer_task(
         boost::bind(timer_handler, boost::ref(counter)));
-    sstpe.scheduleAtFixedDelay(timer_task, boost::chrono::milliseconds(100));
-    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+    sstpe.scheduleAtFixedDelay(timer_task, std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     // As there is a sleep of 100ms in the timertask, it gets invoked only at
     // every 200ms.
     ASSERT_LE((size_t)4, counter);
@@ -60,8 +60,8 @@ TEST(simplescheduledthreadpoolexecutor, fixedRateTest)
     counter = 0UL;
     boost::function<void()> timer_task(
         boost::bind(timer_handler, boost::ref(counter)));
-    sstpe.scheduleAtFixedRate(timer_task, boost::chrono::milliseconds(100));
-    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+    sstpe.scheduleAtFixedRate(timer_task, std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     ASSERT_LE((size_t)9, counter);
     ASSERT_GE((size_t)10, counter);
 

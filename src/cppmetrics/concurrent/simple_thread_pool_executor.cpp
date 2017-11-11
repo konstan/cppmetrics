@@ -20,11 +20,11 @@ namespace concurrent {
 
 SimpleThreadPoolExecutor::SimpleThreadPoolExecutor(size_t thread_count)
     : running_(true)
-    , work_ptr_(new boost::asio::io_service::work(io_service_))
+    , work_ptr_(new asio::io_service::work(io_service_))
 {
     for (size_t i = 0; i < thread_count; ++i) {
         thread_group_.create_thread(
-            boost::bind(&boost::asio::io_service::run, &io_service_));
+            boost::bind(&asio::io_service::run, &io_service_));
     }
 }
 

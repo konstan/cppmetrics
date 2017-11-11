@@ -33,7 +33,7 @@ public:
      * @param rate_unit The conversion unit user for the rate metrics.
      */
     ConsoleReporter(MetricRegistryPtr registry, std::ostream &ostr,
-        boost::chrono::milliseconds rate_unit = boost::chrono::seconds(1));
+        std::chrono::milliseconds rate_unit = std::chrono::seconds(1));
     virtual ~ConsoleReporter();
 
     /**

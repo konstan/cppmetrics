@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <string>
 
-using boost::asio::ip::udp;
+using asio::ip::udp;
 
 namespace cppmetrics {
 namespace graphite {
@@ -73,7 +73,7 @@ void GraphiteSenderUDP::send(const std::string &name, const std::string &value,
     }
 
     std::string graphite_str(ostr.str());
-    socket_.send_to(boost::asio::buffer(graphite_str), receiver_endpoint_);
+    socket_.send_to(asio::buffer(graphite_str), receiver_endpoint_);
 }
 
 void GraphiteSenderUDP::close() { connected_ = false; }

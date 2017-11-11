@@ -73,9 +73,9 @@ namespace sample {
 class GraphiteReporterOptions {
 public:
     std::string host_;                  ///<  The graphite server.
-    boost::uint32_t port_;              ///<  The graphite port.
+    uint32_t port_;              ///<  The graphite port.
     std::string prefix_;                ///<  The prefix to the graphite.
-    boost::uint32_t interval_in_secs_;  ///<  The reporting period in secs.
+    uint32_t interval_in_secs_;  ///<  The reporting period in secs.
 };
 
 /*
@@ -92,14 +92,14 @@ public:
         if (!graphite_reporter_) {
             const std::string& graphite_host(graphite_options.host_);
 
-            boost::uint32_t graphite_port(graphite_options.port_);
+            uint32_t graphite_port(graphite_options.port_);
             graphite::GraphiteSenderPtr graphite_sender(
                 new graphite::GraphiteSenderTCP(graphite_host, graphite_port));
 
             graphite_reporter_.reset(
                 new graphite::GraphiteReporter(getRegistry(), graphite_sender,
                         graphite_options.prefix_));
-            graphite_reporter_->start(boost::chrono::seconds(graphite_options.interval_in_secs_));
+            graphite_reporter_->start(std::chrono::seconds(graphite_options.interval_in_secs_));
         } else {
             LOG(ERROR) << "Graphite reporter already configured.";
         }

@@ -22,7 +22,7 @@ namespace core {
 
 const double ExpDecaySample::DEFAULT_ALPHA = 0.015;
 const Clock::duration ExpDecaySample::RESCALE_THRESHOLD(
-    boost::chrono::hours(1));
+    std::chrono::hours(1));
 
 ExpDecaySample::ExpDecaySample(boost::uint32_t reservoir_size, double alpha)
     : alpha_(alpha)
@@ -44,7 +44,7 @@ void ExpDecaySample::clear()
     next_scale_time_ = start_time_ + RESCALE_THRESHOLD;
 }
 
-boost::uint64_t ExpDecaySample::size() const
+uint64_t ExpDecaySample::size() const
 {
     return std::min(reservoir_size_, count_.load());
 }
@@ -60,15 +60,15 @@ void ExpDecaySample::update(
     boost::lock_guard<boost::mutex> rlock(mutex_);
     rescaleIfNeeded(timestamp);
     boost::random::uniform_real_distribution<> dist(0, 1);
-    boost::chrono::seconds dur =
-        boost::chrono::duration_cast<boost::chrono::seconds>(
+    std::chrono::seconds dur =
+        std::chrono::duration_cast<std::chrono::seconds>(
             timestamp - start_time_);
     double priority = 0.0;
     do {
         priority = std::exp(alpha_ * dur.count()) / dist(rng_);
     } while (std::isnan(priority));
 
-    boost::uint64_t count = ++count_;
+    uint64_t count = ++count_;
     if (count <= reservoir_size_) {
         values_[priority] = value;
     }
@@ -98,8 +98,8 @@ void ExpDecaySample::rescale(const Clock::time_point &prevStartTime)
     Double2Int64Map old_values;
     std::swap(values_, old_values);
     BOOST_FOREACH (const Double2Int64Map::value_type &kv, old_values) {
-        boost::chrono::seconds dur =
-            boost::chrono::duration_cast<boost::chrono::seconds>(
+        std::chrono::seconds dur =
+            std::chrono::duration_cast<std::chrono::seconds>(
                 start_time_ - prevStartTime);
         double key = kv.first * std::exp(-alpha_ * dur.count());
         values_[key] = kv.second;

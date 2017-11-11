@@ -37,7 +37,7 @@ double Timer::getMeanRate() { return meter_.getMeanRate(); }
 
 void Timer::clear() { histogram_.clear(); }
 
-void Timer::update(boost::chrono::nanoseconds duration)
+void Timer::update(std::chrono::nanoseconds duration)
 {
     boost::int64_t count = duration.count();
     if (count >= 0) {

@@ -17,7 +17,7 @@
 #define TIMER_CONTEXT_H_
 
 #include "cppmetrics/core/types.h"
-#include <boost/chrono.hpp>
+#include <chrono>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -48,7 +48,7 @@ public:
      * Stops recording the elapsed time and updates the timer.
      * @return the elapsed time in nanoseconds
      */
-    boost::chrono::nanoseconds stop();
+    std::chrono::nanoseconds stop();
 
 private:
     TimerContext &operator=(const TimerContext &);

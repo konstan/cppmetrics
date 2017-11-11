@@ -16,11 +16,11 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include <boost/chrono.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <chrono>
 #include <string>
 
 #include "cppmetrics/core/histogram.h"
@@ -89,7 +89,7 @@ public:
      * Adds a recorded duration.
      * @param duration the length of the duration in nanos.
      */
-    void update(boost::chrono::nanoseconds duration);
+    void update(std::chrono::nanoseconds duration);
 
     /**
      * Creates a new TimerContext instance that measures the duration and

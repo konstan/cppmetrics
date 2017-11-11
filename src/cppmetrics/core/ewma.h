@@ -17,8 +17,8 @@
 #define EWMA_H_
 
 #include <boost/atomic.hpp>
-#include <boost/chrono.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <chrono>
 
 namespace cppmetrics {
 namespace core {
@@ -39,7 +39,7 @@ public:
      */
     static EWMA oneMinuteEWMA()
     {
-        return EWMA(M1_ALPHA, boost::chrono::seconds(INTERVAL_IN_SEC));
+        return EWMA(M1_ALPHA, std::chrono::seconds(INTERVAL_IN_SEC));
     }
 
     /**
@@ -49,7 +49,7 @@ public:
      */
     static EWMA fiveMinuteEWMA()
     {
-        return EWMA(M5_ALPHA, boost::chrono::seconds(INTERVAL_IN_SEC));
+        return EWMA(M5_ALPHA, std::chrono::seconds(INTERVAL_IN_SEC));
     }
 
     /**
@@ -59,7 +59,7 @@ public:
      */
     static EWMA fifteenMinuteEWMA()
     {
-        return EWMA(M15_ALPHA, boost::chrono::seconds(INTERVAL_IN_SEC));
+        return EWMA(M15_ALPHA, std::chrono::seconds(INTERVAL_IN_SEC));
     }
 
     /**
@@ -67,7 +67,7 @@ public:
      * @param alpha        the smoothing constant
      * @param interval     the expected tick interval
      */
-    EWMA(double alpha, boost::chrono::nanoseconds interval);
+    EWMA(double alpha, std::chrono::nanoseconds interval);
     EWMA(const EWMA &other);
     ~EWMA();
 
@@ -75,7 +75,7 @@ public:
      * Update the moving average with a new value.
      * @param n the new value
      */
-    void update(boost::uint64_t n);
+    void update(uint64_t n);
 
     /**
      * Mark the passage of time and decay the current rate accordingly.
@@ -88,7 +88,7 @@ public:
      * @return the rate
      */
     double getRate(
-        boost::chrono::nanoseconds rate_unit = boost::chrono::seconds(1)) const;
+        std::chrono::nanoseconds rate_unit = std::chrono::seconds(1)) const;
 
 private:
     static const int INTERVAL_IN_SEC;
@@ -101,9 +101,9 @@ private:
 
     boost::atomic<bool> initialized_;
     boost::atomic<double> ewma_;
-    boost::atomic<boost::uint64_t> uncounted_;
+    boost::atomic<uint64_t> uncounted_;
     const double alpha_;
-    const boost::uint64_t interval_nanos_;
+    const uint64_t interval_nanos_;
 };
 
 } /* namespace internal */

@@ -16,10 +16,9 @@
 #ifndef SIMPLE_THREAD_POOL_EXECUTOR_H_
 #define SIMPLE_THREAD_POOL_EXECUTOR_H_
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <boost/atomic.hpp>
 #include <boost/bind.hpp>
-#include <boost/chrono/duration.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread/thread.hpp>
@@ -64,8 +63,8 @@ public:
 
 private:
     boost::atomic<bool> running_;
-    boost::asio::io_service io_service_;
-    boost::scoped_ptr<boost::asio::io_service::work> work_ptr_;
+    asio::io_service io_service_;
+    boost::scoped_ptr<asio::io_service::work> work_ptr_;
     boost::thread_group thread_group_;
 };
 

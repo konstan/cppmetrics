@@ -17,7 +17,7 @@
 #define GRAPHITE_SENDER_TCP_H_
 
 #include "cppmetrics/graphite/graphite_sender.h"
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/scoped_ptr.hpp>
 
@@ -65,8 +65,8 @@ private:
     std::string host_;
     std::string port_;
 
-    boost::scoped_ptr<boost::asio::io_service> io_service_;
-    boost::scoped_ptr<boost::asio::ip::tcp::socket> socket_;
+    boost::scoped_ptr<asio::io_service> io_service_;
+    boost::scoped_ptr<asio::ip::tcp::socket> socket_;
 };
 
 } /* namespace graphite */

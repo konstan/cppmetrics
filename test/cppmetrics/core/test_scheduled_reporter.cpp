@@ -16,6 +16,7 @@
 #include "cppmetrics/core/scheduled_reporter.h"
 #include <gtest/gtest.h>
 #include <iostream>
+#include <thread>
 
 namespace cppmetrics {
 namespace core {
@@ -25,7 +26,7 @@ namespace {
 class StubScheduledReporter : public ScheduledReporter {
 public:
     StubScheduledReporter(
-        MetricRegistryPtr registry, boost::chrono::milliseconds rate_unit)
+        MetricRegistryPtr registry, std::chrono::milliseconds rate_unit)
         : ScheduledReporter(registry, rate_unit)
         , invocation_count_(0)
     {
@@ -40,8 +41,8 @@ public:
         MeteredMap meter_map, TimerMap timer_map, GaugeMap gauge_map)
     {
         ++invocation_count_;
-        boost::chrono::milliseconds invocation_period(
-            boost::chrono::duration_cast<boost::chrono::milliseconds>(
+        std::chrono::milliseconds invocation_period(
+            std::chrono::duration_cast<std::chrono::milliseconds>(
                 Clock::now() - last_time_));
         std::cout << invocation_count_ << " Invocation period(in millis): "
                   << invocation_period.count() << std::endl;
@@ -57,9 +58,9 @@ private:
 TEST(scheduledreporter, test)
 {
     StubScheduledReporter scheduled_reporter(
-        MetricRegistry::DEFAULT_REGISTRY(), boost::chrono::milliseconds(1));
-    scheduled_reporter.start(boost::chrono::milliseconds(100));
-    boost::this_thread::sleep(boost::posix_time::seconds(1));
+        MetricRegistry::DEFAULT_REGISTRY(), std::chrono::milliseconds(1));
+    scheduled_reporter.start(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     scheduled_reporter.stop();
     ASSERT_LE((size_t)9, scheduled_reporter.invocation_count());
     ASSERT_GE((size_t)11, scheduled_reporter.invocation_count());

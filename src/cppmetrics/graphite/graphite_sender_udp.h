@@ -8,7 +8,7 @@
 #ifndef SRC_CPPMETRICS_GRAPHITE_GRAPHITE_SENDER_UDP_H_
 #define SRC_CPPMETRICS_GRAPHITE_GRAPHITE_SENDER_UDP_H_
 #include "cppmetrics/graphite/graphite_sender.h"
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <boost/cstdint.hpp>
 
 namespace cppmetrics {
@@ -53,9 +53,9 @@ private:
     std::string host_;
     uint16_t port_;
 
-    boost::asio::io_service io_service_;
-    boost::asio::ip::udp::udp::endpoint receiver_endpoint_;
-    boost::asio::ip::udp::udp::socket socket_;
+    asio::io_service io_service_;
+    asio::ip::udp::udp::endpoint receiver_endpoint_;
+    asio::ip::udp::udp::socket socket_;
 };
 }
 } // namespace

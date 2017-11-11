@@ -13,7 +13,7 @@
  *      Author: vpoliboy
  */
 
-//#include <glog/logging.h>
+#include <glog/logging.h>
 #include "console_reporter.h"
 #include "utils.h"
 
@@ -21,7 +21,7 @@ namespace cppmetrics {
 namespace core {
 
 ConsoleReporter::ConsoleReporter(MetricRegistryPtr registry, std::ostream &ostr,
-    boost::chrono::milliseconds rate_unit)
+    std::chrono::milliseconds rate_unit)
     : ScheduledReporter(registry, rate_unit)
     , ostr_(ostr)
 {
@@ -42,7 +42,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!gauge_map.empty()) {
         printWithBanner("-- Gauges", '-');
-        BOOST_FOREACH (const core::GaugeMap::value_type &entry, gauge_map) {
+        for (const core::GaugeMap::value_type &entry : gauge_map) {
             ostr_ << entry.first << std::endl;
             printGauge(entry.second);
         }
@@ -51,7 +51,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!counter_map.empty()) {
         printWithBanner("-- Counters", '-');
-        BOOST_FOREACH (const core::CounterMap::value_type &entry, counter_map) {
+        for (const core::CounterMap::value_type &entry : counter_map) {
             ostr_ << entry.first << std::endl;
             printCounter(entry.second);
         }
@@ -60,8 +60,8 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!histogram_map.empty()) {
         printWithBanner("-- Histograms", '-');
-        BOOST_FOREACH (
-            const core::HistogramMap::value_type &entry, histogram_map) {
+        for (
+            const core::HistogramMap::value_type &entry : histogram_map) {
             ostr_ << entry.first << std::endl;
             printHistogram(entry.second);
         }
@@ -70,7 +70,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!meter_map.empty()) {
         printWithBanner("-- Meters", '-');
-        BOOST_FOREACH (const core::MeteredMap::value_type &entry, meter_map) {
+        for (const core::MeteredMap::value_type &entry: meter_map) {
             ostr_ << entry.first << std::endl;
             printMeter(entry.second);
         }
@@ -79,7 +79,7 @@ void ConsoleReporter::report(core::CounterMap counter_map,
 
     if (!timer_map.empty()) {
         printWithBanner("-- Timers", '-');
-        BOOST_FOREACH (const core::TimerMap::value_type &entry, timer_map) {
+        for(const core::TimerMap::value_type &entry: timer_map) {
             ostr_ << entry.first << std::endl;
             printTimer(entry.second);
         }

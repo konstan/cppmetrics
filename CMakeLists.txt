@@ -5,7 +5,7 @@ project (cppmetrics)
 set (CPACK_GENERATOR TGZ)
 set (CPACK_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 set (cppmetrics_VERSION_MAJOR 0)
 set (cppmetrics_VERSION_MINOR 1)
@@ -35,6 +35,9 @@ IF (DEFINED INCLUDE_SYSTEM_DIRS)
     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include")
     SET (EXTRA_LD_FLAGS "-L/usr/lib")
 ENDIF()
+
+set(ASIO_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/deps/asio/asio/include)
+add_definitions(-DASIO_STANDALONE)
 
 set(Boost_USE_MULTITHREADED ON)
 find_package(Boost COMPONENTS timer chrono system filesystem thread date_time REQUIRED)
@@ -112,7 +115,7 @@ IF (DEFINED GLOG_DIR)
     set (GLOG_LIB_DIR ${GLOG_DIR}/lib)
 ENDIF ()
 
-include_directories (src ${BOOST_INCLUDE_DIRS} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
+include_directories (src ${ASIO_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
 link_directories (${GLOG_LIB_DIR} ${GTEST_DIR})
 install (FILES ${cppmetrics_global_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR})
 install (FILES ${cppmetrics_core_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/core)

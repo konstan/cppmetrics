@@ -16,9 +16,9 @@
 #ifndef SIMPLE_SCHEDULED_THREAD_POOL_EXECUTOR_H_
 #define SIMPLE_SCHEDULED_THREAD_POOL_EXECUTOR_H_
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
+#include <chrono>
 #include <boost/atomic.hpp>
-#include <boost/chrono/duration.hpp>
 #include <boost/foreach.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -50,7 +50,7 @@ public:
      * @param period The interval between the start of the tasks.
      */
     virtual void scheduleAtFixedRate(
-        boost::function<void()> command, boost::chrono::milliseconds period);
+        boost::function<void()> command, std::chrono::milliseconds period);
 
     /**
      * Executes the give task at the configured interval delay until shutdown is
@@ -60,7 +60,7 @@ public:
      * @param period The time period between the end of the tasks.
      */
     virtual void scheduleAtFixedDelay(
-        boost::function<void()> command, boost::chrono::milliseconds period);
+        boost::function<void()> command, std::chrono::milliseconds period);
 
     /**
      * Shuts down the service, may or may not return immediately depending on
@@ -81,14 +81,14 @@ public:
 
 private:
     void cancelTimers();
-    void timerHandler(const boost::system::error_code &ec, size_t timer_index);
+    void timerHandler(size_t timer_index);
 
     void scheduleTimer(boost::function<void()> task,
-        boost::chrono::milliseconds period, bool fixed_rate);
+        std::chrono::milliseconds period, bool fixed_rate);
 
     boost::atomic<bool> running_;
-    boost::asio::io_service io_service_;
-    boost::scoped_ptr<boost::asio::io_service::work> work_ptr_;
+    asio::io_service io_service_;
+    boost::scoped_ptr<asio::io_service::work> work_ptr_;
     boost::thread_group thread_group_;
 
     class TimerTask;

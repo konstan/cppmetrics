@@ -19,7 +19,7 @@
 #include "cppmetrics/core/sample.h"
 #include "cppmetrics/core/types.h"
 #include <boost/atomic.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
+#include <chrono>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
 #include <boost/scoped_ptr.hpp>

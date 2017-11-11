@@ -32,15 +32,15 @@ GraphiteSenderTCP::~GraphiteSenderTCP() {}
 
 void GraphiteSenderTCP::connect()
 {
-    io_service_.reset(new boost::asio::io_service());
+    io_service_.reset(new asio::io_service());
 
-    boost::asio::ip::tcp::resolver resolver(*io_service_);
-    boost::asio::ip::tcp::resolver::query query(host_, port_);
-    boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
+    asio::ip::tcp::resolver resolver(*io_service_);
+    asio::ip::tcp::resolver::query query(host_, port_);
+    asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
 
-    socket_.reset(new boost::asio::ip::tcp::socket(*io_service_));
-    boost::system::error_code ec;
-    boost::asio::connect(*socket_, iterator, ec);
+    socket_.reset(new asio::ip::tcp::socket(*io_service_));
+    asio::error_code ec;
+    asio::connect(*socket_, iterator, ec);
     connected_ = !ec;
     if (!connected_) {
         throw std::runtime_error("Connect() error, reason: " + ec.message());
@@ -56,8 +56,7 @@ void GraphiteSenderTCP::send(const std::string &name, const std::string &value,
     std::ostringstream ostr;
     ostr << name << ' ' << value << ' ' << timestamp << std::endl;
     std::string graphite_str(ostr.str());
-    boost::asio::write(
-        *socket_, boost::asio::buffer(graphite_str, graphite_str.size()));
+    asio::write(*socket_, asio::buffer(graphite_str, graphite_str.size()));
 }
 
 void GraphiteSenderTCP::close()

@@ -64,7 +64,7 @@ TEST(expdecaySample, longPeriodsOfInactivityShouldNotCorruptSamplingState)
     Clock::time_point cur_time_point(Clock::now());
     for (int i = 0; i < 1000; i++) {
         exp_decay_sample.update(1000 + i, cur_time_point);
-        cur_time_point += boost::chrono::milliseconds(100);
+        cur_time_point += std::chrono::milliseconds(100);
     }
 
     ASSERT_EQ((size_t)10, exp_decay_sample.size());
@@ -75,7 +75,7 @@ TEST(expdecaySample, longPeriodsOfInactivityShouldNotCorruptSamplingState)
     // this should trigger a rescale. Note that the number of samples will be
     // reduced to 2 because of the very small scaling factor that will make all
     // existing priorities equal to zero after rescale.
-    cur_time_point += boost::chrono::hours(15);
+    cur_time_point += std::chrono::hours(15);
     exp_decay_sample.update(2000, cur_time_point);
     snapshot = exp_decay_sample.getSnapshot();
 
@@ -85,7 +85,7 @@ TEST(expdecaySample, longPeriodsOfInactivityShouldNotCorruptSamplingState)
     // add 1000 values at a rate of 10 values/second
     for (int i = 0; i < 1000; i++) {
         exp_decay_sample.update(3000 + i, cur_time_point);
-        cur_time_point += boost::chrono::milliseconds(100);
+        cur_time_point += std::chrono::milliseconds(100);
     }
     snapshot = exp_decay_sample.getSnapshot();
     ASSERT_EQ((size_t)10, snapshot->size());

@@ -18,9 +18,9 @@
 
 #include "cppmetrics/core/metered.h"
 #include <boost/atomic.hpp>
-#include <boost/chrono.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <chrono>
 
 namespace cppmetrics {
 namespace core {
@@ -35,7 +35,7 @@ public:
      * Creates a meter with the specified rate unit.
      * @param rate_unit The rate unit in nano seconds.
      */
-    Meter(boost::chrono::nanoseconds rate_unit = boost::chrono::seconds(1));
+    Meter(std::chrono::nanoseconds rate_unit = std::chrono::seconds(1));
 
     virtual ~Meter();
 

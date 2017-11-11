@@ -33,7 +33,7 @@ TEST(simplethreadpoolexecutor, functionaltest)
         boost::bind(increment_counter, boost::ref(counter)));
     thread_pool_executor.execute(task);
     // Give up a timeslice.
-    boost::this_thread::sleep(boost::posix_time::milliseconds(20));
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
     ASSERT_EQ((size_t)1, counter);
     ASSERT_FALSE(thread_pool_executor.isShutdown());
     thread_pool_executor.shutdownNow();

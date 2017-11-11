@@ -18,7 +18,6 @@
 
 #include "cppmetrics/core/scheduled_reporter.h"
 #include "cppmetrics/graphite/graphite_sender.h"
-#include <boost/chrono.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
@@ -44,7 +43,7 @@ public:
      */
     GraphiteReporter(core::MetricRegistryPtr registry,
         GraphiteSenderPtr graphite_sender, std::string prefix,
-        boost::chrono::milliseconds rateUnit = boost::chrono::seconds(1));
+        std::chrono::milliseconds rateUnit = std::chrono::seconds(1));
     virtual ~GraphiteReporter();
 
     /**
@@ -66,25 +65,25 @@ private:
     template <class T> std::string format(T o);
 
     void reportTimer(const std::string &name, core::TimerPtr timer,
-        boost::uint64_t timestamp);
+        uint64_t timestamp);
 
     void reportMeter(const std::string &name, core::MeteredPtr meter,
-        boost::uint64_t timestamp);
+        uint64_t timestamp);
 
     void reportHistogram(const std::string &name, core::HistogramPtr histogram,
-        boost::uint64_t timestamp);
+        uint64_t timestamp);
 
     void reportCounter(const std::string &name, core::CounterPtr counter,
-        boost::uint64_t timestamp);
+        uint64_t timestamp);
 
     void reportGauge(const std::string &name, core::GaugePtr gauge,
-        boost::uint64_t timestamp);
+        uint64_t timestamp);
 
     core::MetricRegistryPtr registry_;
     GraphiteSenderPtr sender_;
     std::string prefix_;
-    boost::chrono::milliseconds rate_unit_;
-    boost::chrono::milliseconds duration_unit_;
+    std::chrono::milliseconds rate_unit_;
+    std::chrono::milliseconds duration_unit_;
 };
 
 } /* namespace graphite */

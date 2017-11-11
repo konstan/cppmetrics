@@ -17,7 +17,6 @@
 #define METERED_H_
 
 #include "cppmetrics/core/metric.h"
-#include <boost/chrono.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/shared_ptr.hpp>
 #include <string>

@@ -19,6 +19,7 @@
 #include "cppmetrics/concurrent/simple_scheduled_thread_pool_executor.h"
 #include "cppmetrics/core/metric_registry.h"
 #include "reporter.h"
+#include <chrono>
 
 namespace cppmetrics {
 namespace core {
@@ -53,7 +54,7 @@ public:
      * registry periodically at the given interval.
      * @param period the amount of time between polls in milliseconds.
      */
-    virtual void start(boost::chrono::milliseconds period);
+    virtual void start(std::chrono::milliseconds period);
 
     /**
      * Shuts down the background thread that polls/publishes the metrics from
@@ -70,7 +71,7 @@ protected:
      * meter.
      */
     ScheduledReporter(
-        MetricRegistryPtr registry, boost::chrono::milliseconds rate_unit);
+        MetricRegistryPtr registry, std::chrono::milliseconds rate_unit);
 
     /**
      * Converts the duration value to the milliseconds (from nanoseconds).

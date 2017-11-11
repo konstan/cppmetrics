@@ -22,17 +22,17 @@ namespace graphite {
 
 static const std::string PREFIX("Prefix");
 static const std::string GAUGE_NAME("Gauge");
-static const boost::int64_t GAUGE_VALUE(100);
+static const int64_t GAUGE_VALUE(100);
 
 static const std::string COUNTER_NAME("Counter");
-static const boost::uint64_t COUNTER_VALUE(100);
+static const uint64_t COUNTER_VALUE(100);
 
 namespace {
 
 class FakeGauge : public core::Gauge {
 public:
     virtual ~FakeGauge() {}
-    virtual boost::int64_t getValue() { return GAUGE_VALUE; }
+    virtual int64_t getValue() { return GAUGE_VALUE; }
 };
 
 // TODO: use gmock here instead.
@@ -49,7 +49,7 @@ public:
     virtual void connect() override { method_called_[Connect] = true; }
 
     virtual void send(const std::string &name, const std::string &value,
-        boost::uint64_t timestamp, metric_t type = Counter_t) override
+        uint64_t timestamp, metric_t type = Counter_t) override
     {
         ASSERT_TRUE(method_called_[Connect]);
         method_called_[Send] = true;
@@ -105,7 +105,7 @@ private:
     }
 
     void sendCounter(const std::string &name, const std::string &actual_value,
-        boost::uint64_t timestamp)
+        uint64_t timestamp)
     {
         std::string expected_value(
             boost::lexical_cast<std::string>(COUNTER_VALUE));
@@ -116,17 +116,17 @@ private:
     }
 
     void sendHistogram(const std::string &name, const std::string &value,
-        boost::uint64_t timestamp)
+        uint64_t timestamp)
     {
     }
 
     void sendMeter(const std::string &name, const std::string &value,
-        boost::uint64_t timestamp)
+        uint64_t timestamp)
     {
     }
 
     void sendTimer(const std::string &name, const std::string &value,
-        boost::uint64_t timestamp)
+        uint64_t timestamp)
     {
     }
 };
@@ -142,10 +142,10 @@ TEST(graphitereporter, gaugetest)
     metric_registry->addGauge(GAUGE_NAME, gauge_ptr);
 
     GraphiteReporter graphite_reporter(
-        metric_registry, graphite_sender, PREFIX, boost::chrono::seconds(1));
+        metric_registry, graphite_sender, PREFIX, std::chrono::seconds(1));
 
-    graphite_reporter.start(boost::chrono::milliseconds(100));
-    boost::this_thread::sleep(boost::posix_time::milliseconds(150));
+    graphite_reporter.start(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(150));
     graphite_reporter.stop();
 }
 
@@ -159,10 +159,10 @@ TEST(graphitereporter, countertest)
     counter_ptr->increment(COUNTER_VALUE);
 
     GraphiteReporter graphite_reporter(
-        metric_registry, graphite_sender, PREFIX, boost::chrono::seconds(1));
+        metric_registry, graphite_sender, PREFIX, std::chrono::seconds(1));
 
-    graphite_reporter.start(boost::chrono::milliseconds(100));
-    boost::this_thread::sleep(boost::posix_time::milliseconds(150));
+    graphite_reporter.start(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(150));
     graphite_reporter.stop();
 }
 }
