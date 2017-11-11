@@ -15,5 +15,9 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+CPackConfig.cmake
+.ycm_extra_conf.py
+CPackSourceConfig.cmake
+test_detail.xml
 
 # End of https://www.gitignore.io/api/cmake
