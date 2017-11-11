@@ -5,6 +5,8 @@ project (cppmetrics)
 set (CPACK_GENERATOR TGZ)
 set (CPACK_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
 
+set(CMAKE_CXX_STANDARD 11)
+
 set (cppmetrics_VERSION_MAJOR 0)
 set (cppmetrics_VERSION_MINOR 1)
 set (cppmetrics_VERSION_PATCH 1)
@@ -14,7 +16,15 @@ set(CPACK_PACKAGE_VERSION ${cppmetrics_VERSION})
 INCLUDE(CPack)
 
 if(UNIX AND NOT APPLE)
-       set(LINUX TRUE)
+    set(LINUX TRUE)
+endif()
+
+if(APPLE)
+    set(CMAKE_MACOSX_RPATH 1)
+    if(COMMAND cmake_policy)
+      cmake_policy(SET CMP0003 NEW)
+      cmake_policy(SET CMP0004 NEW)
+    endif(COMMAND cmake_policy)
 endif()
 
 set (cppmetrics_PREPROC_FLAGS -DBOOST_NO_CXX11_SMART_PTR)
@@ -26,11 +36,8 @@ IF (DEFINED INCLUDE_SYSTEM_DIRS)
     SET (EXTRA_LD_FLAGS "-L/usr/lib")
 ENDIF()
 
-if(LINUX)
-  set (BOOST_LD_FLAGS "-lboost_timer -lboost_chrono -lboost_system -lboost_filesystem -lboost_thread -lboost_date_time -lpthread -lrt")
-else()
-  set (BOOST_LD_FLAGS "-lboost_timer -lboost_chrono -lboost_system -lboost_filesystem -lboost_thread -lboost_date_time -lpthread")
-endif()
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost COMPONENTS timer chrono system filesystem thread date_time REQUIRED)
 
 set (GLOG_LD_FLAGS "-lglog")
 
@@ -97,6 +104,34 @@ set (cppmetrics_HEADERS
   ${cppmetrics_graphite_EXTERNAL_HEADERS}
 )
 
+set (DIST_INCLUDE_DIR include/cppmetrics)
+
+
+IF (DEFINED GLOG_DIR)
+    set (GLOG_INCLUDE_DIR ${GLOG_DIR}/include)
+    set (GLOG_LIB_DIR ${GLOG_DIR}/lib)
+ENDIF ()
+
+include_directories (src ${BOOST_INCLUDE_DIRS} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
+link_directories (${GLOG_LIB_DIR} ${GTEST_DIR})
+install (FILES ${cppmetrics_global_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR})
+install (FILES ${cppmetrics_core_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/core)
+install (FILES ${cppmetrics_concurrent_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/concurrent)
+install (FILES ${cppmetrics_graphite_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/graphite)
+
+add_library (cppmetrics STATIC ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
+install (TARGETS cppmetrics DESTINATION lib)
+
+add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
+target_link_libraries (cppmetricsshared ${Boost_LIBRARIES} ${GLOG_LD_FLAGS})
+install (TARGETS cppmetricsshared DESTINATION lib)
+
+add_custom_target(clang-format docker run --rm -v ${PWD}:/root/sources onedata/clang-format-check:1.1)
+
+enable_testing()
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
 set (cppmetrics_core_TEST_SOURCES
   test/cppmetrics/core/test_counter.cpp
   test/cppmetrics/core/test_ewma.cpp
@@ -127,48 +162,7 @@ set (cppmetrics_TEST_SOURCES
     ${cppmetrics_graphite_TEST_SOURCES}
 )
 
-set (GTEST_LD_FLAGS "${EXTRA_LD_FLAGS} ${BOOST_LD_FLAGS} ${GLOG_LD_FLAGS} -lgtest_main -lgtest")
-set (DIST_INCLUDE_DIR include/cppmetrics)
 
-IF (NOT DEFINED BOOST_DIR)
-    find_package(Boost 1.53.0)
-    if(Boost_FOUND)
-        set (BOOST_INC_DIR ${Boost_INCLUDE_DIRS})
-   	set (BOOST_LIB_DIR ${Boost_LIBRARY_DIRS})
-    else ()
-        MESSAGE(STATUS "BOOST distro not found")
-    endif()
-ELSE ()
-    set (BOOST_INC_DIR ${BOOST_DIR}/include)
-    set (BOOST_LIB_DIR ${BOOST_DIR}/lib)
-ENDIF ()
-
-
-IF (DEFINED GLOG_DIR)
-    set (GLOG_INCLUDE_DIR ${GLOG_DIR}/include)
-    set (GLOG_LIB_DIR ${GLOG_DIR}/lib)
-ENDIF ()
-
-IF (DEFINED GTEST_DIR)
-    set (GTEST_INCLUDE_DIR ${GTEST_DIR}/include)
-    set (GTEST_LIB_DIR ${GTEST_DIR}/lib)
-ENDIF ()
-
-include_directories (src ${BOOST_INC_DIR} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
-link_directories (${BOOST_LIB_DIR} ${GLOG_LIB_DIR} ${GTEST_DIR})
-install (FILES ${cppmetrics_global_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR})
-install (FILES ${cppmetrics_core_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/core)
-install (FILES ${cppmetrics_concurrent_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/concurrent)
-install (FILES ${cppmetrics_graphite_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/graphite)
-
-add_library (cppmetrics STATIC ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
-install (TARGETS cppmetrics DESTINATION lib)
-
-# Re-enable them when the boost is built with shared library option too.
-#add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
-#target_link_libraries (cppmetricsshared ${BOOST_LD_FLAGS})
-#install (TARGETS cppmetricsshared DESTINATION lib)
-
-#add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
-#target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_LD_FLAGS})
-#add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)
+add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
+target_link_libraries (gtest_cppmetrics cppmetrics ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} ${GLOG_LD_FLAGS})
+add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)

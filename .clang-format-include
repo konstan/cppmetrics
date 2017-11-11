@@ -1,0 +1,7 @@
+#
+# List of glob patterns for files to check
+#
++ src/**/*.cpp
++ src/**/*.h
++ test/**/*.cpp
++ test/**/*.h
