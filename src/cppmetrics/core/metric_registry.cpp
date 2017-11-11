@@ -14,9 +14,10 @@
  */
 
 #include "cppmetrics/core/metric_registry.h"
-#include <boost/unordered_map.hpp>
 #include <map>
+#include <set>
 #include <shared_mutex>
+#include <unordered_map>
 
 namespace cppmetrics {
 namespace core {
@@ -57,7 +58,7 @@ private:
         metrics_mutex_; /**< mutex that protects both MetricSets and
                            metric_names. */
     // We should use a lock-free concurrent map implementation outside of boost.
-    typedef boost::unordered_map<std::string, MetricPtr> MetricSet;
+    typedef std::unordered_map<std::string, MetricPtr> MetricSet;
     MetricSet metric_set_[TotalTypes];
     typedef std::set<std::string> StringSet;
     StringSet metric_names_;
