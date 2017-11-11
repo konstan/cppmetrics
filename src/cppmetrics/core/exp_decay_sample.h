@@ -18,7 +18,7 @@
 
 #include "cppmetrics/core/sample.h"
 #include "cppmetrics/core/types.h"
-#include <boost/atomic.hpp>
+#include <atomic>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -84,7 +84,7 @@ private:
 
     const double alpha_;
     const boost::uint64_t reservoir_size_;
-    boost::atomic<boost::uint64_t> count_;
+    std::atomic<boost::uint64_t> count_;
 
     mutable boost::mutex mutex_;
     Clock::time_point start_time_;

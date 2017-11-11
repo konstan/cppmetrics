@@ -63,7 +63,7 @@ SimpleScheduledThreadPoolExecutor::~SimpleScheduledThreadPoolExecutor()
 void SimpleScheduledThreadPoolExecutor::cancelTimers()
 {
     boost::lock_guard<boost::mutex> lock(timer_task_mutex_);
-    BOOST_FOREACH (const TimerTask &timer_task, timer_tasks_) {
+    for (const TimerTask &timer_task : timer_tasks_) {
         timer_task.timer_->cancel();
     }
 }

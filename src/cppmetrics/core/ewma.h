@@ -16,7 +16,7 @@
 #ifndef EWMA_H_
 #define EWMA_H_
 
-#include <boost/atomic.hpp>
+#include <atomic>
 #include <boost/scoped_ptr.hpp>
 #include <chrono>
 
@@ -99,9 +99,9 @@ private:
     static const double M5_ALPHA;
     static const double M15_ALPHA;
 
-    boost::atomic<bool> initialized_;
-    boost::atomic<double> ewma_;
-    boost::atomic<uint64_t> uncounted_;
+    std::atomic<bool> initialized_;
+    std::atomic<double> ewma_;
+    std::atomic<uint64_t> uncounted_;
     const double alpha_;
     const uint64_t interval_nanos_;
 };

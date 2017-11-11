@@ -17,7 +17,7 @@
 #define UNIFORM_SAMPLE_H_
 
 #include "cppmetrics/core/sample.h"
-#include <boost/atomic.hpp>
+#include <atomic>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 #include <boost/thread/lock_guard.hpp>
@@ -50,13 +50,13 @@ public:
      * Returns the number of values recorded.
      * @return the number of values recorded
      */
-    virtual boost::uint64_t size() const;
+    virtual uint64_t size() const;
 
     /**
      * Adds a new recorded value to the sample.
      * @param value a new recorded value
      */
-    virtual void update(boost::int64_t value);
+    virtual void update(int64_t value);
 
     /**
      * Returns a snapshot of the sample's values.
@@ -65,13 +65,13 @@ public:
     virtual SnapshotPtr getSnapshot() const;
 
     /**< The Maximum sample size at any given time. */
-    static const boost::uint64_t DEFAULT_SAMPLE_SIZE;
+    static const uint64_t DEFAULT_SAMPLE_SIZE;
 
 private:
-    boost::uint64_t getRandom(boost::uint64_t count) const;
-    const boost::uint64_t reservoir_size_;
-    boost::atomic<boost::uint64_t> count_;
-    typedef std::vector<boost::int64_t> Int64Vector;
+    uint64_t getRandom(uint64_t count) const;
+    const uint64_t reservoir_size_;
+    std::atomic<uint64_t> count_;
+    typedef std::vector<int64_t> Int64Vector;
     Int64Vector values_;
     mutable boost::mt11213b rng_;
     mutable boost::mutex mutex_;

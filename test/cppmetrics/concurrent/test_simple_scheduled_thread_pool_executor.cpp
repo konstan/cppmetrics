@@ -23,7 +23,7 @@ namespace concurrent {
 
 namespace {
 
-void timer_handler(boost::atomic<size_t> &counter)
+void timer_handler(std::atomic<size_t> &counter)
 {
     ++counter;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -36,7 +36,7 @@ TEST(simplescheduledthreadpoolexecutor, fixedDelayTest)
 
     ASSERT_FALSE(sstpe.isShutdown());
 
-    boost::atomic<size_t> counter;
+    std::atomic<size_t> counter;
     counter = 0UL;
     boost::function<void()> timer_task(
         boost::bind(timer_handler, boost::ref(counter)));
@@ -58,7 +58,7 @@ TEST(simplescheduledthreadpoolexecutor, fixedRateTest)
 
     ASSERT_FALSE(sstpe.isShutdown());
 
-    boost::atomic<size_t> counter;
+    std::atomic<size_t> counter;
     counter = 0UL;
     boost::function<void()> timer_task(
         boost::bind(timer_handler, boost::ref(counter)));

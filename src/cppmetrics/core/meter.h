@@ -17,7 +17,7 @@
 #define METER_H_
 
 #include "cppmetrics/core/metered.h"
-#include <boost/atomic.hpp>
+#include <atomic>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <chrono>

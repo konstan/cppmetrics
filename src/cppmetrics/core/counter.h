@@ -17,7 +17,7 @@
 #define COUNTER_H_
 
 #include "cppmetrics/core/metric.h"
-#include <boost/atomic.hpp>
+#include <atomic>
 #include <boost/cstdint.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
@@ -35,7 +35,7 @@ public:
      * Constructor
      * @param n Initialize the counter with a value of \c n.
      */
-    Counter(boost::int64_t n = 0)
+    Counter(int64_t n = 0)
         : count_(n)
     {
     }
@@ -45,22 +45,22 @@ public:
     /**
      * @return the current value of the counter.
      */
-    boost::int64_t getCount() const { return count_; }
+    int64_t getCount() const { return count_; }
 
     /**
      * @param n reset the counter to the value \c n.
      */
-    void setCount(boost::int64_t n) { count_ = n; }
+    void setCount(int64_t n) { count_ = n; }
 
     /**
      * @param n increment the counter by \c n
      */
-    void increment(boost::int64_t n = 1) { count_ += n; }
+    void increment(int64_t n = 1) { count_ += n; }
 
     /**
      * @param n decrement the counter by \c n
      */
-    void decrement(boost::int64_t n = 1) { count_ -= n; }
+    void decrement(int64_t n = 1) { count_ -= n; }
 
     /**
      * Clears the counter, same as calling <code> setCount(0) </code>;
@@ -68,7 +68,7 @@ public:
     void clear() { setCount(0); }
 
 private:
-    boost::atomic<boost::int64_t> count_;
+    std::atomic<int64_t> count_;
 };
 
 typedef boost::shared_ptr<Counter> CounterPtr;

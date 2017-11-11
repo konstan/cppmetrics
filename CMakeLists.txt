@@ -28,7 +28,7 @@ if(APPLE)
 endif()
 
 set (cppmetrics_PREPROC_FLAGS -DBOOST_NO_CXX11_SMART_PTR)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Wall -Winit-self -m64 -pipe")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Wall -Winit-self -Wno-unused-local-typedef -m64 -pipe")
 
 # Last ditch effort : look for boost in /usr/local and /usr/lib
 IF (DEFINED INCLUDE_SYSTEM_DIRS)

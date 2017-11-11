@@ -37,9 +37,9 @@ public:
 
 private:
     const std::chrono::nanoseconds rate_unit_;
-    boost::atomic<uint64_t> count_;
+    std::atomic<uint64_t> count_;
     const Clock::time_point start_time_;
-    boost::atomic<uint64_t> last_tick_;
+    std::atomic<uint64_t> last_tick_;
     internal::EWMA m1_rate_;
     internal::EWMA m5_rate_;
     internal::EWMA m15_rate_;

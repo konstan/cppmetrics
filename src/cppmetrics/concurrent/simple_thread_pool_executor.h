@@ -17,7 +17,7 @@
 #define SIMPLE_THREAD_POOL_EXECUTOR_H_
 
 #include <asio.hpp>
-#include <boost/atomic.hpp>
+#include <atomic>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -62,7 +62,7 @@ public:
     virtual bool isShutdown() const;
 
 private:
-    boost::atomic<bool> running_;
+    std::atomic<bool> running_;
     asio::io_service io_service_;
     boost::scoped_ptr<asio::io_service::work> work_ptr_;
     boost::thread_group thread_group_;
