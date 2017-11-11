@@ -14,7 +14,6 @@
  */
 
 #include "cppmetrics/graphite/graphite_sender_tcp.h"
-#include <boost/lexical_cast.hpp>
 #include <sstream>
 
 namespace cppmetrics {
@@ -23,7 +22,7 @@ namespace graphite {
 GraphiteSenderTCP::GraphiteSenderTCP(const std::string &host, uint32_t port)
     : connected_(false)
     , host_(host)
-    , port_(boost::lexical_cast<std::string>(port))
+    , port_(std::to_string(port))
 {
 }
 

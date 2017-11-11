@@ -47,7 +47,7 @@ uint64_t UniformSample::size() const
 
 uint64_t UniformSample::getRandom(uint64_t count) const
 {
-    boost::random::uniform_int_distribution<> uniform(0, count - 1);
+    std::uniform_int_distribution<> uniform(0, count - 1);
     return uniform(rng_);
 }
 

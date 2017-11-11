@@ -36,7 +36,7 @@ public:
     /**
      * Connects to the graphite sender
      * @return True on success, false otherwise.
-     * @throws boost::system_error if there is a problem.
+     * @throws std::runtime_error if there is a problem.
      */
     virtual void connect() = 0;
 
@@ -46,7 +46,7 @@ public:
      * @param value The value of the metric
      * @param timestamp The timestamp of the metric.
      * @return True on success false otherwise.
-     * @throws boost::system_error if there is a problem.
+     * @throws std::runtime_error if there is a problem.
      */
     virtual void send(const std::string &name, const std::string &value,
         uint64_t timestamp, metric_t type = Counter_t) = 0;

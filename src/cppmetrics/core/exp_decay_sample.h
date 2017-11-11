@@ -19,10 +19,9 @@
 #include "cppmetrics/core/sample.h"
 #include "cppmetrics/core/types.h"
 #include <atomic>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real_distribution.hpp>
 #include <chrono>
 #include <map>
+#include <random>
 #include <vector>
 
 namespace cppmetrics {
@@ -89,7 +88,7 @@ private:
 
     typedef std::map<double, int64_t> Double2Int64Map;
     Double2Int64Map values_;
-    mutable boost::mt11213b rng_;
+    mutable std::mt19937 rng_;
 };
 
 } /* namespace core */

@@ -14,10 +14,9 @@
  */
 
 #include "cppmetrics/core/timer.h"
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
 #include <chrono>
 #include <gtest/gtest.h>
+#include <random>
 #include <thread>
 
 namespace cppmetrics {
@@ -39,9 +38,9 @@ TEST(timer, initialTest)
 TEST(timer, timerContextTest)
 {
     Timer timer;
-    boost::mt11213b rng;
+    std::mt19937 rng;
     for (size_t i = 0; i < 100; ++i) {
-        boost::random::uniform_int_distribution<> uniform(10, 30);
+        std::uniform_int_distribution<> uniform(10, 30);
         size_t sleep_time = uniform(rng);
         TimerContextPtr time_context(timer.timerContextPtr());
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));

@@ -99,8 +99,7 @@ private:
     void sendGauge(const std::string &name, const std::string &actual_value,
         uint64_t timestamp)
     {
-        std::string expected_value(
-            boost::lexical_cast<std::string>(GAUGE_VALUE));
+        std::string expected_value(std::to_string(GAUGE_VALUE));
         ASSERT_STREQ(
             std::string(PREFIX + '.' + GAUGE_NAME).c_str(), name.c_str());
         ASSERT_STREQ(expected_value.c_str(), actual_value.c_str());
@@ -109,8 +108,7 @@ private:
     void sendCounter(const std::string &name, const std::string &actual_value,
         uint64_t timestamp)
     {
-        std::string expected_value(
-            boost::lexical_cast<std::string>(COUNTER_VALUE));
+        std::string expected_value(std::to_string(COUNTER_VALUE));
         ASSERT_STREQ(
             std::string(PREFIX + '.' + COUNTER_NAME + ".count").c_str(),
             name.c_str());

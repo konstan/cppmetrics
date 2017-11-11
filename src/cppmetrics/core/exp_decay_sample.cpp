@@ -53,7 +53,7 @@ void ExpDecaySample::update(int64_t value, const Clock::time_point &timestamp)
 {
     std::lock_guard<std::mutex> rlock(mutex_);
     rescaleIfNeeded(timestamp);
-    boost::random::uniform_real_distribution<> dist(0, 1);
+    std::uniform_real_distribution<> dist(0, 1);
     std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(
         timestamp - start_time_);
     double priority = 0.0;

@@ -18,9 +18,8 @@
 
 #include "cppmetrics/core/sample.h"
 #include <atomic>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
 #include <iterator>
+#include <random>
 #include <vector>
 
 namespace cppmetrics {
@@ -71,7 +70,7 @@ private:
     std::atomic<uint64_t> count_;
     typedef std::vector<int64_t> Int64Vector;
     Int64Vector values_;
-    mutable boost::mt11213b rng_;
+    mutable std::mt19937 rng_;
     mutable std::mutex mutex_;
 };
 

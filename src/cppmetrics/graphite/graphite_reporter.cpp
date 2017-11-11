@@ -34,7 +34,7 @@ GraphiteReporter::~GraphiteReporter() {}
 
 template <typename T> std::string GraphiteReporter::format(T o)
 {
-    return boost::lexical_cast<std::string>(o);
+    return std::to_string(o);
 }
 
 void GraphiteReporter::report(core::CounterMap counter_map,

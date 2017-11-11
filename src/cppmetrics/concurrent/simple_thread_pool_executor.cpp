@@ -23,7 +23,7 @@ SimpleThreadPoolExecutor::SimpleThreadPoolExecutor(size_t thread_count)
     , work_ptr_(new asio::io_service::work(io_service_))
 {
     for (size_t i = 0; i < thread_count; ++i) {
-        thread_group_.create_thread([this]() { this->io_service_.run(); });
+        thread_group_.emplace_back([this]() { this->io_service_.run(); });
     }
 }
 
@@ -36,8 +36,9 @@ void SimpleThreadPoolExecutor::shutdown()
     }
     running_ = false;
     work_ptr_.reset();
-    thread_group_.interrupt_all();
-    thread_group_.join_all();
+    for (auto &thread : thread_group_)
+        if (thread.joinable())
+            thread.join();
 }
 
 void SimpleThreadPoolExecutor::shutdownNow()
@@ -47,8 +48,9 @@ void SimpleThreadPoolExecutor::shutdownNow()
     }
     running_ = false;
     io_service_.stop();
-    thread_group_.interrupt_all();
-    thread_group_.join_all();
+    for (auto &thread : thread_group_)
+        if (thread.joinable())
+            thread.join();
 }
 
 bool SimpleThreadPoolExecutor::isShutdown() const { return !running_; }

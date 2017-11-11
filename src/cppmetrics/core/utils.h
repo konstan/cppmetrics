@@ -18,6 +18,7 @@
 
 #include "cppmetrics/core/types.h"
 #include <chrono>
+#include <iomanip>
 #include <locale>
 #include <sstream>
 
@@ -51,11 +52,9 @@ inline auto get_seconds_from_epoch()
 inline std::string utc_timestamp(const std::locale &current_locale)
 {
     std::ostringstream ss;
-    // assumes std::cout's locale has been set appropriately for the entire app
-    // boost::posix_time::time_facet *t_facet(new
-    // boost::posix_time::time_facet()); t_facet->time_duration_format("%d-%M-%y
-    // %H:%M:%S%F %Q"); ss.imbue(std::locale(current_locale, t_facet)); ss <<
-    // boost::posix_time::microsec_clock::universal_time();
+    auto now_c =
+        std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    ss << std::put_time(std::localtime(&now_c), "%c");
     return ss.str();
 }
 }

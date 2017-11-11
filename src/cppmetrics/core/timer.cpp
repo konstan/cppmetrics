@@ -25,7 +25,7 @@ Timer::Timer()
 
 Timer::~Timer() {}
 
-boost::uint64_t Timer::getCount() const { return histogram_.getCount(); }
+uint64_t Timer::getCount() const { return histogram_.getCount(); }
 
 double Timer::getFifteenMinuteRate() { return meter_.getFifteenMinuteRate(); }
 

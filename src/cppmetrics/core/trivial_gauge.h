@@ -6,6 +6,7 @@
 #define MEDIASERVER_TRIVIAL_GAUGE_H_H
 
 #include "gauge.h"
+#include <memory>
 
 namespace cppmetrics {
 namespace core {
@@ -17,7 +18,7 @@ public:
     int64_t value_;
 };
 
-typedef boost::shared_ptr<TrivialGauge> TrivialGaugePtr;
+typedef std::shared_ptr<TrivialGauge> TrivialGaugePtr;
 }
 }
 #endif // MEDIASERVER_TRIVIAL_GAUGE_H_H

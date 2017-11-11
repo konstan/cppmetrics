@@ -18,7 +18,8 @@
 
 #include <asio.hpp>
 #include <atomic>
-#include <boost/thread/thread.hpp>
+#include <thread>
+#include <vector>
 
 namespace cppmetrics {
 namespace concurrent {
@@ -62,7 +63,7 @@ private:
     std::atomic<bool> running_;
     asio::io_service io_service_;
     std::unique_ptr<asio::io_service::work> work_ptr_;
-    boost::thread_group thread_group_;
+    std::vector<std::thread> thread_group_;
 };
 
 } /* namespace concurrent */

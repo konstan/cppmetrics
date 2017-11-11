@@ -21,9 +21,8 @@
 #include "cppmetrics/core/histogram.h"
 #include "cppmetrics/core/meter.h"
 #include "cppmetrics/core/timer.h"
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 #include <map>
+#include <memory>
 #include <string>
 
 namespace cppmetrics {
@@ -36,7 +35,7 @@ typedef std::map<std::string, TimerPtr> TimerMap;
 typedef std::map<std::string, GaugePtr> GaugeMap;
 
 class MetricRegistry;
-typedef boost::shared_ptr<MetricRegistry> MetricRegistryPtr;
+typedef std::shared_ptr<MetricRegistry> MetricRegistryPtr;
 /**
  * The thread-safe registry class for all metrics.
  */
