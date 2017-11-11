@@ -16,6 +16,8 @@
 #include "cppmetrics/graphite/graphite_reporter.h"
 #include <boost/lexical_cast.hpp>
 #include <gtest/gtest.h>
+#include <chrono>
+#include <thread>
 
 namespace cppmetrics {
 namespace graphite {

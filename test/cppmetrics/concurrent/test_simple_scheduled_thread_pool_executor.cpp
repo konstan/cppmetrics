@@ -15,6 +15,8 @@
 
 #include "cppmetrics/concurrent/simple_scheduled_thread_pool_executor.h"
 #include <gtest/gtest.h>
+#include <chrono>
+#include <thread>
 
 namespace cppmetrics {
 namespace concurrent {
