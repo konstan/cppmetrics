@@ -16,22 +16,21 @@
 #ifndef GAUGE_H_
 #define GAUGE_H_
 
-#include <boost/shared_ptr.hpp>
-#include <boost/cstdint.hpp>
 #include "cppmetrics/core/metric.h"
+#include <boost/cstdint.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace cppmetrics {
 namespace core {
 
 /**
- * A gauge metric is an instantaneous reading of a particular value. Used typically
- * to instrument a queue size, backlog etc.
+ * A gauge metric is an instantaneous reading of a particular value. Used
+ * typically to instrument a queue size, backlog etc.
  *
  */
-class Gauge: public Metric {
+class Gauge : public Metric {
 public:
-    virtual ~Gauge() {
-    }
+    virtual ~Gauge() {}
 
     /**
      * @return the current value of the guage.

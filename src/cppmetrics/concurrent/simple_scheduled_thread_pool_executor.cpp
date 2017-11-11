@@ -28,13 +28,15 @@ typedef boost::shared_ptr<Timer> TimerPtr;
 
 class SimpleScheduledThreadPoolExecutor::TimerTask {
 public:
-    TimerTask() :
-            period_(1000) {
-    };
+    TimerTask()
+        : period_(1000){};
     TimerTask(TimerPtr timer, boost::function<void()> task,
-            boost::posix_time::milliseconds period, bool fixed_rate) :
-            timer_(timer), task_(task), period_(period), fixed_rate_(fixed_rate) {
-
+        boost::posix_time::milliseconds period, bool fixed_rate)
+        : timer_(timer)
+        , task_(task)
+        , period_(period)
+        , fixed_rate_(fixed_rate)
+    {
     }
     TimerPtr timer_;
     boost::function<void()> task_;
@@ -43,31 +45,35 @@ public:
 };
 
 SimpleScheduledThreadPoolExecutor::SimpleScheduledThreadPoolExecutor(
-        size_t thread_count) :
-                running_(true),
-                work_ptr_(new boost::asio::io_service::work(io_service_)) {
+    size_t thread_count)
+    : running_(true)
+    , work_ptr_(new boost::asio::io_service::work(io_service_))
+{
     for (size_t i = 0; i < thread_count; ++i) {
         thread_group_.create_thread(
-                boost::bind(&boost::asio::io_service::run, &io_service_));
+            boost::bind(&boost::asio::io_service::run, &io_service_));
     }
 }
 
-SimpleScheduledThreadPoolExecutor::~SimpleScheduledThreadPoolExecutor() {
+SimpleScheduledThreadPoolExecutor::~SimpleScheduledThreadPoolExecutor()
+{
     shutdownNow();
 }
 
-void SimpleScheduledThreadPoolExecutor::cancelTimers() {
+void SimpleScheduledThreadPoolExecutor::cancelTimers()
+{
     boost::lock_guard<boost::mutex> lock(timer_task_mutex_);
-    BOOST_FOREACH(const TimerTask& timer_task, timer_tasks_) {
+    BOOST_FOREACH (const TimerTask &timer_task, timer_tasks_) {
         boost::system::error_code ec;
         timer_task.timer_->cancel(ec);
     }
 }
 
 void SimpleScheduledThreadPoolExecutor::timerHandler(
-        const boost::system::error_code& ec, size_t timer_index) {
+    const boost::system::error_code &ec, size_t timer_index)
+{
     if (!running_) {
-        LOG(ERROR)<< "Timer not started.";
+        LOG(ERROR) << "Timer not started.";
         return;
     }
 
@@ -80,7 +86,8 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(
     try {
         boost::lock_guard<boost::mutex> lock(timer_task_mutex_);
         timer_task = timer_tasks_.at(timer_index);
-    } catch (const std::out_of_range& oor) {
+    }
+    catch (const std::out_of_range &oor) {
         LOG(ERROR) << "Unable to find the timer at index " << timer_index;
         return;
     }
@@ -94,8 +101,9 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(
     boost::system::error_code eec;
     if (timer_task.fixed_rate_) {
         timer_task.timer_->expires_at(
-                timer_task.timer_->expires_at() + timer_task.period_, eec);
-    } else {
+            timer_task.timer_->expires_at() + timer_task.period_, eec);
+    }
+    else {
         timer_task.timer_->expires_from_now(timer_task.period_, eec);
     }
 
@@ -104,11 +112,12 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(
     }
 
     timer_task.timer_->async_wait(
-            boost::bind(&SimpleScheduledThreadPoolExecutor::timerHandler, this,
-                    boost::asio::placeholders::error, timer_index));
+        boost::bind(&SimpleScheduledThreadPoolExecutor::timerHandler, this,
+            boost::asio::placeholders::error, timer_index));
 }
 
-void SimpleScheduledThreadPoolExecutor::shutdown() {
+void SimpleScheduledThreadPoolExecutor::shutdown()
+{
     if (!running_) {
         return;
     }
@@ -118,7 +127,8 @@ void SimpleScheduledThreadPoolExecutor::shutdown() {
     thread_group_.join_all();
 }
 
-void SimpleScheduledThreadPoolExecutor::shutdownNow() {
+void SimpleScheduledThreadPoolExecutor::shutdownNow()
+{
     if (!running_) {
         return;
     }
@@ -129,13 +139,12 @@ void SimpleScheduledThreadPoolExecutor::shutdownNow() {
     thread_group_.join_all();
 }
 
-bool SimpleScheduledThreadPoolExecutor::isShutdown() const {
-    return !running_;
-}
+bool SimpleScheduledThreadPoolExecutor::isShutdown() const { return !running_; }
 
 void SimpleScheduledThreadPoolExecutor::scheduleTimer(
-        boost::function<void()> task, boost::chrono::milliseconds interval,
-        bool fixed_rate) {
+    boost::function<void()> task, boost::chrono::milliseconds interval,
+    bool fixed_rate)
+{
     boost::posix_time::milliseconds period(interval.count());
     TimerPtr timer(new Timer(io_service_, period));
     size_t timer_index = 0;
@@ -145,17 +154,19 @@ void SimpleScheduledThreadPoolExecutor::scheduleTimer(
         timer_index = timer_tasks_.size() - 1;
     }
     timer->async_wait(
-            boost::bind(&SimpleScheduledThreadPoolExecutor::timerHandler, this,
-                    boost::asio::placeholders::error, timer_index));
+        boost::bind(&SimpleScheduledThreadPoolExecutor::timerHandler, this,
+            boost::asio::placeholders::error, timer_index));
 }
 
 void SimpleScheduledThreadPoolExecutor::scheduleAtFixedDelay(
-        boost::function<void()> task, boost::chrono::milliseconds period) {
+    boost::function<void()> task, boost::chrono::milliseconds period)
+{
     scheduleTimer(task, period, false);
 }
 
 void SimpleScheduledThreadPoolExecutor::scheduleAtFixedRate(
-        boost::function<void()> task, boost::chrono::milliseconds period) {
+    boost::function<void()> task, boost::chrono::milliseconds period)
+{
     scheduleTimer(task, period, true);
 }
 

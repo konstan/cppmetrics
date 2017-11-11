@@ -18,20 +18,20 @@
 namespace cppmetrics {
 namespace concurrent {
 
-SimpleThreadPoolExecutor::SimpleThreadPoolExecutor(size_t thread_count) :
-                running_(true),
-                work_ptr_(new boost::asio::io_service::work(io_service_)) {
+SimpleThreadPoolExecutor::SimpleThreadPoolExecutor(size_t thread_count)
+    : running_(true)
+    , work_ptr_(new boost::asio::io_service::work(io_service_))
+{
     for (size_t i = 0; i < thread_count; ++i) {
         thread_group_.create_thread(
-                boost::bind(&boost::asio::io_service::run, &io_service_));
+            boost::bind(&boost::asio::io_service::run, &io_service_));
     }
 }
 
-SimpleThreadPoolExecutor::~SimpleThreadPoolExecutor() {
-    shutdownNow();
-}
+SimpleThreadPoolExecutor::~SimpleThreadPoolExecutor() { shutdownNow(); }
 
-void SimpleThreadPoolExecutor::shutdown() {
+void SimpleThreadPoolExecutor::shutdown()
+{
     if (!running_) {
         return;
     }
@@ -41,7 +41,8 @@ void SimpleThreadPoolExecutor::shutdown() {
     thread_group_.join_all();
 }
 
-void SimpleThreadPoolExecutor::shutdownNow() {
+void SimpleThreadPoolExecutor::shutdownNow()
+{
     if (!running_) {
         return;
     }
@@ -51,11 +52,10 @@ void SimpleThreadPoolExecutor::shutdownNow() {
     thread_group_.join_all();
 }
 
-bool SimpleThreadPoolExecutor::isShutdown() const {
-    return !running_;
-}
+bool SimpleThreadPoolExecutor::isShutdown() const { return !running_; }
 
-void SimpleThreadPoolExecutor::execute(boost::function<void()> command) {
+void SimpleThreadPoolExecutor::execute(boost::function<void()> command)
+{
     io_service_.post(command);
 }
 

@@ -16,10 +16,10 @@
 #ifndef TIMER_CONTEXT_H_
 #define TIMER_CONTEXT_H_
 
-#include <boost/chrono.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
 #include "cppmetrics/core/types.h"
+#include <boost/chrono.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace cppmetrics {
 namespace core {
@@ -31,12 +31,11 @@ class Timer;
  */
 class TimerContext {
 public:
-
     /**
      * Creates a TimerContext.
      * @param timer The parent timer metric.
      */
-    TimerContext(Timer& timer);
+    TimerContext(Timer &timer);
 
     ~TimerContext();
 
@@ -50,12 +49,12 @@ public:
      * @return the elapsed time in nanoseconds
      */
     boost::chrono::nanoseconds stop();
-private:
 
-    TimerContext& operator=(const TimerContext&);
+private:
+    TimerContext &operator=(const TimerContext &);
 
     Clock::time_point start_time_; ///< The start time on instantitation */
-    Timer& timer_;                 ///< The parent timer object. */
+    Timer &timer_;                 ///< The parent timer object. */
     bool active_;                  ///< Whether the timer is active or not */
 };
 

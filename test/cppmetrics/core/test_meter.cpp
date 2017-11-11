@@ -13,34 +13,32 @@
  *      Author: vpoliboy
  */
 
-
-#include <gtest/gtest.h>
 #include "cppmetrics/core/meter.h"
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace core {
 
-TEST(meter, functionaltest) {
+TEST(meter, functionaltest)
+{
 
-	Meter meter;
+    Meter meter;
 
-	ASSERT_EQ((size_t)0, meter.getCount());
-	ASSERT_NEAR(0.0, meter.getMeanRate(), 0.001);
-	ASSERT_NEAR(0.0, meter.getOneMinuteRate(), 0.001);
-	ASSERT_NEAR(0.0, meter.getFiveMinuteRate(), 0.001);
-	ASSERT_NEAR(0.0, meter.getFifteenMinuteRate(), 0.001);
-/*
- 	// TODO: Have to use gmock here.
-	meter.mark();
-	meter.mark(2);
+    ASSERT_EQ((size_t)0, meter.getCount());
+    ASSERT_NEAR(0.0, meter.getMeanRate(), 0.001);
+    ASSERT_NEAR(0.0, meter.getOneMinuteRate(), 0.001);
+    ASSERT_NEAR(0.0, meter.getFiveMinuteRate(), 0.001);
+    ASSERT_NEAR(0.0, meter.getFifteenMinuteRate(), 0.001);
+    /*
+            // TODO: Have to use gmock here.
+            meter.mark();
+            meter.mark(2);
 
-	ASSERT_NEAR(0.3, meter.getMeanRate(), 0.001);
-	ASSERT_NEAR(0.1840, meter.getOneMinuteRate(), 0.001);
-	ASSERT_NEAR(0.1966, meter.getFiveMinuteRate(), 0.001);
-	ASSERT_NEAR(0.1988, meter.getFifteenMinuteRate(), 0.001);
-	*/
+            ASSERT_NEAR(0.3, meter.getMeanRate(), 0.001);
+            ASSERT_NEAR(0.1840, meter.getOneMinuteRate(), 0.001);
+            ASSERT_NEAR(0.1966, meter.getFiveMinuteRate(), 0.001);
+            ASSERT_NEAR(0.1988, meter.getFifteenMinuteRate(), 0.001);
+            */
 }
-
 }
 }
-

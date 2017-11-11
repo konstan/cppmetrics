@@ -16,9 +16,9 @@
 #ifndef EWMA_H_
 #define EWMA_H_
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/chrono.hpp>
 #include <boost/atomic.hpp>
+#include <boost/chrono.hpp>
+#include <boost/scoped_ptr.hpp>
 
 namespace cppmetrics {
 namespace core {
@@ -26,35 +26,39 @@ namespace internal {
 
 /**
  * An exponentially-weighted moving average.
- * describe in detail  http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
- * not thread-safe.
+ * describe in detail
+ * http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average not
+ * thread-safe.
  */
 class EWMA {
 public:
     /**
-     * Creates a new EWMA which is equivalent to the UNIX one minute load average and which expects
-     * to be ticked every 5 seconds.
+     * Creates a new EWMA which is equivalent to the UNIX one minute load
+     * average and which expects to be ticked every 5 seconds.
      * @return a one-minute EWMA
      */
-    static EWMA oneMinuteEWMA() {
+    static EWMA oneMinuteEWMA()
+    {
         return EWMA(M1_ALPHA, boost::chrono::seconds(INTERVAL_IN_SEC));
     }
 
     /**
-     * Creates a new EWMA which is equivalent to the UNIX five minute load average and which expects
-     * to be ticked every 5 seconds.
+     * Creates a new EWMA which is equivalent to the UNIX five minute load
+     * average and which expects to be ticked every 5 seconds.
      * @return a five-minute EWMA
      */
-    static EWMA fiveMinuteEWMA() {
+    static EWMA fiveMinuteEWMA()
+    {
         return EWMA(M5_ALPHA, boost::chrono::seconds(INTERVAL_IN_SEC));
     }
 
     /**
-     * Creates a new EWMA which is equivalent to the UNIX fifteen minute load average and which expects
-     * to be ticked every 5 seconds.
+     * Creates a new EWMA which is equivalent to the UNIX fifteen minute load
+     * average and which expects to be ticked every 5 seconds.
      * @return a five-minute EWMA
      */
-    static EWMA fifteenMinuteEWMA() {
+    static EWMA fifteenMinuteEWMA()
+    {
         return EWMA(M15_ALPHA, boost::chrono::seconds(INTERVAL_IN_SEC));
     }
 
@@ -83,10 +87,10 @@ public:
      * @param rate_unit the unit of time
      * @return the rate
      */
-    double getRate(boost::chrono::nanoseconds rate_unit =
-            boost::chrono::seconds(1)) const;
-private:
+    double getRate(
+        boost::chrono::nanoseconds rate_unit = boost::chrono::seconds(1)) const;
 
+private:
     static const int INTERVAL_IN_SEC;
     static const int ONE_MINUTE;
     static const int FIVE_MINUTES;

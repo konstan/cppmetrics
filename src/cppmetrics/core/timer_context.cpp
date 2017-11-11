@@ -19,21 +19,22 @@
 namespace cppmetrics {
 namespace core {
 
-TimerContext::TimerContext(Timer& timer) :
-        timer_(timer) {
+TimerContext::TimerContext(Timer &timer)
+    : timer_(timer)
+{
     reset();
 }
 
-TimerContext::~TimerContext() {
-    stop();
-}
+TimerContext::~TimerContext() { stop(); }
 
-void TimerContext::reset() {
+void TimerContext::reset()
+{
     active_ = true;
     start_time_ = Clock::now();
 }
 
-boost::chrono::nanoseconds TimerContext::stop() {
+boost::chrono::nanoseconds TimerContext::stop()
+{
     if (active_) {
         boost::chrono::nanoseconds dur = Clock::now() - start_time_;
         timer_.update(dur);

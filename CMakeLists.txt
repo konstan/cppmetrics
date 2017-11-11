@@ -126,7 +126,9 @@ add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES}
 target_link_libraries (cppmetricsshared ${Boost_LIBRARIES} ${GLOG_LD_FLAGS})
 install (TARGETS cppmetricsshared DESTINATION lib)
 
-add_custom_target(clang-format docker run --rm -v ${PWD}:/root/sources onedata/clang-format-check:1.1)
+add_custom_target(clang-format
+    COMMAND docker run --rm -v ${PWD}:/root/sources onedata/clang-format-check:1.1
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 enable_testing()
 find_package(GTest REQUIRED)

@@ -16,20 +16,20 @@
 #ifndef METER_H_
 #define METER_H_
 
-#include <boost/chrono.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/atomic.hpp>
 #include "cppmetrics/core/metered.h"
+#include <boost/atomic.hpp>
+#include <boost/chrono.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace cppmetrics {
 namespace core {
 
 /**
- * A meter metric which measures mean throughput and one-, five-, and fifteen-minute
- * exponentially-weighted moving average throughputs.
+ * A meter metric which measures mean throughput and one-, five-, and
+ * fifteen-minute exponentially-weighted moving average throughputs.
  */
-class Meter: public Metered {
+class Meter : public Metered {
 public:
     /**
      * Creates a meter with the specified rate unit.
@@ -45,25 +45,26 @@ public:
     virtual boost::uint64_t getCount() const;
 
     /**
-     * @return the fifteen-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the meter was created.
+     * @return the fifteen-minute exponentially-weighted moving average rate at
+     * which events have occurred since the meter was created.
      */
     virtual double getFifteenMinuteRate();
 
     /**
-     * @return the five-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the meter was created.
+     * @return the five-minute exponentially-weighted moving average rate at
+     * which events have occurred since the meter was created.
      */
     virtual double getFiveMinuteRate();
 
     /**
-     * @return the one-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the meter was created.
+     * @return the one-minute exponentially-weighted moving average rate at
+     * which events have occurred since the meter was created.
      */
     virtual double getOneMinuteRate();
 
     /**
-     * @return the mean rate at which events have occurred since the meter was created.
+     * @return the mean rate at which events have occurred since the meter was
+     * created.
      */
     virtual double getMeanRate();
 

@@ -17,8 +17,8 @@
 #define SNAPSHOT_H_
 
 #include <boost/cstdint.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <vector>
 
 namespace cppmetrics {
@@ -35,7 +35,7 @@ public:
      * Create a new {@link Snapshot} with the given values.
      * @param values    an unordered set of values in the reservoir
      */
-    Snapshot(const ValueVector& values);
+    Snapshot(const ValueVector &values);
     ~Snapshot();
 
     /**
@@ -72,7 +72,7 @@ public:
      * Returns all the values in the snapshot.
      * @return All the values in the snapshot.
      */
-    const ValueVector& getValues() const;
+    const ValueVector &getValues() const;
 
     /**
      * Returns the value at the given quantile.
@@ -116,6 +116,7 @@ public:
      * @return the value at the 999th percentile
      */
     double get999thPercentile() const;
+
 private:
     ValueVector values_;
 };

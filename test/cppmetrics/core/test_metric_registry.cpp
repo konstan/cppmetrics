@@ -13,39 +13,36 @@
  *      Author: vpoliboy
  */
 
-#include <gtest/gtest.h>
 #include "cppmetrics/core/metric_registry.h"
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace core {
 
 namespace {
 
-class FakeGauge: public Gauge {
+class FakeGauge : public Gauge {
 public:
-    virtual ~FakeGauge() {
-    }
-    ;
-    virtual boost::int64_t getValue() {
-        return 10;
-    }
+    virtual ~FakeGauge(){};
+    virtual boost::int64_t getValue() { return 10; }
 };
-
 }
 
-TEST(metricregistry, initialTest) {
+TEST(metricregistry, initialTest)
+{
     MetricRegistry metric_registry;
-    ASSERT_EQ((size_t )0, metric_registry.count());
-    ASSERT_EQ((size_t )0, metric_registry.getCounters().size());
-    ASSERT_EQ((size_t )0, metric_registry.getGauges().size());
-    ASSERT_EQ((size_t )0, metric_registry.getHistograms().size());
-    ASSERT_EQ((size_t )0, metric_registry.getMeters().size());
-    ASSERT_EQ((size_t )0, metric_registry.getTimers().size());
+    ASSERT_EQ((size_t)0, metric_registry.count());
+    ASSERT_EQ((size_t)0, metric_registry.getCounters().size());
+    ASSERT_EQ((size_t)0, metric_registry.getGauges().size());
+    ASSERT_EQ((size_t)0, metric_registry.getHistograms().size());
+    ASSERT_EQ((size_t)0, metric_registry.getMeters().size());
+    ASSERT_EQ((size_t)0, metric_registry.getTimers().size());
 
     ASSERT_FALSE(metric_registry.removeMetric("random_metric_name"));
 }
 
-TEST(metricregistry, counterTest) {
+TEST(metricregistry, counterTest)
+{
     MetricRegistry metric_registry;
 
     const std::string counter1("counter1");
@@ -68,17 +65,18 @@ TEST(metricregistry, counterTest) {
     ASSERT_TRUE(counter_ptr1.get() != counter_ptr3.get());
 
     CounterMap counters(metric_registry.getCounters());
-    ASSERT_EQ((size_t )2, counters.size());
+    ASSERT_EQ((size_t)2, counters.size());
     ASSERT_STREQ(counter1.c_str(), counters.begin()->first.c_str());
     ASSERT_STREQ(counter2.c_str(), counters.rbegin()->first.c_str());
 
     ASSERT_TRUE(metric_registry.removeMetric(counter2));
     counters = metric_registry.getCounters();
-    ASSERT_EQ((size_t )1, counters.size());
+    ASSERT_EQ((size_t)1, counters.size());
     ASSERT_STREQ(counter1.c_str(), counters.begin()->first.c_str());
 }
 
-TEST(metricregistry, gaugeTest) {
+TEST(metricregistry, gaugeTest)
+{
     MetricRegistry metric_registry;
 
     const std::string gauge1("gauge1");
@@ -91,26 +89,27 @@ TEST(metricregistry, gaugeTest) {
     // Create another gauge
     GaugePtr gauge_ptr2(new FakeGauge());
     // Cannot add a new gauge with same name.
-    ASSERT_THROW(metric_registry.addGauge(gauge1, gauge_ptr2),
-            std::invalid_argument);
+    ASSERT_THROW(
+        metric_registry.addGauge(gauge1, gauge_ptr2), std::invalid_argument);
     // Try creating a different metric with the same name.
     ASSERT_THROW(metric_registry.counter(gauge1), std::invalid_argument);
 
     // add a new gauge with different name.
     ASSERT_TRUE(metric_registry.addGauge(gauge2, gauge_ptr2));
     GaugeMap gauges(metric_registry.getGauges());
-    ASSERT_EQ((size_t )2, gauges.size());
+    ASSERT_EQ((size_t)2, gauges.size());
     ASSERT_STREQ(gauge1.c_str(), gauges.begin()->first.c_str());
     ASSERT_STREQ(gauge2.c_str(), gauges.rbegin()->first.c_str());
 
     ASSERT_TRUE(metric_registry.removeMetric(gauge1));
     ASSERT_FALSE(metric_registry.removeMetric(gauge1));
     gauges = metric_registry.getGauges();
-    ASSERT_EQ((size_t )1, gauges.size());
+    ASSERT_EQ((size_t)1, gauges.size());
     ASSERT_STREQ(gauge2.c_str(), gauges.begin()->first.c_str());
 }
 
-TEST(metricregistry, histogramTest) {
+TEST(metricregistry, histogramTest)
+{
     MetricRegistry metric_registry;
 
     const std::string histogram1("histogram1");
@@ -133,17 +132,18 @@ TEST(metricregistry, histogramTest) {
     ASSERT_TRUE(histogram_ptr1.get() != histogram_ptr3.get());
 
     HistogramMap histograms(metric_registry.getHistograms());
-    ASSERT_EQ((size_t )2, histograms.size());
+    ASSERT_EQ((size_t)2, histograms.size());
     ASSERT_STREQ(histogram1.c_str(), histograms.begin()->first.c_str());
     ASSERT_STREQ(histogram2.c_str(), histograms.rbegin()->first.c_str());
 
     ASSERT_TRUE(metric_registry.removeMetric(histogram2));
     histograms = metric_registry.getHistograms();
-    ASSERT_EQ((size_t )1, histograms.size());
+    ASSERT_EQ((size_t)1, histograms.size());
     ASSERT_STREQ(histogram1.c_str(), histograms.begin()->first.c_str());
 }
 
-TEST(metricregistry, meterTest) {
+TEST(metricregistry, meterTest)
+{
     MetricRegistry metric_registry;
 
     const std::string meter1("meter1");
@@ -166,17 +166,18 @@ TEST(metricregistry, meterTest) {
     ASSERT_TRUE(meter_ptr1.get() != meter_ptr3.get());
 
     MeteredMap meters(metric_registry.getMeters());
-    ASSERT_EQ((size_t )2, meters.size());
+    ASSERT_EQ((size_t)2, meters.size());
     ASSERT_STREQ(meter1.c_str(), meters.begin()->first.c_str());
     ASSERT_STREQ(meter2.c_str(), meters.rbegin()->first.c_str());
 
     ASSERT_TRUE(metric_registry.removeMetric(meter2));
     meters = metric_registry.getMeters();
-    ASSERT_EQ((size_t )1, meters.size());
+    ASSERT_EQ((size_t)1, meters.size());
     ASSERT_STREQ(meter1.c_str(), meters.begin()->first.c_str());
 }
 
-TEST(metricregistry, timerTest) {
+TEST(metricregistry, timerTest)
+{
     MetricRegistry metric_registry;
 
     const std::string timer1("timer1");
@@ -199,16 +200,14 @@ TEST(metricregistry, timerTest) {
     ASSERT_TRUE(timer_ptr1.get() != timer_ptr3.get());
 
     TimerMap timers(metric_registry.getTimers());
-    ASSERT_EQ((size_t )2, timers.size());
+    ASSERT_EQ((size_t)2, timers.size());
     ASSERT_STREQ(timer1.c_str(), timers.begin()->first.c_str());
     ASSERT_STREQ(timer2.c_str(), timers.rbegin()->first.c_str());
 
     ASSERT_TRUE(metric_registry.removeMetric(timer2));
     timers = metric_registry.getTimers();
-    ASSERT_EQ((size_t )1, timers.size());
+    ASSERT_EQ((size_t)1, timers.size());
     ASSERT_STREQ(timer1.c_str(), timers.begin()->first.c_str());
 }
-
 }
 }
-

@@ -26,8 +26,7 @@ namespace core {
  */
 class Sample {
 public:
-    virtual ~Sample() {
-    }
+    virtual ~Sample() {}
 
     /**
      * Clears the values in the sample.

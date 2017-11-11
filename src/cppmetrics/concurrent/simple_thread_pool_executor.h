@@ -16,13 +16,13 @@
 #ifndef SIMPLE_THREAD_POOL_EXECUTOR_H_
 #define SIMPLE_THREAD_POOL_EXECUTOR_H_
 
+#include <boost/asio.hpp>
+#include <boost/atomic.hpp>
+#include <boost/bind.hpp>
+#include <boost/chrono/duration.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/chrono/duration.hpp>
-#include <boost/atomic.hpp>
 #include <boost/thread/thread.hpp>
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
 
 namespace cppmetrics {
 namespace concurrent {
@@ -32,7 +32,6 @@ namespace concurrent {
  */
 class SimpleThreadPoolExecutor {
 public:
-
     /**
      * Creates a new thread pool with the given number of threads.
      * @param thread_count The number of threads in the thread pool.

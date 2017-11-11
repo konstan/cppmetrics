@@ -16,10 +16,10 @@
 #ifndef GRAPHITE_SENDER_TCP_H_
 #define GRAPHITE_SENDER_TCP_H_
 
-#include <boost/cstdint.hpp>
-#include <boost/asio.hpp>
-#include <boost/scoped_ptr.hpp>
 #include "cppmetrics/graphite/graphite_sender.h"
+#include <boost/asio.hpp>
+#include <boost/cstdint.hpp>
+#include <boost/scoped_ptr.hpp>
 
 namespace cppmetrics {
 namespace graphite {
@@ -27,15 +27,14 @@ namespace graphite {
 /**
  * Graphite TCP sender.
  */
-class GraphiteSenderTCP: public GraphiteSender {
+class GraphiteSenderTCP : public GraphiteSender {
 public:
-
     /**
      * Creates a new sender with the given params.
      * @param host The graphite server host.
      * @param port The graphite server port.
      */
-    GraphiteSenderTCP(const std::string& host, boost::uint32_t port);
+    GraphiteSenderTCP(const std::string &host, boost::uint32_t port);
     virtual ~GraphiteSenderTCP();
 
     /**
@@ -53,9 +52,8 @@ public:
      * @return True on success false otherwise.
      * @throws std::runtime_error if there is a problem.
      */
-    virtual void send(const std::string& name,
-            const std::string& value,
-            boost::uint64_t timestamp, metric_t type = Counter_t);
+    virtual void send(const std::string &name, const std::string &value,
+        boost::uint64_t timestamp, metric_t type = Counter_t);
 
     /**
      * Closes the TCP connection.

@@ -16,16 +16,16 @@
 #ifndef METRIC_REGISTRY_H_
 #define METRIC_REGISTRY_H_
 
-#include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <string>
-#include <map>
 #include "cppmetrics/core/counter.h"
 #include "cppmetrics/core/gauge.h"
 #include "cppmetrics/core/histogram.h"
 #include "cppmetrics/core/meter.h"
 #include "cppmetrics/core/timer.h"
+#include <boost/noncopyable.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
+#include <map>
+#include <string>
 
 namespace cppmetrics {
 namespace core {
@@ -41,9 +41,8 @@ typedef boost::shared_ptr<MetricRegistry> MetricRegistryPtr;
 /**
  * The thread-safe registry class for all metrics.
  */
-class MetricRegistry: boost::noncopyable {
+class MetricRegistry : boost::noncopyable {
 public:
-
     /**
      * Singleton factory method for the Metric registry.
      * @return The default singleton metric registry
@@ -62,52 +61,62 @@ public:
      * @param name The name of the gauge metric.
      * @param metric A subclass object of the Gauge.
      * @return True on creation, false if the gauge is already present.
-     * @throws std::invalid_argument exception if a metric of different type with the same name is already present.
+     * @throws std::invalid_argument exception if a metric of different type
+     * with the same name is already present.
      */
-    bool addGauge(const std::string& name, GaugePtr metric);
+    bool addGauge(const std::string &name, GaugePtr metric);
 
     /**
      * Removes the metric with the given name from the registry.
      * @param name The name of the metric
-     * @return True on success, false if the metric with the name is not present.
+     * @return True on success, false if the metric with the name is not
+     * present.
      */
-    bool removeMetric(const std::string& name);
+    bool removeMetric(const std::string &name);
 
     /**
-     * Gets a {@link Counter} from the registry with the given name if present otherwise creates and adds a new
+     * Gets a {@link Counter} from the registry with the given name if present
+     * otherwise creates and adds a new
      *  {@link Counter} and returns the newly added one.
      * @param name The name of the Counter.
      * @return shared_ptr to the Counter object.
-     * @throws std::invalid_argument if a metric with the same name but different type exists in the registry.
+     * @throws std::invalid_argument if a metric with the same name but
+     * different type exists in the registry.
      */
-    CounterPtr counter(const std::string& name);
+    CounterPtr counter(const std::string &name);
 
     /**
-     * Gets a {@link Histogram} from the registry with the given name if present otherwise creates and adds a new
+     * Gets a {@link Histogram} from the registry with the given name if present
+     * otherwise creates and adds a new
      *  {@link Histogram} and returns the newly added one.
      * @param name The name of the Histogram.
      * @return shared_ptr to the Histogram ojbect.
-     * @throws std::invalid_argument if a metric with the same name but different type exists in the registry.
+     * @throws std::invalid_argument if a metric with the same name but
+     * different type exists in the registry.
      */
-    HistogramPtr histogram(const std::string& name);
+    HistogramPtr histogram(const std::string &name);
 
     /**
-     * Gets a {@link Meter} from the registry with the given name if present otherwise creates and adds a new
+     * Gets a {@link Meter} from the registry with the given name if present
+     * otherwise creates and adds a new
      *  {@link Meter} and returns the newly added one.
      * @param name The name of the Meter.
      * @return shared_ptr to the Meter ojbect.
-     * @throws std::invalid_argument if a metric with the same name but different type exists in the registry.
+     * @throws std::invalid_argument if a metric with the same name but
+     * different type exists in the registry.
      */
-    MeterPtr meter(const std::string& name);
+    MeterPtr meter(const std::string &name);
 
     /**
-     * Gets a {@link Timer} from the registry with the given name if present otherwise creates and adds a new
+     * Gets a {@link Timer} from the registry with the given name if present
+     * otherwise creates and adds a new
      *  {@link Timer} and returns the newly added one.
      * @param name The name of the Timer.
      * @return shared_ptr to the Timer ojbect.
-     * @throws std::invalid_argument if a metric with the same name but different type exists in the registry.
+     * @throws std::invalid_argument if a metric with the same name but
+     * different type exists in the registry.
      */
-    TimerPtr timer(const std::string& name);
+    TimerPtr timer(const std::string &name);
 
     /**
      * Returns all the counters and their names currently in the registry.

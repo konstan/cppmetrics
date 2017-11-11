@@ -16,11 +16,11 @@
 #ifndef METERED_H_
 #define METERED_H_
 
-#include <boost/shared_ptr.hpp>
-#include <boost/cstdint.hpp>
-#include <string>
-#include <boost/chrono.hpp>
 #include "cppmetrics/core/metric.h"
+#include <boost/chrono.hpp>
+#include <boost/cstdint.hpp>
+#include <boost/shared_ptr.hpp>
+#include <string>
 
 namespace cppmetrics {
 namespace core {
@@ -28,31 +28,31 @@ namespace core {
 /**
  * Interface for objects which maintains mean and exponentially-weighted rate.
  */
-class Metered: public Metric {
+class Metered : public Metric {
 public:
-    virtual ~Metered() {
-    }
+    virtual ~Metered() {}
     /**
      * @returns the number of events that have been marked.
      */
     virtual boost::uint64_t getCount() const = 0;
     /**
-     * @return the fifteen-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the meter was created.
+     * @return the fifteen-minute exponentially-weighted moving average rate at
+     * which events have occurred since the meter was created.
      */
     virtual double getFifteenMinuteRate() = 0;
     /**
-     * @return the fifteen-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the meter was created.
+     * @return the fifteen-minute exponentially-weighted moving average rate at
+     * which events have occurred since the meter was created.
      */
     virtual double getFiveMinuteRate() = 0;
     /**
-     * @return the fifteen-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the meter was created.
+     * @return the fifteen-minute exponentially-weighted moving average rate at
+     * which events have occurred since the meter was created.
      */
     virtual double getOneMinuteRate() = 0;
     /**
-     * @return the average rate at which events have occurred since the meter was created.
+     * @return the average rate at which events have occurred since the meter
+     * was created.
      */
     virtual double getMeanRate() = 0;
 };

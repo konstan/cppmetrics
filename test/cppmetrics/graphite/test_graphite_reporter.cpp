@@ -13,9 +13,9 @@
  *      Author: vpoliboy
  */
 
-#include <gtest/gtest.h>
-#include <boost/lexical_cast.hpp>
 #include "cppmetrics/graphite/graphite_reporter.h"
+#include <boost/lexical_cast.hpp>
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace graphite {
@@ -30,24 +30,27 @@ static const boost::uint64_t COUNTER_VALUE(100);
 namespace {
 
 class FakeGauge : public core::Gauge {
-   public:
+public:
     virtual ~FakeGauge() {}
     virtual boost::int64_t getValue() { return GAUGE_VALUE; }
 };
 
 // TODO: use gmock here instead.
 class FakeGraphiteSender : public GraphiteSender {
-   public:
+public:
     enum MetricType { Counter, Gauge, Histogram, Meter, Timer };
-    FakeGraphiteSender(MetricType metric_type) : metric_type_(metric_type) {}
+    FakeGraphiteSender(MetricType metric_type)
+        : metric_type_(metric_type)
+    {
+    }
 
     virtual ~FakeGraphiteSender() { verifyMethodCallOrder(); };
 
     virtual void connect() override { method_called_[Connect] = true; }
 
-    virtual void send(const std::string& name, const std::string& value,
-                      boost::uint64_t timestamp,
-                      metric_t type = Counter_t) override {
+    virtual void send(const std::string &name, const std::string &value,
+        boost::uint64_t timestamp, metric_t type = Counter_t) override
+    {
         ASSERT_TRUE(method_called_[Connect]);
         method_called_[Send] = true;
         switch (metric_type_) {
@@ -71,35 +74,39 @@ class FakeGraphiteSender : public GraphiteSender {
         }
     }
 
-    virtual void close() override {
+    virtual void close() override
+    {
         ASSERT_TRUE(method_called_[Connect]);
         ASSERT_TRUE(method_called_[Send]);
         method_called_[Close] = true;
     }
 
-   private:
+private:
     enum METHOD { Connect = 0, Send, Close, TotalMethods };
     bool method_called_[TotalMethods];
 
     MetricType metric_type_;
 
-    void verifyMethodCallOrder() {
+    void verifyMethodCallOrder()
+    {
         ASSERT_TRUE(method_called_[Connect]);
         ASSERT_TRUE(method_called_[Send]);
         ASSERT_TRUE(method_called_[Close]);
     }
 
-    void sendGauge(const std::string& name, const std::string& actual_value,
-                   boost::uint64_t timestamp) {
+    void sendGauge(const std::string &name, const std::string &actual_value,
+        boost::uint64_t timestamp)
+    {
         std::string expected_value(
             boost::lexical_cast<std::string>(GAUGE_VALUE));
-        ASSERT_STREQ(std::string(PREFIX + '.' + GAUGE_NAME).c_str(),
-                     name.c_str());
+        ASSERT_STREQ(
+            std::string(PREFIX + '.' + GAUGE_NAME).c_str(), name.c_str());
         ASSERT_STREQ(expected_value.c_str(), actual_value.c_str());
     }
 
-    void sendCounter(const std::string& name, const std::string& actual_value,
-                     boost::uint64_t timestamp) {
+    void sendCounter(const std::string &name, const std::string &actual_value,
+        boost::uint64_t timestamp)
+    {
         std::string expected_value(
             boost::lexical_cast<std::string>(COUNTER_VALUE));
         ASSERT_STREQ(
@@ -108,18 +115,25 @@ class FakeGraphiteSender : public GraphiteSender {
         ASSERT_STREQ(expected_value.c_str(), actual_value.c_str());
     }
 
-    void sendHistogram(const std::string& name, const std::string& value,
-                       boost::uint64_t timestamp) {}
+    void sendHistogram(const std::string &name, const std::string &value,
+        boost::uint64_t timestamp)
+    {
+    }
 
-    void sendMeter(const std::string& name, const std::string& value,
-                   boost::uint64_t timestamp) {}
+    void sendMeter(const std::string &name, const std::string &value,
+        boost::uint64_t timestamp)
+    {
+    }
 
-    void sendTimer(const std::string& name, const std::string& value,
-                   boost::uint64_t timestamp) {}
+    void sendTimer(const std::string &name, const std::string &value,
+        boost::uint64_t timestamp)
+    {
+    }
 };
 }
 
-TEST(graphitereporter, gaugetest) {
+TEST(graphitereporter, gaugetest)
+{
     core::MetricRegistryPtr metric_registry(new core::MetricRegistry());
     GraphiteSenderPtr graphite_sender(
         new FakeGraphiteSender(FakeGraphiteSender::Gauge));
@@ -127,15 +141,16 @@ TEST(graphitereporter, gaugetest) {
     core::GaugePtr gauge_ptr(new FakeGauge());
     metric_registry->addGauge(GAUGE_NAME, gauge_ptr);
 
-    GraphiteReporter graphite_reporter(metric_registry, graphite_sender, PREFIX,
-                                       boost::chrono::seconds(1));
+    GraphiteReporter graphite_reporter(
+        metric_registry, graphite_sender, PREFIX, boost::chrono::seconds(1));
 
     graphite_reporter.start(boost::chrono::milliseconds(100));
     boost::this_thread::sleep(boost::posix_time::milliseconds(150));
     graphite_reporter.stop();
 }
 
-TEST(graphitereporter, countertest) {
+TEST(graphitereporter, countertest)
+{
     core::MetricRegistryPtr metric_registry(new core::MetricRegistry());
     GraphiteSenderPtr graphite_sender(
         new FakeGraphiteSender(FakeGraphiteSender::Counter));
@@ -143,8 +158,8 @@ TEST(graphitereporter, countertest) {
     core::CounterPtr counter_ptr(metric_registry->counter(COUNTER_NAME));
     counter_ptr->increment(COUNTER_VALUE);
 
-    GraphiteReporter graphite_reporter(metric_registry, graphite_sender, PREFIX,
-                                       boost::chrono::seconds(1));
+    GraphiteReporter graphite_reporter(
+        metric_registry, graphite_sender, PREFIX, boost::chrono::seconds(1));
 
     graphite_reporter.start(boost::chrono::milliseconds(100));
     boost::this_thread::sleep(boost::posix_time::milliseconds(150));

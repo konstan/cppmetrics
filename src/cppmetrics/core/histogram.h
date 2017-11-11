@@ -16,14 +16,14 @@
 #ifndef HISTOGRAM_H_
 #define HISTOGRAM_H_
 
+#include <boost/atomic.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/atomic.hpp>
 
 #include "cppmetrics/core/metric.h"
-#include "cppmetrics/core/sampling.h"
 #include "cppmetrics/core/sample.h"
+#include "cppmetrics/core/sampling.h"
 
 namespace cppmetrics {
 namespace core {
@@ -32,7 +32,7 @@ namespace core {
  * A metric which calculates the distribution of a value.
  * Thread-safe.
  */
-class Histogram: public Metric, Sampling {
+class Histogram : public Metric, Sampling {
 public:
     /**
      * Creates a new histogram based on the sample type.
@@ -65,10 +65,12 @@ public:
 
     /**< The Maximum sample size at any given time. */
     static const boost::uint64_t DEFAULT_SAMPLE_SIZE;
+
 private:
     static const double DEFAULT_ALPHA;
 
-    boost::scoped_ptr<Sample> sample_; /**< The underlying sample implementation. */
+    boost::scoped_ptr<Sample>
+        sample_; /**< The underlying sample implementation. */
     boost::atomic<boost::uint64_t> count_; /**< The number of samples. */
 };
 

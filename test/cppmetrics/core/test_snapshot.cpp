@@ -13,13 +13,14 @@
  *      Author: vpoliboy
  */
 
-#include <gtest/gtest.h>
 #include "cppmetrics/core/snapshot.h"
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace core {
 
-TEST(snapshot, zeroSampleTest) {
+TEST(snapshot, zeroSampleTest)
+{
     const ValueVector samples;
     Snapshot snapshot(samples);
     ASSERT_EQ(0, snapshot.getMin());
@@ -28,8 +29,9 @@ TEST(snapshot, zeroSampleTest) {
     ASSERT_NEAR(0.0, snapshot.getStdDev(), 0.0001);
 }
 
-TEST(snapshot, oneSampleTest) {
-    const ValueVector::value_type values_array[] = { 1 };
+TEST(snapshot, oneSampleTest)
+{
+    const ValueVector::value_type values_array[] = {1};
     const size_t element_count(sizeof(values_array) / sizeof(values_array[0]));
     const ValueVector values(values_array, values_array + element_count);
     Snapshot snapshot(values);
@@ -39,9 +41,10 @@ TEST(snapshot, oneSampleTest) {
     ASSERT_NEAR(0.0, snapshot.getStdDev(), 0.0001);
 }
 
-TEST(snapshot, minMaxMedianPercentileWithFiveSamplesTest) {
+TEST(snapshot, minMaxMedianPercentileWithFiveSamplesTest)
+{
 
-    const ValueVector::value_type values_array[] = { 5, 1, 2, 3, 4 };
+    const ValueVector::value_type values_array[] = {5, 1, 2, 3, 4};
     const size_t element_count(sizeof(values_array) / sizeof(values_array[0]));
     const ValueVector values(values_array, values_array + element_count);
     Snapshot snapshot(values);
@@ -64,9 +67,6 @@ TEST(snapshot, minMaxMedianPercentileWithFiveSamplesTest) {
     ASSERT_EQ(5, snapshot.getMax());
     ASSERT_NEAR(3.0, snapshot.getMean(), 0.000001);
     ASSERT_NEAR(1.5811, snapshot.getStdDev(), 0.0001);
-
-}
-
 }
 }
-
+}

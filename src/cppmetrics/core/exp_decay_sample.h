@@ -16,33 +16,33 @@
 #ifndef EXP_DECAY_SAMPLE_H_
 #define EXP_DECAY_SAMPLE_H_
 
-#include <vector>
+#include "cppmetrics/core/sample.h"
+#include "cppmetrics/core/types.h"
 #include <boost/atomic.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/lock_guard.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/scoped_ptr.hpp>
-#include "cppmetrics/core/types.h"
-#include "cppmetrics/core/sample.h"
+#include <boost/thread/lock_guard.hpp>
+#include <boost/thread/mutex.hpp>
+#include <vector>
 
 namespace cppmetrics {
 namespace core {
 
 /**
- * An exponentially-decaying random reservoir of {@code long}s. Uses Cormode et al's
- * forward-decaying priority reservoir sampling method to produce a statistically representative
- * sampling reservoir, exponentially biased towards newer entries.
+ * An exponentially-decaying random reservoir of {@code long}s. Uses Cormode et
+ * al's forward-decaying priority reservoir sampling method to produce a
+ * statistically representative sampling reservoir, exponentially biased towards
+ * newer entries.
  */
-class ExpDecaySample: public Sample {
+class ExpDecaySample : public Sample {
 public:
-
     /**
      * Creates a new {@link ExpDecaySample} of the given size and alpha factor.
      * @param size  the number of samples to keep in the sampling reservoir
-     * @param alpha the exponential decay factor; the higher this is, the more biased the reservoir
-     *              will be towards newer values
+     * @param alpha the exponential decay factor; the higher this is, the more
+     * biased the reservoir will be towards newer values
      */
     ExpDecaySample(boost::uint32_t size = 1024, double alpha = DEFAULT_ALPHA);
     virtual ~ExpDecaySample();
@@ -66,8 +66,8 @@ public:
      * @param value     the value to be added
      * @param timestamp the epoch timestamp of {@code value} in seconds
      */
-    virtual void update(boost::int64_t value,
-            const Clock::time_point& timestamp);
+    virtual void update(
+        boost::int64_t value, const Clock::time_point &timestamp);
 
     /**
      * Returns a snapshot of the reservoir's values.
@@ -79,8 +79,8 @@ private:
     static const double DEFAULT_ALPHA;
     static const Clock::duration RESCALE_THRESHOLD;
 
-    void rescaleIfNeeded(const Clock::time_point& when);
-    void rescale(const Clock::time_point& old_start_time);
+    void rescaleIfNeeded(const Clock::time_point &when);
+    void rescale(const Clock::time_point &old_start_time);
 
     const double alpha_;
     const boost::uint64_t reservoir_size_;

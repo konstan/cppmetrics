@@ -13,17 +13,16 @@
  *      Author: vpoliboy
  */
 
-#include <gtest/gtest.h>
 #include "cppmetrics/graphite/graphite_sender_tcp.h"
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace graphite {
 
-TEST(graphiteSenderTCP, connectionFailuresTest) {
+TEST(graphiteSenderTCP, connectionFailuresTest)
+{
     GraphiteSenderTCP graphite_sender_tcp("localhost", 3483);
     ASSERT_THROW(graphite_sender_tcp.connect(), std::runtime_error);
 }
-
 }
 }
-

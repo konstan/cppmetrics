@@ -26,11 +26,8 @@ namespace core {
  */
 class Sampling {
 public:
-    enum SampleType {
-        kUniform, kBiased
-    };
-    virtual ~Sampling() {
-    }
+    enum SampleType { kUniform, kBiased };
+    virtual ~Sampling() {}
 
     /**
      * Returns the snapshot of values in the sample.

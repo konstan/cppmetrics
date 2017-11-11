@@ -13,13 +13,14 @@
  *      Author: vpoliboy
  */
 
-#include <gtest/gtest.h>
 #include "cppmetrics/core/counter.h"
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace core {
 
-TEST(counter, functionaltest) {
+TEST(counter, functionaltest)
+{
 
     Counter counter;
     ASSERT_EQ(0, counter.getCount());
@@ -48,7 +49,5 @@ TEST(counter, functionaltest) {
     counter.decrement(12);
     ASSERT_EQ(-12, counter.getCount());
 }
-
 }
 }
-

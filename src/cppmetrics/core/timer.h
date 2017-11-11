@@ -16,28 +16,29 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include <string>
 #include <boost/chrono.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/function.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <string>
 
+#include "cppmetrics/core/histogram.h"
+#include "cppmetrics/core/meter.h"
 #include "cppmetrics/core/metered.h"
 #include "cppmetrics/core/metric.h"
 #include "cppmetrics/core/sampling.h"
 #include "cppmetrics/core/timer_context.h"
-#include "cppmetrics/core/meter.h"
-#include "cppmetrics/core/histogram.h"
 
 namespace cppmetrics {
 namespace core {
 
 /**
- * A timer metric which aggregates timing durations and provides duration statistics, plus
- * throughput statistics via {@link Meter} and {@link Histogram}.
+ * A timer metric which aggregates timing durations and provides duration
+ * statistics, plus throughput statistics via {@link Meter} and {@link
+ * Histogram}.
  */
-class Timer: public Metered, Sampling {
+class Timer : public Metered, Sampling {
 public:
     /**
      * Creates a new {@link Timer} using an {@link ExpDecaySample}.
@@ -51,25 +52,26 @@ public:
     virtual boost::uint64_t getCount() const;
 
     /**
-     * @return the fifteen-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the timer was created.
+     * @return the fifteen-minute exponentially-weighted moving average rate at
+     * which events have occurred since the timer was created.
      */
     virtual double getFifteenMinuteRate();
 
     /**
-     * @return the five-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the timer was created.
+     * @return the five-minute exponentially-weighted moving average rate at
+     * which events have occurred since the timer was created.
      */
     virtual double getFiveMinuteRate();
 
     /**
-     * @return the one-minute exponentially-weighted moving average rate at which events have
-     *         occurred since the timer was created.
+     * @return the one-minute exponentially-weighted moving average rate at
+     * which events have occurred since the timer was created.
      */
     virtual double getOneMinuteRate();
 
     /**
-     * @return the average rate at which events have occurred since the meter was created.
+     * @return the average rate at which events have occurred since the meter
+     * was created.
      */
     virtual double getMeanRate();
 
@@ -90,23 +92,25 @@ public:
     void update(boost::chrono::nanoseconds duration);
 
     /**
-     * Creates a new TimerContext instance that measures the duration and updates the
-     * duration before the instance goes out of scope.
+     * Creates a new TimerContext instance that measures the duration and
+     * updates the duration before the instance goes out of scope.
      * @return The TimerContext object.
      * @note The TimerContextPtr should not be shared.
      */
-    TimerContextPtr timerContextPtr() {
+    TimerContextPtr timerContextPtr()
+    {
         return boost::shared_ptr<TimerContext>(new TimerContext(*this));
     }
 
     /**
-     * Times the duration of a function that will be executed internally and updates the duration.
+     * Times the duration of a function that will be executed internally and
+     * updates the duration.
      * @param The fn to be timed.
      */
     void time(boost::function<void()> fn);
 
 private:
-    Meter meter_; /**< The underlying meter object */
+    Meter meter_;         /**< The underlying meter object */
     Histogram histogram_; /**< The underlying histogram object */
 };
 

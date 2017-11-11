@@ -13,22 +13,24 @@
  *      Author: vpoliboy
  */
 
-#include <gtest/gtest.h>
 #include "cppmetrics/core/ewma.h"
+#include <gtest/gtest.h>
 
 namespace cppmetrics {
 namespace core {
 namespace internal {
 
 namespace {
-void elapse_minute(EWMA& ewma) {
+void elapse_minute(EWMA &ewma)
+{
     for (int i = 0; i < 12; i++) {
         ewma.tick();
     }
 }
 }
 
-TEST(ewma, oneMinuteTestWithValueOf3) {
+TEST(ewma, oneMinuteTestWithValueOf3)
+{
 
     EWMA ewma = EWMA::oneMinuteEWMA();
     ewma.update(3);
@@ -80,7 +82,8 @@ TEST(ewma, oneMinuteTestWithValueOf3) {
     ASSERT_NEAR(0.00000018, ewma.getRate(boost::chrono::seconds(1)), 0.000001);
 }
 
-TEST(ewma, FiveMinuteTestWithValueOf3) {
+TEST(ewma, FiveMinuteTestWithValueOf3)
+{
     EWMA ewma = EWMA::fiveMinuteEWMA();
     ewma.update(3);
     ewma.tick();
@@ -133,7 +136,8 @@ TEST(ewma, FiveMinuteTestWithValueOf3) {
     ASSERT_NEAR(0.02987224, ewma.getRate(boost::chrono::seconds(1)), 0.000001);
 }
 
-TEST(ewma, FifteenMinuteTestWithValueOf3) {
+TEST(ewma, FifteenMinuteTestWithValueOf3)
+{
     EWMA ewma = EWMA::fifteenMinuteEWMA();
     ewma.update(3);
     ewma.tick();
@@ -185,8 +189,6 @@ TEST(ewma, FifteenMinuteTestWithValueOf3) {
     elapse_minute(ewma);
     ASSERT_NEAR(0.22072766, ewma.getRate(boost::chrono::seconds(1)), 0.000001);
 }
-
 }
 }
 }
-

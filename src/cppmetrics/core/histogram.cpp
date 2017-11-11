@@ -13,41 +13,41 @@
  *      Author: vpoliboy
  */
 
-#include "cppmetrics/core/uniform_sample.h"
-#include "cppmetrics/core/exp_decay_sample.h"
 #include "cppmetrics/core/histogram.h"
+#include "cppmetrics/core/exp_decay_sample.h"
+#include "cppmetrics/core/uniform_sample.h"
 
 namespace cppmetrics {
 namespace core {
 
-Histogram::Histogram(SampleType sample_type) {
+Histogram::Histogram(SampleType sample_type)
+{
     if (sample_type == kUniform) {
         sample_.reset(new UniformSample());
-    } else if (sample_type == kBiased) {
+    }
+    else if (sample_type == kBiased) {
         sample_.reset(new ExpDecaySample());
-    } else {
+    }
+    else {
         throw std::invalid_argument("invalid sample_type.");
     }
     clear();
 }
 
-Histogram::~Histogram() {
-}
+Histogram::~Histogram() {}
 
-void Histogram::clear() {
+void Histogram::clear()
+{
     count_ = 0;
     sample_->clear();
 }
 
-boost::uint64_t Histogram::getCount() const {
-    return count_;
-}
+boost::uint64_t Histogram::getCount() const { return count_; }
 
-SnapshotPtr Histogram::getSnapshot() const {
-    return sample_->getSnapshot();
-}
+SnapshotPtr Histogram::getSnapshot() const { return sample_->getSnapshot(); }
 
-void Histogram::update(boost::int64_t value) {
+void Histogram::update(boost::int64_t value)
+{
     ++count_;
     sample_->update(value);
 }

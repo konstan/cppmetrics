@@ -18,38 +18,27 @@
 namespace cppmetrics {
 namespace core {
 
-Timer::Timer() :
-        histogram_(Sampling::kBiased) {
+Timer::Timer()
+    : histogram_(Sampling::kBiased)
+{
 }
 
-Timer::~Timer() {
-}
+Timer::~Timer() {}
 
-boost::uint64_t Timer::getCount() const {
-    return histogram_.getCount();
-}
+boost::uint64_t Timer::getCount() const { return histogram_.getCount(); }
 
-double Timer::getFifteenMinuteRate() {
-    return meter_.getFifteenMinuteRate();
-}
+double Timer::getFifteenMinuteRate() { return meter_.getFifteenMinuteRate(); }
 
-double Timer::getFiveMinuteRate() {
-    return meter_.getFiveMinuteRate();
-}
+double Timer::getFiveMinuteRate() { return meter_.getFiveMinuteRate(); }
 
-double Timer::getOneMinuteRate() {
-    return meter_.getOneMinuteRate();
-}
+double Timer::getOneMinuteRate() { return meter_.getOneMinuteRate(); }
 
-double Timer::getMeanRate() {
-    return meter_.getMeanRate();
-}
+double Timer::getMeanRate() { return meter_.getMeanRate(); }
 
-void Timer::clear() {
-    histogram_.clear();
-}
+void Timer::clear() { histogram_.clear(); }
 
-void Timer::update(boost::chrono::nanoseconds duration) {
+void Timer::update(boost::chrono::nanoseconds duration)
+{
     boost::int64_t count = duration.count();
     if (count >= 0) {
         histogram_.update(count);
@@ -57,11 +46,10 @@ void Timer::update(boost::chrono::nanoseconds duration) {
     }
 }
 
-SnapshotPtr Timer::getSnapshot() const {
-    return histogram_.getSnapshot();
-}
+SnapshotPtr Timer::getSnapshot() const { return histogram_.getSnapshot(); }
 
-void Timer::time(boost::function<void()> func) {
+void Timer::time(boost::function<void()> func)
+{
     TimerContext timer_context(*this);
     func();
 }

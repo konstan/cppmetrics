@@ -24,8 +24,7 @@ namespace core {
  */
 class Reporter {
 public:
-    virtual ~Reporter() {
-    }
+    virtual ~Reporter() {}
 
     /**
      * reports the metrics.

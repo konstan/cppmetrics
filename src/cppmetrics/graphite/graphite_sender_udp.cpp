@@ -5,55 +5,59 @@
  *      Author: noam
  */
 
+#include "cppmetrics/graphite/graphite_sender_udp.h"
+#include <iostream>
 #include <sstream>
 #include <stdint.h>
-#include  <iostream>
 #include <string>
-#include "cppmetrics/graphite/graphite_sender_udp.h"
 
 using boost::asio::ip::udp;
 
 namespace cppmetrics {
 namespace graphite {
 
-GraphiteSenderUDP::GraphiteSenderUDP(const std::string& host, uint16_t port) :
-                connected_(false),
-                host_(host),
-                port_(port),
-		socket_(io_service_) {
-	socket_.open(udp::v4());
+GraphiteSenderUDP::GraphiteSenderUDP(const std::string &host, uint16_t port)
+    : connected_(false)
+    , host_(host)
+    , port_(port)
+    , socket_(io_service_)
+{
+    socket_.open(udp::v4());
 }
 
-GraphiteSenderUDP::~GraphiteSenderUDP() {
-}
+GraphiteSenderUDP::~GraphiteSenderUDP() {}
 
-void GraphiteSenderUDP::connect() {
+void GraphiteSenderUDP::connect()
+{
     udp::resolver resolver(io_service_);
     std::ostringstream ss;
     ss << port_; // bypass compiler problem that prevents using to_string()
-    udp::resolver::query query(host_, ss.str() );
+    udp::resolver::query query(host_, ss.str());
     receiver_endpoint_ = *resolver.resolve(query);
     connected_ = true;
 }
 
-//noamc: current implementation uses blocking send
-void GraphiteSenderUDP::send(const std::string& name,
-        const std::string& value,
-        uint64_t timestamp , metric_t type) {
+// noamc: current implementation uses blocking send
+void GraphiteSenderUDP::send(const std::string &name, const std::string &value,
+    uint64_t timestamp, metric_t type)
+{
     if (!connected_) {
         throw std::runtime_error("Graphite server connection not established.");
     }
     std::ostringstream ostr;
     bool useGraphiteFormat = false;
-    if(useGraphiteFormat){
-    	ostr << name << ' ' << value << ' ' << timestamp << std::endl;
-    }else{
-    	// use datadog format
+    if (useGraphiteFormat) {
+        ostr << name << ' ' << value << ' ' << timestamp << std::endl;
+    }
+    else {
+        // use datadog format
         std::string t;
         switch (type) {
             case GraphiteSender::Counter_t:
-                // 0.1 means 1/10 of the sampling rate of the counter which is 1.0 second
-                t = "c|@0.1"; // HACK: should take the sampling period (10sec) from the timer thread
+                // 0.1 means 1/10 of the sampling rate of the counter which
+                // is 1.0 second
+                t = "c|@0.1"; // HACK: should take the sampling period (10sec)
+                              // from the timer thread
                 break;
             case GraphiteSender::Gauge_t:
                 t = "g";
@@ -65,17 +69,14 @@ void GraphiteSenderUDP::send(const std::string& name,
                 t = "g|#badcountertype";
                 assert(!"bad counter type");
         }
-    	ostr << name <<": " << value << "|" << t << std::endl;
+        ostr << name << ": " << value << "|" << t << std::endl;
     }
 
     std::string graphite_str(ostr.str());
     socket_.send_to(boost::asio::buffer(graphite_str), receiver_endpoint_);
 }
 
-void GraphiteSenderUDP::close() {
-    connected_ = false;
-}
+void GraphiteSenderUDP::close() { connected_ = false; }
 
 } /* namespace graphite */
 } /* namespace cppmetrics */
-

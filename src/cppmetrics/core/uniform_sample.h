@@ -16,25 +16,24 @@
 #ifndef UNIFORM_SAMPLE_H_
 #define UNIFORM_SAMPLE_H_
 
-#include <vector>
-#include <iterator>
+#include "cppmetrics/core/sample.h"
 #include <boost/atomic.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/lock_guard.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include "cppmetrics/core/sample.h"
+#include <boost/thread/lock_guard.hpp>
+#include <boost/thread/mutex.hpp>
+#include <iterator>
+#include <vector>
 
 namespace cppmetrics {
 namespace core {
 
 /**
- * A random sampling reservoir of a stream of {@code long}s. Uses Vitter's Algorithm R to produce a
- * statistically representative sample.
+ * A random sampling reservoir of a stream of {@code long}s. Uses Vitter's
+ * Algorithm R to produce a statistically representative sample.
  */
-class UniformSample: public Sample {
+class UniformSample : public Sample {
 public:
-
     /**
      * Creates a new {@link UniformReservoir}.
      * @param size the number of samples to keep in the sampling reservoir
@@ -67,6 +66,7 @@ public:
 
     /**< The Maximum sample size at any given time. */
     static const boost::uint64_t DEFAULT_SAMPLE_SIZE;
+
 private:
     boost::uint64_t getRandom(boost::uint64_t count) const;
     const boost::uint64_t reservoir_size_;

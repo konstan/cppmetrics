@@ -13,24 +13,25 @@
  *      Author: vpoliboy
  */
 
-#include <sstream>
-#include <boost/lexical_cast.hpp>
 #include "cppmetrics/graphite/graphite_sender_tcp.h"
+#include <boost/lexical_cast.hpp>
+#include <sstream>
 
 namespace cppmetrics {
 namespace graphite {
 
-GraphiteSenderTCP::GraphiteSenderTCP(const std::string& host,
-        boost::uint32_t port) :
-                connected_(false),
-                host_(host),
-                port_(boost::lexical_cast<std::string>(port)) {
+GraphiteSenderTCP::GraphiteSenderTCP(
+    const std::string &host, boost::uint32_t port)
+    : connected_(false)
+    , host_(host)
+    , port_(boost::lexical_cast<std::string>(port))
+{
 }
 
-GraphiteSenderTCP::~GraphiteSenderTCP() {
-}
+GraphiteSenderTCP::~GraphiteSenderTCP() {}
 
-void GraphiteSenderTCP::connect() {
+void GraphiteSenderTCP::connect()
+{
     io_service_.reset(new boost::asio::io_service());
 
     boost::asio::ip::tcp::resolver resolver(*io_service_);
@@ -46,20 +47,21 @@ void GraphiteSenderTCP::connect() {
     }
 }
 
-void GraphiteSenderTCP::send(const std::string& name,
-        const std::string& value,
-        boost::uint64_t timestamp, metric_t type) {
+void GraphiteSenderTCP::send(const std::string &name, const std::string &value,
+    boost::uint64_t timestamp, metric_t type)
+{
     if (!connected_) {
         throw std::runtime_error("Graphite server connection not established.");
     }
     std::ostringstream ostr;
     ostr << name << ' ' << value << ' ' << timestamp << std::endl;
     std::string graphite_str(ostr.str());
-    boost::asio::write(*socket_,
-            boost::asio::buffer(graphite_str, graphite_str.size()));
+    boost::asio::write(
+        *socket_, boost::asio::buffer(graphite_str, graphite_str.size()));
 }
 
-void GraphiteSenderTCP::close() {
+void GraphiteSenderTCP::close()
+{
     connected_ = false;
     socket_.reset();
     io_service_.reset();
