@@ -17,6 +17,7 @@
 #include <asio.hpp>
 #include <chrono>
 #include <glog/logging.h>
+#include <mutex>
 
 namespace cppmetrics {
 namespace concurrent {

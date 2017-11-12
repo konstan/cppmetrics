@@ -18,7 +18,7 @@
 
 #include "cppmetrics/core/metric.h"
 #include <atomic>
-#include <boost/cstdint.hpp>
+#include <cstdint>
 #include <memory>
 
 namespace cppmetrics {

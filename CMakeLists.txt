@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.0)
+cmake_minimum_required(VERSION 3.2.0)
 
 project (cppmetrics)
 
@@ -6,6 +6,9 @@ set (CPACK_GENERATOR TGZ)
 set (CPACK_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
 
 set(CMAKE_CXX_STANDARD 14)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
 set (cppmetrics_VERSION_MAJOR 0)
 set (cppmetrics_VERSION_MINOR 1)
@@ -27,7 +30,6 @@ if(APPLE)
     endif(COMMAND cmake_policy)
 endif()
 
-set (cppmetrics_PREPROC_FLAGS -DBOOST_NO_CXX11_SMART_PTR)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Wall -Winit-self -Wno-unused-local-typedef -m64 -pipe")
 
 IF (DEFINED INCLUDE_SYSTEM_DIRS)
@@ -111,7 +113,7 @@ IF (DEFINED GLOG_DIR)
     set (GLOG_LIB_DIR ${GLOG_DIR}/lib)
 ENDIF ()
 
-include_directories (src ${ASIO_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
+include_directories (src ${ASIO_INCLUDE_DIRS} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
 link_directories (${GLOG_LIB_DIR} ${GTEST_DIR})
 install (FILES ${cppmetrics_global_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR})
 install (FILES ${cppmetrics_core_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/core)
@@ -165,5 +167,5 @@ set (cppmetrics_TEST_SOURCES
 
 
 add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
-target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_BOTH_LIBRARIES} ${GLOG_LD_FLAGS})
+target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_BOTH_LIBRARIES} ${GLOG_LD_FLAGS} Threads::Threads)
 add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)

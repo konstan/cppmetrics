@@ -15,7 +15,6 @@
 
 #include "cppmetrics/graphite/graphite_reporter.h"
 #include "cppmetrics/core/utils.h"
-#include <boost/lexical_cast.hpp>
 #include <glog/logging.h>
 
 namespace cppmetrics {

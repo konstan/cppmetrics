@@ -109,7 +109,7 @@ private:
 }
 ```
 
-###TODO
+### TODO
 - Currently the Timer and Meter resolutions are in millis and per-minute respectively, make this configurable.
 - Provide more reporters out of the box.
 

@@ -14,6 +14,7 @@
  */
 
 #include "cppmetrics/core/snapshot.h"
+#include <algorithm>
 #include <gtest/gtest.h>
 
 namespace cppmetrics {

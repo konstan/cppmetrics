@@ -21,6 +21,7 @@
 #include <iterator>
 #include <random>
 #include <vector>
+#include <mutex>
 
 namespace cppmetrics {
 namespace core {

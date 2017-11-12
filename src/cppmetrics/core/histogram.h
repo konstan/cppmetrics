@@ -17,7 +17,7 @@
 #define HISTOGRAM_H_
 
 #include <atomic>
-#include <boost/cstdint.hpp>
+#include <cstdint>
 
 #include "cppmetrics/core/metric.h"
 #include "cppmetrics/core/sample.h"

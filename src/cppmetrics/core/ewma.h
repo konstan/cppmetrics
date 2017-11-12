@@ -17,7 +17,6 @@
 #define EWMA_H_
 
 #include <atomic>
-#include <boost/scoped_ptr.hpp>
 #include <chrono>
 
 namespace cppmetrics {

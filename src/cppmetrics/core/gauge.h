@@ -17,7 +17,7 @@
 #define GAUGE_H_
 
 #include "cppmetrics/core/metric.h"
-#include <boost/cstdint.hpp>
+#include <cstdint>
 #include <memory>
 
 namespace cppmetrics {

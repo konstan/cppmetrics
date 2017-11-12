@@ -18,8 +18,7 @@
 
 #include "cppmetrics/graphite/graphite_sender.h"
 #include <asio.hpp>
-#include <boost/cstdint.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <cstdint>
 
 namespace cppmetrics {
 namespace graphite {

@@ -29,7 +29,7 @@ class GraphiteSender {
 public:
     // HACK: the sender should not have to know the metric type.
     // this is added for dd-statsd format needs
-    typedef enum class metric_t { Gauge_t, Counter_t, Histogram_t };
+    enum class metric_t { Gauge_t, Counter_t, Histogram_t };
 
     virtual ~GraphiteSender() {}
 
