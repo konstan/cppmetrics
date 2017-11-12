@@ -40,7 +40,7 @@ public:
 // TODO: use gmock here instead.
 class FakeGraphiteSender : public GraphiteSender {
 public:
-    enum MetricType { Counter, Gauge, Histogram, Meter, Timer };
+    enum class MetricType { Counter, Gauge, Histogram, Meter, Timer };
     FakeGraphiteSender(MetricType metric_type)
         : metric_type_(metric_type)
     {
@@ -51,24 +51,24 @@ public:
     virtual void connect() override { method_called_[Connect] = true; }
 
     virtual void send(const std::string &name, const std::string &value,
-        uint64_t timestamp, metric_t type = Counter_t) override
+        uint64_t timestamp, metric_t type = metric_t::Counter_t) override
     {
         ASSERT_TRUE(method_called_[Connect]);
         method_called_[Send] = true;
         switch (metric_type_) {
-            case Counter:
+            case MetricType::Counter:
                 sendCounter(name, value, timestamp);
                 break;
-            case Gauge:
+            case MetricType::Gauge:
                 sendGauge(name, value, timestamp);
                 break;
-            case Histogram:
+            case MetricType::Histogram:
                 sendHistogram(name, value, timestamp);
                 break;
-            case Meter:
+            case MetricType::Meter:
                 sendMeter(name, value, timestamp);
                 break;
-            case Timer:
+            case MetricType::Timer:
                 sendTimer(name, value, timestamp);
                 break;
             default:
@@ -136,7 +136,7 @@ TEST(graphitereporter, gaugetest)
 {
     core::MetricRegistryPtr metric_registry(new core::MetricRegistry());
     GraphiteSenderPtr graphite_sender(
-        new FakeGraphiteSender(FakeGraphiteSender::Gauge));
+        new FakeGraphiteSender(FakeGraphiteSender::MetricType::Gauge));
 
     core::GaugePtr gauge_ptr(new FakeGauge());
     metric_registry->addGauge(GAUGE_NAME, gauge_ptr);
@@ -153,7 +153,7 @@ TEST(graphitereporter, countertest)
 {
     core::MetricRegistryPtr metric_registry(new core::MetricRegistry());
     GraphiteSenderPtr graphite_sender(
-        new FakeGraphiteSender(FakeGraphiteSender::Counter));
+        new FakeGraphiteSender(FakeGraphiteSender::MetricType::Counter));
 
     core::CounterPtr counter_ptr(metric_registry->counter(COUNTER_NAME));
     counter_ptr->increment(COUNTER_VALUE);

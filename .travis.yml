@@ -1,26 +1,16 @@
 language: cpp
 
-env:
-  - DEPENDENCIES_ROOT=`pwd`/dependencies
-
 compiler:
   - gcc
 
 before_install:
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-add-repository -y ppa:boost-latest/ppa && sudo apt-get update && sudo apt-get install -y libboost1.54-all-dev; fi
-
-install:
-  - echo "Dependencies root $DEPENDENCIES_ROOT"
-  - mkdir -p $DEPENDENCIES_ROOT
-  - echo `pwd`
-  - ./installDependencies.sh $DEPENDENCIES_ROOT
+    - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-add-repository -y ppa:onedata/build-deps && sudo apt-get update && sudo apt-get install -y google-glog gtest; fi
 
 before_script:
   - rm -rf build
   - mkdir build
   - cd build
-  - DEPENDENCIES_LOCATION=$DEPENDENCIES_ROOT/install
-  - cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=dist -DINCLUDE_SYSTEM_DIRS=1 -DGLOG_DIR=$DEPENDENCIES_LOCATION ../
+  - cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=dist -DINCLUDE_SYSTEM_DIRS=1 ../
 
 script: make gtest VERBOSE=ON
 

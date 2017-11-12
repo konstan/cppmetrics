@@ -157,7 +157,7 @@ void GraphiteReporter::reportGauge(
     const std::string &name, core::GaugePtr gauge, uint64_t timestamp)
 {
     const std::string value = format(gauge->getValue());
-    sender_->send(prefix(name), value, timestamp, GraphiteSender::Gauge_t);
+    sender_->send(prefix(name), value, timestamp, GraphiteSender::metric_t::Gauge_t);
 }
 
 std::string GraphiteReporter::prefix(const std::string &name, const char *extra)

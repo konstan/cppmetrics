@@ -40,7 +40,7 @@ public:
      * @throws std::runtime_error if there is a problem.
      */
     virtual void send(const std::string &name, const std::string &value,
-        uint64_t timestamp, metric_t type);
+        uint64_t timestamp, metric_t type = metric_t::Counter_t);
 
     /**
      * Closes the connection.

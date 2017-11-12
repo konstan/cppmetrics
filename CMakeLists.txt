@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.5.7)
+cmake_minimum_required(VERSION 2.8.0)
 
 project (cppmetrics)
 
@@ -30,7 +30,6 @@ endif()
 set (cppmetrics_PREPROC_FLAGS -DBOOST_NO_CXX11_SMART_PTR)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Wall -Winit-self -Wno-unused-local-typedef -m64 -pipe")
 
-# Last ditch effort : look for boost in /usr/local and /usr/lib
 IF (DEFINED INCLUDE_SYSTEM_DIRS)
     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include")
     SET (EXTRA_LD_FLAGS "-L/usr/lib")
@@ -38,9 +37,6 @@ ENDIF()
 
 set(ASIO_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/deps/asio/asio/include)
 add_definitions(-DASIO_STANDALONE)
-
-set(Boost_USE_MULTITHREADED ON)
-find_package(Boost COMPONENTS timer chrono system filesystem thread date_time REQUIRED)
 
 set (GLOG_LD_FLAGS "-lglog")
 
@@ -126,7 +122,7 @@ add_library (cppmetrics STATIC ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
 install (TARGETS cppmetrics DESTINATION lib)
 
 add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
-target_link_libraries (cppmetricsshared ${Boost_LIBRARIES} ${GLOG_LD_FLAGS})
+target_link_libraries (cppmetricsshared ${GLOG_LD_FLAGS})
 install (TARGETS cppmetricsshared DESTINATION lib)
 
 add_custom_target(clang-format
@@ -169,5 +165,5 @@ set (cppmetrics_TEST_SOURCES
 
 
 add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
-target_link_libraries (gtest_cppmetrics cppmetrics ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} ${GLOG_LD_FLAGS})
+target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_BOTH_LIBRARIES} ${GLOG_LD_FLAGS})
 add_custom_target(gtest gtest_cppmetrics --gtest_output=xml DEPENDS gtest_cppmetrics)

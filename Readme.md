@@ -1,16 +1,14 @@
-##Background
+## Background
 
 cppmetrics is a C++ port of the [DropWizard metrics!](https://dropwizard.github.io/metrics/3.1.0/).
 The library implements the standard metrics primitives like Gauge, Counter, Histogram, Meter and Timer and the provides the reporter
 implementations like the ConsoleReporter, GraphiteRepoter out of the box.
-Its written in C++98 to make the integration into existing pre-C++11 codebases easier and should be portable across different 
-platforms but being used only in linux environment.
 
-[![Build Status](https://travis-ci.org/ultradns/cppmetrics.png)](https://travis-ci.org/ultradns/cppmetrics)
+[![Build Status](https://travis-ci.org/bkryza/cppmetrics.png)](https://travis-ci.org/bkryza/cppmetrics)
 
 ## Build dependencies
-- cmake (>= 2.6.5)
-- boost libraries (>= 1.53.0)
+- C++14 compiler
+- cmake (>= 2.8.0)
 - google logging framework (>= 0.3.1)
 - gtest (>= 1.6.0, dependency for the unit tests only.)
 
@@ -29,16 +27,16 @@ make -j
 mkdir build
 cd build
 cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=dist -DBOOST_DIR=<BOOST_BINARY_DISTRO> -DGLOG_DIR=<GLOG_BINARY_DISTRO> -DGTEST_DIR=<GTEST_BINARY_DISTRO> ../cppmetrics/
-make gtest
+make gtest VERBOSE=ON
 make package
 ```
 
 The above process produces a tar file of include files and a static library and should be used to statically link in your existing application. The shared library option is
 not turned off by default but can be turned on easily if required.
 
-##Sample code snippet
+## Sample code snippet
 
-####Using a Histogram or a timer or a meter..
+#### Using a Histogram or a timer or a meter..
 ``` cpp
 #include <cppmetrics/cppmetrics.h>
 ...
@@ -61,7 +59,7 @@ bool QueryHandler::doProcess(const Query& query) {
 }
 ```
 
-####Creating the default metrics registry and a graphite reporter that pushes the data to graphite server.
+#### Creating the default metrics registry and a graphite reporter that pushes the data to graphite server.
 
 ```cpp
 #include <cppmetrics/cppmetrics.h>
