@@ -93,7 +93,7 @@ bool MetricRegistry::Impl::isInstanceOf(const MetricPtr &metric_ptr) const
 {
     std::shared_ptr<MetricClass> stored_metric(
         std::dynamic_pointer_cast<MetricClass>(metric_ptr));
-    return (stored_metric.get() != NULL);
+    return (stored_metric.get() != nullptr);
 }
 
 MetricPtr MetricRegistry::Impl::buildMetric(MetricType metric_type) const

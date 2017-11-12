@@ -28,7 +28,9 @@ namespace core {
  * The abstract base class for all scheduled reporters (i.e., reporters which
  * process a registry's metrics periodically).
  */
-class ScheduledReporter : public Reporter {
+class ScheduledReporter
+    : public Reporter,
+      public std::enable_shared_from_this<ScheduledReporter> {
 public:
     virtual ~ScheduledReporter();
 

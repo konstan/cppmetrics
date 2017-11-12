@@ -14,6 +14,7 @@
  */
 
 #include "cppmetrics/core/scheduled_reporter.h"
+#include <glog/logging.h>
 
 namespace cppmetrics {
 namespace core {
@@ -48,12 +49,21 @@ void ScheduledReporter::start(std::chrono::milliseconds period)
     if (!running_) {
         running_ = true;
         scheduled_executor_.scheduleAtFixedDelay(
-            [this]() { this->report(); }, period);
+            [s = std::weak_ptr<ScheduledReporter>{shared_from_this()}]() {
+                LOG(ERROR) << "SR task called";
+                auto self = s.lock();
+                if (!self)
+                    return;
+
+                self->report();
+            },
+            period);
     }
 }
 
 void ScheduledReporter::stop()
 {
+    LOG(ERROR) << "STOPPING scheduled reported: " << running_;
     if (running_) {
         running_ = false;
         scheduled_executor_.shutdownNow();

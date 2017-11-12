@@ -59,6 +59,9 @@ void GraphiteSenderTCP::send(const std::string &name, const std::string &value,
 
 void GraphiteSenderTCP::close()
 {
+    if (!connected_)
+        return;
+
     connected_ = false;
     socket_.reset();
     io_service_.reset();

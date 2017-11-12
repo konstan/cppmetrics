@@ -46,25 +46,26 @@ void GraphiteReporter::report(core::CounterMap counter_map,
     try {
         sender_->connect();
 
-        for (const core::CounterMap::value_type &kv : counter_map) {
+        for (const auto &kv : counter_map) {
             reportCounter(kv.first, kv.second, timestamp);
         }
 
-        for (const core::HistogramMap::value_type &kv : histogram_map) {
+        for (const auto &kv : histogram_map) {
             reportHistogram(kv.first, kv.second, timestamp);
         }
 
-        for (const core::MeteredMap::value_type &kv : meter_map) {
+        for (const auto &kv : meter_map) {
             reportMeter(kv.first, kv.second, timestamp);
         }
 
-        for (const core::TimerMap::value_type &kv : timer_map) {
+        for (const auto &kv : timer_map) {
             reportTimer(kv.first, kv.second, timestamp);
         }
 
-        for (const core::GaugeMap::value_type &kv : gauge_map) {
+        for (const auto &kv : gauge_map) {
             reportGauge(kv.first, kv.second, timestamp);
         }
+
         sender_->close();
     }
     catch (const std::exception &e) {
@@ -106,7 +107,6 @@ void GraphiteReporter::reportTimer(
 void GraphiteReporter::reportMeter(
     const std::string &name, core::MeteredPtr meter, uint64_t timestamp)
 {
-
     sender_->send(prefix(name, "count"), format(meter->getCount()), timestamp);
     sender_->send(prefix(name, "m1_rate"),
         format(convertRateUnit(meter->getOneMinuteRate())), timestamp);
@@ -156,7 +156,8 @@ void GraphiteReporter::reportGauge(
     const std::string &name, core::GaugePtr gauge, uint64_t timestamp)
 {
     const std::string value = format(gauge->getValue());
-    sender_->send(prefix(name), value, timestamp, GraphiteSender::metric_t::Gauge_t);
+    sender_->send(
+        prefix(name), value, timestamp, GraphiteSender::metric_t::Gauge_t);
 }
 
 std::string GraphiteReporter::prefix(const std::string &name, const char *extra)

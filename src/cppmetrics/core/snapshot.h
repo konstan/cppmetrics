@@ -17,8 +17,8 @@
 #define SNAPSHOT_H_
 
 #include <cstdint>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace cppmetrics {
 namespace core {

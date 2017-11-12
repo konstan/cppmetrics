@@ -50,7 +50,7 @@ TEST(metricregistry, counterTest)
 
     // Create a counter
     CounterPtr counter_ptr1(metric_registry.counter(counter1));
-    ASSERT_TRUE(counter_ptr1.get() != NULL);
+    ASSERT_TRUE(counter_ptr1.get() != nullptr);
 
     // Fetch already created counter.
     CounterPtr counter_ptr2(metric_registry.counter(counter1));
@@ -61,7 +61,7 @@ TEST(metricregistry, counterTest)
 
     // Create another counter
     CounterPtr counter_ptr3(metric_registry.counter(counter2));
-    ASSERT_TRUE(counter_ptr3.get() != NULL);
+    ASSERT_TRUE(counter_ptr3.get() != nullptr);
     ASSERT_TRUE(counter_ptr1.get() != counter_ptr3.get());
 
     CounterMap counters(metric_registry.getCounters());
@@ -117,7 +117,7 @@ TEST(metricregistry, histogramTest)
 
     // Create a histogram
     HistogramPtr histogram_ptr1(metric_registry.histogram(histogram1));
-    ASSERT_TRUE(histogram_ptr1.get() != NULL);
+    ASSERT_TRUE(histogram_ptr1.get() != nullptr);
 
     // Fetch already created histogram.
     HistogramPtr histogram_ptr2(metric_registry.histogram(histogram1));
@@ -128,7 +128,7 @@ TEST(metricregistry, histogramTest)
 
     // Create another histogram
     HistogramPtr histogram_ptr3(metric_registry.histogram(histogram2));
-    ASSERT_TRUE(histogram_ptr3.get() != NULL);
+    ASSERT_TRUE(histogram_ptr3.get() != nullptr);
     ASSERT_TRUE(histogram_ptr1.get() != histogram_ptr3.get());
 
     HistogramMap histograms(metric_registry.getHistograms());
@@ -151,7 +151,7 @@ TEST(metricregistry, meterTest)
 
     // Create a meter
     MeterPtr meter_ptr1(metric_registry.meter(meter1));
-    ASSERT_TRUE(meter_ptr1.get() != NULL);
+    ASSERT_TRUE(meter_ptr1.get() != nullptr);
 
     // Fetch already created meter.
     MeterPtr meter_ptr2(metric_registry.meter(meter1));
@@ -162,7 +162,7 @@ TEST(metricregistry, meterTest)
 
     // Create another meter
     MeterPtr meter_ptr3(metric_registry.meter(meter2));
-    ASSERT_TRUE(meter_ptr3.get() != NULL);
+    ASSERT_TRUE(meter_ptr3.get() != nullptr);
     ASSERT_TRUE(meter_ptr1.get() != meter_ptr3.get());
 
     MeteredMap meters(metric_registry.getMeters());
@@ -185,7 +185,7 @@ TEST(metricregistry, timerTest)
 
     // Create a timer
     TimerPtr timer_ptr1(metric_registry.timer(timer1));
-    ASSERT_TRUE(timer_ptr1.get() != NULL);
+    ASSERT_TRUE(timer_ptr1.get() != nullptr);
 
     // Fetch already created timer.
     TimerPtr timer_ptr2(metric_registry.timer(timer1));
@@ -196,7 +196,7 @@ TEST(metricregistry, timerTest)
 
     // Create another timer
     TimerPtr timer_ptr3(metric_registry.timer(timer2));
-    ASSERT_TRUE(timer_ptr3.get() != NULL);
+    ASSERT_TRUE(timer_ptr3.get() != nullptr);
     ASSERT_TRUE(timer_ptr1.get() != timer_ptr3.get());
 
     TimerMap timers(metric_registry.getTimers());

@@ -59,7 +59,7 @@ public:
         core::TimerMap timer_map, core::GaugeMap gauge_map);
 
 private:
-    std::string prefix(const std::string &name, const char *extra = NULL);
+    std::string prefix(const std::string &name, const char *extra = nullptr);
 
     template <class T> std::string format(T o);
 
@@ -81,8 +81,6 @@ private:
     core::MetricRegistryPtr registry_;
     GraphiteSenderPtr sender_;
     std::string prefix_;
-    std::chrono::milliseconds rate_unit_;
-    std::chrono::milliseconds duration_unit_;
 };
 
 } /* namespace graphite */

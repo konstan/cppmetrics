@@ -19,9 +19,9 @@
 #include "cppmetrics/core/sample.h"
 #include <atomic>
 #include <iterator>
+#include <mutex>
 #include <random>
 #include <vector>
-#include <mutex>
 
 namespace cppmetrics {
 namespace core {

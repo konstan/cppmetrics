@@ -30,9 +30,7 @@ GraphiteSenderUDP::~GraphiteSenderUDP() {}
 void GraphiteSenderUDP::connect()
 {
     udp::resolver resolver(io_service_);
-    std::ostringstream ss;
-    ss << port_; // bypass compiler problem that prevents using to_string()
-    udp::resolver::query query(host_, ss.str());
+    udp::resolver::query query(host_, std::to_string(port_));
     receiver_endpoint_ = *resolver.resolve(query);
     connected_ = true;
 }
