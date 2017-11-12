@@ -5,3 +5,4 @@
 + src/**/*.h
 + test/**/*.cpp
 + test/**/*.h
++ examples/**/*.cpp

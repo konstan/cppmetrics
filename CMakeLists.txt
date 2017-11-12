@@ -11,12 +11,12 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 set (cppmetrics_VERSION_MAJOR 0)
-set (cppmetrics_VERSION_MINOR 1)
-set (cppmetrics_VERSION_PATCH 1)
+set (cppmetrics_VERSION_MINOR 2)
+set (cppmetrics_VERSION_PATCH 0)
 set (cppmetrics_VERSION_TAG "")
 set (cppmetrics_VERSION "${cppmetrics_VERSION_MAJOR}.${cppmetrics_VERSION_MINOR}.${cppmetrics_VERSION_PATCH}${cppmetrics_VERSION_TAG}")
 set(CPACK_PACKAGE_VERSION ${cppmetrics_VERSION})
-INCLUDE(CPack)
+include(CPack)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -32,10 +32,10 @@ endif()
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -Wall -Winit-self -Wno-unused-local-typedef -m64 -pipe")
 
-IF (DEFINED INCLUDE_SYSTEM_DIRS)
+if(DEFINED INCLUDE_SYSTEM_DIRS)
     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include")
     SET (EXTRA_LD_FLAGS "-L/usr/lib")
-ENDIF()
+endif()
 
 set(ASIO_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/deps/asio/asio/include)
 add_definitions(-DASIO_STANDALONE)
@@ -108,10 +108,10 @@ set (cppmetrics_HEADERS
 set (DIST_INCLUDE_DIR include/cppmetrics)
 
 
-IF (DEFINED GLOG_DIR)
+if(DEFINED GLOG_DIR)
     set (GLOG_INCLUDE_DIR ${GLOG_DIR}/include)
     set (GLOG_LIB_DIR ${GLOG_DIR}/lib)
-ENDIF ()
+endif()
 
 include_directories (src ${ASIO_INCLUDE_DIRS} ${GLOG_INCLUDE_DIR} ${GTEST_DIR})
 link_directories (${GLOG_LIB_DIR} ${GTEST_DIR})
@@ -120,13 +120,20 @@ install (FILES ${cppmetrics_core_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DI
 install (FILES ${cppmetrics_concurrent_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/concurrent)
 install (FILES ${cppmetrics_graphite_EXTERNAL_HEADERS} DESTINATION ${DIST_INCLUDE_DIR}/graphite)
 
+# Static library
 add_library (cppmetrics STATIC ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
 install (TARGETS cppmetrics DESTINATION lib)
 
+# Shared library
 add_library (cppmetricsshared SHARED ${cppmetrics_HEADERS} ${cppmetrics_SOURCES})
 target_link_libraries (cppmetricsshared ${GLOG_LD_FLAGS})
 install (TARGETS cppmetricsshared DESTINATION lib)
 
+# Examples
+add_executable(graphite_client examples/graphite_client.cc)
+target_link_libraries(graphite_client cppmetrics ${GLOG_LD_FLAGS} Threads::Threads)
+
+# Code formatting
 add_custom_target(clang-format
     COMMAND docker run --rm -v ${PWD}:/root/sources onedata/clang-format-check:1.1
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
@@ -135,7 +142,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-set (cppmetrics_core_TEST_SOURCES
+set(cppmetrics_core_TEST_SOURCES
   test/cppmetrics/core/test_counter.cpp
   test/cppmetrics/core/test_ewma.cpp
   test/cppmetrics/core/test_exp_decay_sample.cpp
@@ -149,22 +156,21 @@ set (cppmetrics_core_TEST_SOURCES
   test/cppmetrics/core/test_console_reporter.cpp
 )
 
-set (cppmetrics_graphite_TEST_SOURCES
+set(cppmetrics_graphite_TEST_SOURCES
   test/cppmetrics/graphite/test_graphite_sender_tcp.cpp
   test/cppmetrics/graphite/test_graphite_reporter.cpp
 )
 
-set (cppmetrics_concurrent_TEST_SOURCES
+set(cppmetrics_concurrent_TEST_SOURCES
   test/cppmetrics/concurrent/test_simple_thread_pool_executor.cpp
   test/cppmetrics/concurrent/test_simple_scheduled_thread_pool_executor.cpp
 )
 
-set (cppmetrics_TEST_SOURCES
+set(cppmetrics_TEST_SOURCES
     ${cppmetrics_core_TEST_SOURCES}
     ${cppmetrics_concurrent_TEST_SOURCES}
     ${cppmetrics_graphite_TEST_SOURCES}
 )
-
 
 add_executable(gtest_cppmetrics EXCLUDE_FROM_ALL ${cppmetrics_TEST_SOURCES})
 target_link_libraries (gtest_cppmetrics cppmetrics ${GTEST_BOTH_LIBRARIES} ${GLOG_LD_FLAGS} Threads::Threads)
