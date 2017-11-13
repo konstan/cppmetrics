@@ -71,7 +71,6 @@ void SimpleScheduledThreadPoolExecutor::cancelTimers()
 void SimpleScheduledThreadPoolExecutor::timerHandler(
     const asio::error_code &ec, size_t timer_index)
 {
-    LOG(ERROR) << "STARTING TIMER HANDLER: " << timer_index;
     if (!running_) {
         LOG(ERROR) << "Timer " << timer_index << " not started.";
         return;
@@ -97,15 +96,13 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(
         return;
     }
 
-    LOG(ERROR) << "EXECUTING TIMER TASK: " << timer_index;
     // Execute the timer underlying task
     try {
         timer_task.task_();
     }
     catch (const std::exception &e) {
-        LOG(ERROR) << "TIMER TASK EXECUTION FAILED: " << e.what();
+        LOG(ERROR) << "Timer task execution failed: " << e.what();
     }
-    LOG(ERROR) << "FINISHED EXECUTING TIMER TASK: " << timer_index;
 
     asio::error_code eec;
     if (timer_task.fixed_rate_) {
@@ -128,36 +125,21 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(
 
 void SimpleScheduledThreadPoolExecutor::shutdown()
 {
-    // if (!running_) {
-    //     return;
-    // }
-    LOG(ERROR) << "SSTPE shutdown";
     running_ = false;
     work_ptr_.reset();
-    LOG(ERROR) << "SSTPE joining on threads";
     for (auto &thread : thread_group_)
         if (thread.joinable())
             thread.join();
-    LOG(ERROR) << "SSTPE joining on threads - DONE";
 }
 
 void SimpleScheduledThreadPoolExecutor::shutdownNow()
 {
-    // if (!running_) {
-    //     return;
-    // }
-    LOG(ERROR) << "SSTPE shutdownNow";
     running_ = false;
     cancelTimers();
     io_service_.stop();
-    LOG(ERROR) << "SSTPE now joining on threads";
-    for (auto &thread : thread_group_) {
-        if (thread.joinable()) {
-            LOG(ERROR) << "Joining thread: " << thread.get_id();
+    for (auto &thread : thread_group_)
+        if (thread.joinable())
             thread.join();
-        }
-    }
-    LOG(ERROR) << "SSTPE now joining on threads - DONE";
 }
 
 bool SimpleScheduledThreadPoolExecutor::isShutdown() const { return !running_; }

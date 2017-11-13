@@ -50,11 +50,9 @@ void ScheduledReporter::start(std::chrono::milliseconds period)
         running_ = true;
         scheduled_executor_.scheduleAtFixedDelay(
             [s = std::weak_ptr<ScheduledReporter>{shared_from_this()}]() {
-                LOG(ERROR) << "SR task called";
                 auto self = s.lock();
                 if (!self)
                     return;
-
                 self->report();
             },
             period);
@@ -63,7 +61,6 @@ void ScheduledReporter::start(std::chrono::milliseconds period)
 
 void ScheduledReporter::stop()
 {
-    LOG(ERROR) << "STOPPING scheduled reported: " << running_;
     if (running_) {
         running_ = false;
         scheduled_executor_.shutdownNow();

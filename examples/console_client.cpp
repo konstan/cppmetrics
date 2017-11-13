@@ -21,31 +21,24 @@ private:
 
 int main(int argc, char **argv)
 {
-    if (argc != 4) {
+    if (argc != 2) {
         std::cout << "Usage: " << argv[0]
-                  << " <graphite_hostname> <graphite_port> <duration>\n";
+                  << " <duration>\n";
         return 1;
     }
 
-    std::string graphite_hostname{argv[1]};
-    int graphite_port{std::stoi(argv[2])};
-    int duration{std::stoi(argv[3])};
+    int duration{std::stoi(argv[1])};
 
-    std::shared_ptr<cppmetrics::graphite::GraphiteReporter> graphite_reporter;
+    std::shared_ptr<core::ConsoleReporter> console_reporter;
     core::MetricRegistryPtr metric_registry(new core::MetricRegistry());
 
     core::GaugePtr gauge_ptr(new RandomGauge());
     metric_registry->addGauge("RANDOM_GAUGE", gauge_ptr);
 
-    core::CounterPtr counter = metric_registry->counter("RANDOM_COUNTER");
+    console_reporter.reset(new core::ConsoleReporter(
+        metric_registry, std::cout));
 
-    graphite::GraphiteSenderPtr graphite_sender(
-        new graphite::GraphiteSenderUDP(graphite_hostname, graphite_port));
-
-    graphite_reporter.reset(new graphite::GraphiteReporter(
-        metric_registry, graphite_sender, "cppmetrics_test"));
-
-    graphite_reporter->start(std::chrono::seconds(1));
+    console_reporter->start(std::chrono::seconds(1));
 
     LOG(ERROR) << "STARTING WAITING...";
 
@@ -53,5 +46,5 @@ int main(int argc, char **argv)
 
     LOG(ERROR) << "FINISHED WAITING...";
 
-    graphite_reporter->stop();
+    console_reporter->stop();
 }

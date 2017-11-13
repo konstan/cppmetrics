@@ -132,6 +132,10 @@ install (TARGETS cppmetricsshared DESTINATION lib)
 # Examples
 add_executable(graphite_client examples/graphite_client.cpp)
 target_link_libraries(graphite_client cppmetrics ${GLOG_LD_FLAGS} Threads::Threads)
+add_executable(console_client examples/console_client.cpp)
+target_link_libraries(console_client cppmetrics ${GLOG_LD_FLAGS} Threads::Threads)
+
+
 
 # Code formatting
 add_custom_target(clang-format
