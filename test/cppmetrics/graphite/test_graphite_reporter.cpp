@@ -140,12 +140,12 @@ TEST(graphitereporter, gaugetest)
     core::GaugePtr gauge_ptr(new FakeGauge());
     metric_registry->addGauge(GAUGE_NAME, gauge_ptr);
 
-    GraphiteReporter graphite_reporter(
-        metric_registry, graphite_sender, PREFIX, std::chrono::seconds(1));
+    std::shared_ptr<GraphiteReporter> graphite_reporter(new GraphiteReporter(
+        metric_registry, graphite_sender, PREFIX, std::chrono::seconds(1)));
 
-    graphite_reporter.start(std::chrono::milliseconds(100));
+    graphite_reporter->start(std::chrono::milliseconds(100));
     std::this_thread::sleep_for(std::chrono::milliseconds(150));
-    graphite_reporter.stop();
+    graphite_reporter->stop();
 }
 
 TEST(graphitereporter, countertest)
@@ -157,12 +157,12 @@ TEST(graphitereporter, countertest)
     core::CounterPtr counter_ptr(metric_registry->counter(COUNTER_NAME));
     counter_ptr->increment(COUNTER_VALUE);
 
-    GraphiteReporter graphite_reporter(
-        metric_registry, graphite_sender, PREFIX, std::chrono::seconds(1));
+    std::shared_ptr<GraphiteReporter> graphite_reporter(new GraphiteReporter(
+        metric_registry, graphite_sender, PREFIX, std::chrono::seconds(1)));
 
-    graphite_reporter.start(std::chrono::milliseconds(100));
+    graphite_reporter->start(std::chrono::milliseconds(100));
     std::this_thread::sleep_for(std::chrono::milliseconds(150));
-    graphite_reporter.stop();
+    graphite_reporter->stop();
 }
 }
 }

@@ -35,8 +35,9 @@ TEST(consolereporter, gaugetest)
 
     MetricRegistryPtr metric_registry(new MetricRegistry());
     metric_registry->addGauge("new.gauge", GaugePtr(new TestGauge()));
-    ConsoleReporter console_reporter(metric_registry, std::cout);
-    console_reporter.start(std::chrono::milliseconds(1000));
+    std::shared_ptr<ConsoleReporter> console_reporter(
+        new ConsoleReporter(metric_registry, std::cout));
+    console_reporter->start(std::chrono::milliseconds(1000));
     std::this_thread::sleep_for(std::chrono::milliseconds(10 * 1000));
 }
 
@@ -45,8 +46,9 @@ TEST(consolereporter, timerContextTest)
 
     MetricRegistryPtr metric_registry(new MetricRegistry());
     std::mt19937 rng;
-    ConsoleReporter console_reporter(metric_registry, std::cout);
-    console_reporter.start(std::chrono::milliseconds(1000));
+    std::shared_ptr<ConsoleReporter> console_reporter(
+        new ConsoleReporter(metric_registry, std::cout));
+    console_reporter->start(std::chrono::milliseconds(1000));
     for (size_t i = 0; i < 100; ++i) {
         std::uniform_int_distribution<> uniform(10, 30);
         size_t sleep_time = uniform(rng);

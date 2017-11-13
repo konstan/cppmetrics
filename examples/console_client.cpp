@@ -22,8 +22,7 @@ private:
 int main(int argc, char **argv)
 {
     if (argc != 2) {
-        std::cout << "Usage: " << argv[0]
-                  << " <duration>\n";
+        std::cout << "Usage: " << argv[0] << " <duration>\n";
         return 1;
     }
 
@@ -35,8 +34,8 @@ int main(int argc, char **argv)
     core::GaugePtr gauge_ptr(new RandomGauge());
     metric_registry->addGauge("RANDOM_GAUGE", gauge_ptr);
 
-    console_reporter.reset(new core::ConsoleReporter(
-        metric_registry, std::cout));
+    console_reporter.reset(
+        new core::ConsoleReporter(metric_registry, std::cout));
 
     console_reporter->start(std::chrono::seconds(1));
 

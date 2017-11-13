@@ -118,8 +118,8 @@ void SimpleScheduledThreadPoolExecutor::timerHandler(
     }
 
     timer_task.timer_->async_wait(
-        [this, timer_index](const asio::error_code &ec) {
-            this->timerHandler(ec, timer_index);
+        [this, timer_index](const asio::error_code &tec) {
+            this->timerHandler(tec, timer_index);
         });
 }
 

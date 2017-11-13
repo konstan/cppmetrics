@@ -57,13 +57,14 @@ private:
 
 TEST(scheduledreporter, test)
 {
-    StubScheduledReporter scheduled_reporter(
-        MetricRegistry::DEFAULT_REGISTRY(), std::chrono::milliseconds(1));
-    scheduled_reporter.start(std::chrono::milliseconds(100));
+    std::shared_ptr<StubScheduledReporter> scheduled_reporter(
+        new StubScheduledReporter(
+            MetricRegistry::DEFAULT_REGISTRY(), std::chrono::milliseconds(1)));
+    scheduled_reporter->start(std::chrono::milliseconds(100));
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    scheduled_reporter.stop();
-    ASSERT_LE((size_t)9, scheduled_reporter.invocation_count());
-    ASSERT_GE((size_t)11, scheduled_reporter.invocation_count());
+    scheduled_reporter->stop();
+    ASSERT_LE((size_t)9, scheduled_reporter->invocation_count());
+    ASSERT_GE((size_t)11, scheduled_reporter->invocation_count());
 }
 }
 }
