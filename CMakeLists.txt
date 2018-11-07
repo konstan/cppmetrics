@@ -83,6 +83,7 @@ set (cppmetrics_core_EXTERNAL_HEADERS
   src/cppmetrics/core/uniform_sample.h
   src/cppmetrics/core/sampling.h
   src/cppmetrics/core/types.h
+  src/cppmetrics/core/trivial_gauge.h
   src/cppmetrics/core/console_reporter.h
  )
 
